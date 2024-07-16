@@ -22,7 +22,8 @@ const moment = require('moment');
 const { getterPinnedFn, setterPinnedFn } = require("../../utils/pinned");
 const {isMine} = require("./message");
 const Conversation=require('../../models/Conversation')
-const Message=require('../../models/Message')
+const Message=require('../../models/Message');
+const { ForbiddenError } = require("../../utils/errors");
 
 // TODO move in DB migration
 // Ensure softSkills
@@ -522,7 +523,7 @@ const preProcessGet = async ({ model, fields, id, user, params }) => {
 
 setPreprocessGet(preProcessGet)
 
-const preCreate = async ({model, params, user}) => {
+const preCreate = async ({model, params, user, skip_validation}) => {
   if (['experience', 'communication', 'certification', 'training'].includes(model) && !params.user) {
     params.user=user
   }
@@ -563,7 +564,17 @@ const preCreate = async ({model, params, user}) => {
     params.conversation=conversation
     params.receiver=await conversation.getPartner(user)
   }
-  return Promise.resolve({model, params})
+  if (model=='recommandation') {
+    if (!(user.role==ROLE_FREELANCE)) {
+      throw new ForbiddenError(`Seul un indépendant peut demander une recommandation`)
+    }
+    if (!(params.message?.trim() && params.creator_email?.trim())) {
+      throw new ForbiddenError(`Le message et l'adresse mail du destinataire sont obligatoires`)
+    }
+    params.freelance=user
+    skip_validation=true
+  }
+  return Promise.resolve({model, params, skip_validation})
 }
 
 setPreCreateData(preCreate)
@@ -593,7 +604,10 @@ const postCreate = async ({model, params, data}) => {
       await Announce.findByIdAndUpdate(params.parent, {$addToSet: {languages: data._id}})
     }
   }
-  return Promise.resolve(data)
+  if (model=='recommandation') {
+    
+  }
+   return Promise.resolve(data)
 }
 
 setPostCreateData(postCreate)
