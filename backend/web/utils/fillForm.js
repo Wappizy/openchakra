@@ -9,18 +9,14 @@
 */}
 
 const axios = require('axios')
-const { PDFDocument, PDFTextField, PDFButton } = require('pdf-lib')
+const { PDFDocument } = require('pdf-lib')
 const fs = require('fs').promises
-const validator=require('validator')
-const defaultLink='./form.pdf'
-const defaultOutputLink='./finalform.pdf'
-const defaultData = ['1', '2', '3', '5']
-const args = process.argv.slice(2)
+const validator = require('validator')
 
 async function getPDFBytes(filePath) {
-  const isUrl=validator.isURL(filePath)
+  const isUrl = validator.isURL(filePath)
   if (isUrl) {
-    const {data}=await axios.get(filePath, {responseType: 'arraybuffer'})
+    const { data } = await axios.get(filePath, { responseType: 'arraybuffer' })
     return data
   }
   const pdf = await fs.readFile(filePath)
@@ -33,25 +29,75 @@ async function copyPDF(sourceLink) {
   return pdf
 }
 
-async function logFormFields(sourceLink){
-  const sourcePDFBytes=await getPDFBytes(sourceLink)
+async function logFormFields(sourceLink) {
+  const sourcePDFBytes = await getPDFBytes(sourceLink)
   const sourcePDF = await PDFDocument.load(sourcePDFBytes)
+  const form = sourcePDF.getForm()
+
   return Object.fromEntries(
-    sourcePDF.getForm().getFields().map(field => [field.getName(), field.acroField.constructor.name])
+    form.getFields().map(field => {
+      const fieldName = field.getName()
+      const fieldType = field.constructor.name
+      const widgets = field.acroField.getWidgets()
+      const positions = widgets.map(widget => {
+        const rect = widget.getRectangle()
+        const x = rect.x
+        const y = rect.y
+        const width = rect.width
+        const height = rect.height
+        return { x, y, width, height }
+      })
+
+      return [fieldName, { type: fieldType, positions }]
+    })
   )
 }
 
 const setFieldValue = (form, field, value) => {
-  const fieldType=field.constructor.name
+  const fieldType = field.constructor.name
   if (fieldType === 'PDFTextField') {
-    field.setText(value)
+    const widgets = field.acroField.getWidgets()
+    const rect = widgets[0].getRectangle()
+    const fieldWidth = rect.width
+    const charWidth = 5
+    const maxLength = Math.floor(fieldWidth / charWidth)
+
+    const wrapText = (text, maxLength) => {
+      const lines = []
+      let currentLine = ''
+
+      for (let word of text.split(' ')) {
+        if ((currentLine + word).length > maxLength) {
+          lines.push(currentLine.trim())
+          currentLine = word + ' '
+        } else {
+          currentLine += word + ' '
+        }
+      }
+
+      lines.push(currentLine.trim())
+      return lines
+    }
+
+    const wrappedLines = wrapText(value, maxLength)
+    const wrappedValue = wrappedLines.join('\n')
+    
+    const lineHeight = 12; 
+    const newHeight = wrappedLines.length * lineHeight
+    rect.height = newHeight
+    widgets.forEach(widget => widget.setRectangle(rect))
+    field.enableMultiline()
+    field.setText(wrappedValue)
   } else if (fieldType === 'PDFButton') {
     field.setImage(value)
-  }
-  else {
-    console.warn(`Can not set value for field type ${fieldType}`)
+  } else {
+    console.warn(`Cannot set value for field type ${fieldType}`)
   }
 }
+
+
+
+
 
 async function fillForm(sourceLink, data) {
   const sourcePDFBytes = await getPDFBytes(sourceLink)
@@ -59,7 +105,7 @@ async function fillForm(sourceLink, data) {
   const form = sourcePDF.getForm()
   
   Object.entries(data).forEach(([fieldName, fieldValue]) => {
-    const field=form.getFieldMaybe(fieldName)
+    const field = form.getFieldMaybe(fieldName)
     if (!field) {
       return console.warn(`Found no field ${fieldName}`)
     }
@@ -69,15 +115,15 @@ async function fillForm(sourceLink, data) {
 }
 
 async function savePDFFile(pdf, outputFilePath) {
-  const pdfBytes= await pdf.save()
+  const pdfBytes = await pdf.save()
   const buffer = Buffer.from(pdfBytes)
   await fs.writeFile(outputFilePath, buffer)
 }
 
-module.exports={
-    getPDFBytes,
-    copyPDF,
-    logFormFields,
-    fillForm,
-    savePDFFile,
+module.exports = {
+  getPDFBytes,
+  copyPDF,
+  logFormFields,
+  fillForm,
+  savePDFFile,
 }
