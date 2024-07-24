@@ -33,7 +33,6 @@ async function logFormFields(sourceLink) {
   const sourcePDFBytes = await getPDFBytes(sourceLink)
   const sourcePDF = await PDFDocument.load(sourcePDFBytes)
   const form = sourcePDF.getForm()
-
   return Object.fromEntries(
     form.getFields().map(field => {
       const fieldName = field.getName()
@@ -47,7 +46,6 @@ async function logFormFields(sourceLink) {
         const height = rect.height
         return { x, y, width, height }
       })
-
       return [fieldName, { type: fieldType, positions }]
     })
   )
@@ -61,11 +59,9 @@ const setFieldValue = (form, field, value) => {
     const fieldWidth = rect.width
     const charWidth = 5
     const maxLength = Math.floor(fieldWidth / charWidth)
-
     const wrapText = (text, maxLength) => {
       const lines = []
       let currentLine = ''
-
       for (let word of text.split(' ')) {
         if ((currentLine + word).length > maxLength) {
           lines.push(currentLine.trim())
@@ -74,17 +70,15 @@ const setFieldValue = (form, field, value) => {
           currentLine += word + ' '
         }
       }
-
       lines.push(currentLine.trim())
       return lines
     }
-
     const wrappedLines = wrapText(value, maxLength)
     const wrappedValue = wrappedLines.join('\n')
-    
-    const lineHeight = 12; 
+    const lineHeight = 16
     const newHeight = wrappedLines.length * lineHeight
     rect.height = newHeight
+    rect.y -= newHeight - 12
     widgets.forEach(widget => widget.setRectangle(rect))
     field.enableMultiline()
     field.setText(wrappedValue)
@@ -94,10 +88,6 @@ const setFieldValue = (form, field, value) => {
     console.warn(`Cannot set value for field type ${fieldType}`)
   }
 }
-
-
-
-
 
 async function fillForm(sourceLink, data) {
   const sourcePDFBytes = await getPDFBytes(sourceLink)
@@ -120,10 +110,58 @@ async function savePDFFile(pdf, outputFilePath) {
   await fs.writeFile(outputFilePath, buffer)
 }
 
+
+async function duplicateFields(sourceLink, margin = 10) {
+  const sourcePDFBytes = await getPDFBytes(sourceLink)
+  const sourcePDF = await PDFDocument.load(sourcePDFBytes)
+  const form = sourcePDF.getForm()
+
+  const fieldMap = Object.fromEntries(
+    form.getFields().map(field => {
+      const fieldName = field.getName()
+      const fieldType = field.constructor.name
+      const widgets = field.acroField.getWidgets()
+      const positions = widgets.map(widget => {
+        const rect = widget.getRectangle()
+        const x = rect.x
+        const y = rect.y
+        const width = rect.width
+        const height = rect.height
+        return { x, y, width, height }
+      })
+      return [fieldName, { type: fieldType, positions }]
+    })
+  )
+
+  const page = sourcePDF.getPage(0)
+  const height = page.getHeight()
+
+  for (const [fieldName, { type, positions }] of Object.entries(fieldMap)) {
+    for (const { x, y, width, height } of positions) {
+      const newY = y - height - margin
+      const newFieldName = `${fieldName}_copy`
+      let newField
+
+      if (type === 'PDFTextField') {
+        newField = form.createTextField(newFieldName)
+        newField.setText('')
+        newField.updateAppearances({ borderWidth: 0 });
+      } else if (type === 'PDFButton') {
+        newField = form.createButton(newFieldName)
+      }
+
+      newField.addToPage(page, { x, y: newY, width, height })
+    }
+  }
+
+  return sourcePDF
+}
+
 module.exports = {
   getPDFBytes,
   copyPDF,
   logFormFields,
   fillForm,
   savePDFFile,
+  duplicateFields
 }
