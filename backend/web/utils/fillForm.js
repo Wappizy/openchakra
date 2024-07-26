@@ -9,7 +9,7 @@
 */}
 
 const axios = require('axios')
-const { PDFDocument } = require('pdf-lib')
+const { PDFDocument, StandardFonts } = require('pdf-lib')
 const fs = require('fs').promises
 const validator = require('validator')
 
@@ -51,48 +51,54 @@ async function logFormFields(sourceLink) {
   )
 }
 
-const setFieldValue = (form, field, value, font, fontSize) => {
+const setFieldValue = (form, field, value, fallbackFont, fallbackFontSize) => {
   const fieldType = field.constructor.name
   if (fieldType === 'PDFTextField') {
     field.enableMultiline()
     const widgets = field.acroField.getWidgets()
-    const rect = widgets[0].getRectangle()
-    const fieldWidth = rect.width
 
-    const charWidth = fontSize * 0.5
+    widgets.forEach(widget => {
+      const rect = widget.getRectangle()
+      const fieldWidth = rect.width
+      //charWidth that worked the best, couldn't get charWidth from font
+      const charWidth = fallbackFontSize * 0.25
+      const topY = rect.y + rect.height
 
-    const wrapText = (text, fieldWidth, charWidth) => {
-      const words = text.split(' ')
-      let lines = []
-      let currentLine = ''
+      const wrapText = (text, fieldWidth, charWidth) => {
+        const words = String(text).split(' ')
+        let lines = []
+        let currentLine = ''
 
-      words.forEach((word) => {
-        const testLine = currentLine + (currentLine.length ? ' ' : '') + word
-        const textWidth = testLine.length * charWidth
+        words.forEach((word) => {
+          const testLine = currentLine + (currentLine.length ? ' ' : '') + word
+          const textWidth = testLine.length * charWidth
 
-        if (textWidth <= fieldWidth) {
-          currentLine = testLine
-        } else {
-          lines.push(currentLine)
-          currentLine = word
-        }
-      })
+          if (textWidth <= fieldWidth) {
+            currentLine = testLine
+          } else {
+            lines.push(currentLine)
+            currentLine = word
+          }
+        })
 
-      lines.push(currentLine)
-      return lines
-    }
+        lines.push(currentLine)
+        return lines
+      }
 
-    const wrappedLines = wrapText(value, fieldWidth, charWidth)
-    const wrappedValue = wrappedLines.join('\n')
+      const wrappedLines = wrapText(value, fieldWidth, charWidth)
+      const wrappedValue = wrappedLines.join('\n')
 
-    const lineHeight = fontSize * 1.2
-    const requiredHeight = wrappedLines.length * lineHeight + lineHeight
+      const lineHeight = fallbackFontSize * 1.2
+      const requiredHeight = wrappedLines.length * lineHeight + lineHeight
 
-    rect.y -= (requiredHeight - rect.height)
-    rect.height = requiredHeight
-    widgets.forEach(widget => widget.setRectangle(rect))
+      rect.y = topY - requiredHeight
+      rect.height = requiredHeight
+      widget.setRectangle(rect)
 
-    field.setText(wrappedValue)
+      field.setText(wrappedValue)
+    })
+
+    form.updateFieldAppearances(fallbackFont)
   } else if (fieldType === 'PDFButton') {
     field.setImage(value)
   } else {
@@ -100,69 +106,108 @@ const setFieldValue = (form, field, value, font, fontSize) => {
   }
 }
 
-async function fillForm(sourceLink, data, font, fontSize) {
+async function fillForm(sourceLink, data, font = StandardFonts.Helvetica, fontSize = 12) {
   const sourcePDFBytes = await getPDFBytes(sourceLink)
-  const sourcePDF = await PDFDocument.load(sourcePDFBytes)
-  const pdfFont = await sourcePDF.embedFont(font)
-  const form = sourcePDF.getForm()
+  const pdfDoc = await PDFDocument.load(sourcePDFBytes)
+  const pdfFont = await pdfDoc.embedFont(font)
+  const form = pdfDoc.getForm()
 
-  Object.entries(data).forEach(([fieldName, fieldValue]) => {
-    const field = form.getFieldMaybe(fieldName)
-    if (!field) {
-      return console.warn(`Found no field ${fieldName}`)
+  for (const fieldName in data) {
+    const fieldValue = data[fieldName]
+    
+    if (typeof fieldValue === 'object' && Array.isArray(fieldValue)) {
+      const textFields = Object.keys(fieldValue[0])
+      const numberOfDuplicates = fieldValue.length
+      
+      await duplicateFields(pdfDoc, textFields, numberOfDuplicates, 10)
+
+      fieldValue.forEach((detail, index) => {
+        const fieldIndex = index + 1
+        for (const key in detail) {
+          const newFieldName = `${key}_copy_${fieldIndex}`
+          const field = form.getTextField(newFieldName)
+          if (field) {
+            setFieldValue(form, field, detail[key].toString(), pdfFont, fontSize)
+          } else {
+            console.warn(`Field ${newFieldName} does not exist in the form.`)
+          }
+        }
+      })
+    } else {
+      const field = form.getTextField(fieldName)
+      if (field) {
+        setFieldValue(form, field, fieldValue, pdfFont, fontSize)
+      } else {
+        console.log(`No data found for field ${fieldName}`)
+      }
     }
-    setFieldValue(form, field, fieldValue, pdfFont, fontSize)
-  })
+  }
 
   form.updateFieldAppearances(pdfFont)
-  form.flatten()
-  return sourcePDF
+  return pdfDoc
 }
 
 async function savePDFFile(pdf, outputFilePath) {
+  const form = pdf.getForm()
+  form.flatten()
   const pdfBytes = await pdf.save()
   const buffer = Buffer.from(pdfBytes)
   await fs.writeFile(outputFilePath, buffer)
 }
 
-async function duplicateFields(sourceLink, textFields, numberOfDuplicates = 1, pageNumber = 0, margin = 10) {
-  const sourcePDFBytes = await getPDFBytes(sourceLink)
-  const sourcePDF = await PDFDocument.load(sourcePDFBytes)
+async function duplicateFields(sourcePDF, textFields, numberOfDuplicates = 1, margin = 10) {
   const form = sourcePDF.getForm()
-  const fieldMap = Object.fromEntries(
-    form.getFields().map(field => {
-      const fieldName = field.getName()
-      const fieldType = field.constructor.name
-      const widgets = field.acroField.getWidgets()
-      const positions = widgets.map(widget => {
+  const fieldMap = {}
+
+  form.getFields().forEach(field => {
+    const fieldName = field.getName()
+    const fieldType = field.constructor.name
+    const widgets = field.acroField.getWidgets()
+
+    fieldMap[fieldName] = {
+      type: fieldType,
+      positions: widgets.map(widget => {
         const rect = widget.getRectangle()
         const appearance = widget.getDefaultAppearance()
-        const x = rect.x
-        const y = rect.y
-        const width = rect.width
-        const height = rect.height
-        return { x, y, width, height, appearance }
+        const pageRef = widget.P()
+        const pageIndex = sourcePDF.getPages().findIndex(page => page.ref === pageRef)
+
+        return {
+          x: rect.x,
+          y: rect.y,
+          width: rect.width,
+          height: rect.height,
+          appearance,
+          pageIndex
+        }
       })
-      return [fieldName, { type: fieldType, positions }]
-    })
-  )
+    }
+  })
 
-  const originalPage = sourcePDF.getPage(pageNumber)
-  const pageHeight = originalPage.getHeight()
+  const allPositions = Object.values(textFields).flatMap(field => fieldMap[field].positions)
+  let baseY = Math.max(...allPositions.map(pos => pos.y))
+  const maxH = Math.max(...allPositions.map(pos => pos.height))
+  for (const fieldName of textFields) {
+    if (!fieldMap[fieldName]) {
+      console.warn(`Field ${fieldName} does not exist in the form.`)
+      continue
+    }
 
-  for (let i = 0; i < numberOfDuplicates; i++) {
-    let currentPage = originalPage
-    let yOffset = 0
+    const { type, positions } = fieldMap[fieldName]
+    const { x, width, height, appearance, pageIndex } = positions[0]
+    const oldY = positions[0].y
+    const originalPage = sourcePDF.getPage(pageIndex)
+    const pageHeight = originalPage.getHeight()
+    let fieldHeight = height
 
-    for (const fieldName of textFields) {
-      const { type, positions } = fieldMap[fieldName]
-      const { x, y, width, height, appearance } = positions[0]
-      let newY = y - yOffset - (height + margin) * i
+    for (let i = 0; i < numberOfDuplicates; i++) {
+      let currentPage = originalPage
+      let newY = oldY - ((maxH + margin) * (i))
 
       if (newY < 0) {
         currentPage = sourcePDF.addPage([originalPage.getWidth(), pageHeight])
-        newY = pageHeight - (height + margin)
-        yOffset = 0
+        newY = pageHeight - (fieldHeight + margin)
+        baseY = newY
       }
 
       const newFieldName = `${fieldName}_copy_${i + 1}`
@@ -181,6 +226,7 @@ async function duplicateFields(sourceLink, textFields, numberOfDuplicates = 1, p
         widget.setDefaultAppearance(appearance)
       })
     }
+    baseY -= (fieldHeight + margin) * numberOfDuplicates
   }
 
   return sourcePDF

@@ -1,8 +1,9 @@
-const { StandardFonts } = require('pdf-lib')
-const { duplicateFields, setFieldValue } = require('../../../utils/fillForm')
+const { duplicateFields, setFieldValue, fillForm } = require('../../../utils/fillForm')
 const Quotation = require('../../models/Quotation')
 const { ForbiddenError } = require('../../utils/errors')
 const { QUOTATION_STATUS_SENT, QUOTATION_STATUS_DRAFT } = require('./consts')
+const { StandardFonts } = require('pdf-lib')
+const moment = require('moment')
 
 const sendQuotation = async quotationId => {
   const quotation = await Quotation.findById(quotationId)
@@ -14,28 +15,35 @@ const sendQuotation = async quotationId => {
 }
 
 async function fillQuotationDetails(sourceLink, quotation) {
-  const textFields = ['description', 'rate', 'days', 'total', 'tva']
-  const numberOfDuplicates = quotation.details.length
-  const pdf = await duplicateFields(sourceLink, textFields, numberOfDuplicates, 0, 10)
+  const data = {
+    applicationserialnumber: quotation.application.serial_number,
+    announceserialnumber: quotation.application.announce.serial_number,
+    applicationsentdate_af_date: moment(quotation.application.sent_date).format("DD/MM/YYYY"),
+    freelanceshortname: quotation.application.freelance.shortname,
+    companyname: quotation.application.announce.user.company_name,
+    whyme: quotation.application.why_me,
+    announcetitle: quotation.application.announce.title,
+    announcestartdate_af_date: moment(quotation.application.announce.start_date).format("DD/MM/YYYY"),
+    httotal: quotation.ht_total,
+    tvatotal: quotation.vat_total,
+    totalttc: quotation.ttc_total,
+    quotationserialnumber: quotation.serial_number,
+    applicationexpirationdate_af_date: moment(quotation.expiration_date).format("DD/MM/YYYY"),
+    quotationdeliverables: quotation.deliverable,
+    quotationdetail: quotation.detail,
+    quotationcomments: quotation.comments || '',
+    commissionttc: quotation.ttc_customer_commission,
+    applicationstartdate_af_date: moment(quotation.start_date).format("DD/MM/YYYY"),
+    quotationdetailsdescription: quotation.details.map(detail => ({
+      quotationdetailsdescription: detail.label,
+      rate: detail.price.toString(),
+      days: detail.quantity.toString(),
+      total: detail.ht_total.toString(),
+      tva: detail.vat_rate.toString()
+    }))
+  }
 
-  const form = pdf.getForm()
-  quotation.details.forEach((detail, index) => {
-    const fieldIndex = index + 1
-    const descriptionField = form.getTextField(`description_copy_${fieldIndex}`)
-    const rateField = form.getTextField(`rate_copy_${fieldIndex}`)
-    const daysField = form.getTextField(`days_copy_${fieldIndex}`)
-    const totalField = form.getTextField(`total_copy_${fieldIndex}`)
-    const tvaField = form.getTextField(`tva_copy_${fieldIndex}`)
-
-    if (descriptionField) setFieldValue(form, descriptionField, detail.label, StandardFonts.Helvetica, 12)
-    if (rateField) rateField.setText(detail.price.toString())
-    if (daysField) daysField.setText(detail.quantity.toString())
-    if (totalField) totalField.setText(detail.ht_total.toString())
-    if (tvaField) tvaField.setText(detail.vat_rate.toString())
-  })
-
-  form.flatten()
-  return pdf
+  return fillForm(sourceLink, data)
 }
 
 module.exports = {
