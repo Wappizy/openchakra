@@ -11,12 +11,15 @@ const moment=require('moment')
 const { formatDate, formatHour } = require('../../../utils/text')
 const { generateIcs } = require('../../../utils/ics')
 const { computeUrl } = require('../../../config/config')
+const CustomerFreelance = require('../../../server/models/CustomerFreelance')
+const { loadFromDb } = require('../../utils/database')
 
 const SIB_IDS={
   CUSTOMER_CONFIRM_EMAIL:1,
   FREELANCE_CONFIRM_EMAIL:2,
   FREELANCE_SEND_SUGGESTION: 31,
   CUSTOMER_SEND_APPLICATION: 39,
+  USER_SEND_SUSPENSION: 23,
 }
 
 const SMS_CONTENTS={
@@ -85,7 +88,19 @@ const sendApplication2Customer = async ({freelance, announce, customer}) => {
   })
 }
 
+// Send application confirmation
+const sendSuspension2User = async ({value}) => {
+  const [user] = await loadFromDb({model:'customerFreelance', id:value, fields:['firstname','email','suspended_reason']})
+  return sendNotification({
+    notification: SIB_IDS.USER_SEND_SUSPENSION,
+    destinee: user,
+    params: {
+      firstname: user.firstname,
+      motifsuspension: user.suspended_reason,
+    }
+  })
+}
 
 module.exports = {
-  sendCustomerConfirmEmail, sendFreelanceConfirmEmail, sendSuggestion2Freelance, sendApplication2Customer,
+  sendCustomerConfirmEmail, sendFreelanceConfirmEmail, sendSuggestion2Freelance, sendApplication2Customer, sendSuspension2User
 }

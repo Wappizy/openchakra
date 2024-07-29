@@ -34,7 +34,7 @@ const addValidationAllowedDomain = domain => {
 }
 
 const isAllowedEmail = email => {
-  return isProduction() || ALLOWED_VALIDATION_DOMAINS.some(domain => email.endsWith(domain))
+  return isProduction() || ALLOWED_VALIDATION_DOMAINS.some(domain => String(email).endsWith(domain))
 }
 
 const mailHandlers=lodash(mailProvider).split(',')
