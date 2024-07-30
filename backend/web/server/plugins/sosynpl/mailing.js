@@ -105,7 +105,15 @@ const sendSuspension2User = async ({value}) => {
 
 // Send reminder if still interested in SoSynpl
 const checkFreelanceInterest = async() => {
-  const freelances = await CustomerFreelance.find({availability_last_update:{$lte:moment().subtract(45, 'days').toDate()}})
+  const startOfDay45DaysAgo = moment().subtract(45, 'days').startOf('day').toDate()
+  const endOfDay45DaysAgo = moment().subtract(45, 'days').endOf('day').toDate()
+  
+  const freelances = await CustomerFreelance.find({
+    availability_last_update: {
+      $gte: startOfDay45DaysAgo,
+      $lte: endOfDay45DaysAgo
+    }
+  })
   if(freelances) {
     const notificationPromises = freelances.map(async (freelance) => {
       try {

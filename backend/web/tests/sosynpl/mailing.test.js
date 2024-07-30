@@ -19,7 +19,7 @@ describe('Mailing', () => {
     const DBNAME = `test${moment().unix()}`
     await mongoose.connect(`mongodb://localhost/${DBNAME}`, MONGOOSE_OPTIONS)
 
-    user = await CustomerFreelance.create({...CUSTOMER_DATA, email:'seghir.oumohand@wappizy.com', availability_last_update:moment().subtract(47, 'days').toDate()})
+    user = await CustomerFreelance.create({...CUSTOMER_DATA, email:'seghir.oumohand@wappizy.com', availability_last_update:moment().subtract(45, 'days').toDate()})
     admin = await CustomerFreelance.create({...CUSTOMER_DATA, role:ROLE_ADMIN})
   })
 
@@ -33,7 +33,6 @@ describe('Mailing', () => {
   })
 
   it.only('must send reminder if interested', async () => {
-    console.log(user.availability_last_update)
     await checkFreelanceInterest()
   })
 })
