@@ -6,15 +6,11 @@ const {
   getTagUrl,
   addValidationAllowedDomain
 } = require('../../utils/mailing')
-const {datetime_str} = require('../../../utils/dateutils')
 const moment=require('moment')
-const { formatDate, formatHour } = require('../../../utils/text')
-const { generateIcs } = require('../../../utils/ics')
 const { computeUrl } = require('../../../config/config')
 const CustomerFreelance = require('../../../server/models/CustomerFreelance')
 const { loadFromDb } = require('../../utils/database')
-const cron = require('../../utils/cron')
-const { ROLE_FREELANCE } = require('./consts')
+const { ROLE_FREELANCE, AVAILABILITY_UNDEFINED } = require('./consts')
 
 const SIB_IDS={
   CUSTOMER_CONFIRM_EMAIL:1,
@@ -23,6 +19,7 @@ const SIB_IDS={
   CUSTOMER_SEND_APPLICATION: 39,
   USER_SEND_SUSPENSION: 23,
   FREELANCE_INTEREST_REMINDER: 25,
+  FREELANCE_AVAILABILITY_REMINDER: 15,
 }
 
 const SMS_CONTENTS={
@@ -146,6 +143,19 @@ const checkFreelanceInterest = async() => {
   }
 }
 
+// Send reminder after 8, 15, 30, 60 days
+const sendRemidner2Freelance = async (freelance) => {
+  const url=`${await getTagUrl('SUPPLIER_DASHBOARD')}?id=${freelance._id}`
+  return sendNotification({
+    notification: SIB_IDS.FREELANCE_AVAILABILITY_REMINDER,
+    destinee: freelance,
+    params: {
+      firstname: freelance.firstname,
+      update_profile_url: url,
+    }
+  })
+}
 module.exports = {
-  sendCustomerConfirmEmail, sendFreelanceConfirmEmail, sendSuggestion2Freelance, sendApplication2Customer, sendSuspension2User, checkFreelanceInterest
+  sendCustomerConfirmEmail, sendFreelanceConfirmEmail, sendSuggestion2Freelance, sendApplication2Customer, sendSuspension2User, checkFreelanceInterest,
+  sendRemidner2Freelance
 }
