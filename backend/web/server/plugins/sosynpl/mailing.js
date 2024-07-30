@@ -14,6 +14,7 @@ const { computeUrl } = require('../../../config/config')
 const CustomerFreelance = require('../../../server/models/CustomerFreelance')
 const { loadFromDb } = require('../../utils/database')
 const cron = require('../../utils/cron')
+const { ROLE_FREELANCE } = require('./consts')
 
 const SIB_IDS={
   CUSTOMER_CONFIRM_EMAIL:1,
@@ -109,6 +110,7 @@ const checkFreelanceInterest = async() => {
   const endOfDay45DaysAgo = moment().subtract(45, 'days').endOf('day').toDate()
   
   const freelances = await CustomerFreelance.find({
+    role:ROLE_FREELANCE,
     availability_last_update: {
       $gte: startOfDay45DaysAgo,
       $lte: endOfDay45DaysAgo
