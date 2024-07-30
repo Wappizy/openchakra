@@ -8,7 +8,7 @@ const Freelance=require('../../models/Freelance')
 const CustomerFreelance=require('../../models/CustomerFreelance')
 const HardSkillCategory=require('../../models/HardSkillCategory')
 const { validatePassword } = require("../../../utils/passwords")
-const { sendCustomerConfirmEmail, sendFreelanceConfirmEmail, checkFreelanceInterest } = require("./mailing")
+const { sendCustomerConfirmEmail, sendFreelanceConfirmEmail } = require("./mailing")
 const { ROLE_ADMIN} = require("../smartdiet/consts")
 const { NATIONALITIES, PURCHASE_STATUS, LANGUAGE_LEVEL, REGIONS } = require("../../../utils/consts")
 const {computeUserHardSkillsCategories, computeHSCategoryProgress } = require("./hard_skills");
@@ -25,7 +25,6 @@ const { usersCount, customersCount, freelancesCount, currentMissionsCount, comin
 const Statistic = require("../../models/Statistic");
 const Mission = require("../../models/Mission");
 const Application = require("../../models/Application");
-const customCron = require("../../utils/cron");
 
 // TODO move in DB migration
 // Ensure softSkills
@@ -765,8 +764,5 @@ cron.schedule('0 0 * * * *', async () => {
     {available_from: null, availability: AVAILABILITY_ON}
   )
 })
-
-// Freelance whose availability date hasn't been changed for the past 45 days
-customCron.schedule('0 9 * * * *', checkFreelanceInterest)
 
 //**** CRONS end */
