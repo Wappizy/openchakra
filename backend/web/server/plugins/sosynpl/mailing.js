@@ -13,6 +13,7 @@ const { generateIcs } = require('../../../utils/ics')
 const { computeUrl } = require('../../../config/config')
 const CustomerFreelance = require('../../../server/models/CustomerFreelance')
 const { loadFromDb } = require('../../utils/database')
+const cron = require('../../utils/cron')
 
 const SIB_IDS={
   CUSTOMER_CONFIRM_EMAIL:1,
@@ -20,6 +21,7 @@ const SIB_IDS={
   FREELANCE_SEND_SUGGESTION: 31,
   CUSTOMER_SEND_APPLICATION: 39,
   USER_SEND_SUSPENSION: 23,
+  FREELANCE_INTEREST_REMINDER: 25,
 }
 
 const SMS_CONTENTS={
@@ -101,6 +103,38 @@ const sendSuspension2User = async ({value}) => {
   })
 }
 
+// Send reminder if still interested in SoSynpl
+const checkFreelanceInterest = async() => {
+  const freelances = await CustomerFreelance.find({availability_last_update:{$lte:moment().subtract(45, 'days').toDate()}})
+  if(freelances) {
+    const notificationPromises = freelances.map(async (freelance) => {
+      try {
+        await sendNotification({
+          notification: SIB_IDS.FREELANCE_INTEREST_REMINDER,
+          destinee: freelance,
+          params: {
+            firstname: freelance.firstname,
+            email: freelance.email,
+          }
+        });
+      } catch (error) {
+        console.error(`Failed to send notification to ${freelance.email}: `, error);
+        throw error
+      }
+    })
+
+    const results = await Promise.allSettled(notificationPromises)
+
+    results.forEach((result, index) => {
+      if (result.status === 'fulfilled') {
+        console.log(`Notification sent to ${freelances[index].email}`)
+      } else {
+        console.error(`Failed to send notification to ${freelances[index].email}: `, result.reason)
+      }
+    })
+  }
+}
+
 module.exports = {
-  sendCustomerConfirmEmail, sendFreelanceConfirmEmail, sendSuggestion2Freelance, sendApplication2Customer, sendSuspension2User
+  sendCustomerConfirmEmail, sendFreelanceConfirmEmail, sendSuggestion2Freelance, sendApplication2Customer, sendSuspension2User, checkFreelanceInterest
 }
