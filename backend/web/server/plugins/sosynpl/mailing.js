@@ -102,46 +102,17 @@ const sendSuspension2User = async ({value}) => {
 }
 
 // Send reminder if still interested in SoSynpl
-const checkFreelanceInterest = async() => {
-  const startOfDay45DaysAgo = moment().subtract(45, 'days').startOf('day').toDate()
-  const endOfDay45DaysAgo = moment().subtract(45, 'days').endOf('day').toDate()
-  
-  const freelances = await CustomerFreelance.find({
-    role:ROLE_FREELANCE,
-    availability_last_update: {
-      $gte: startOfDay45DaysAgo,
-      $lte: endOfDay45DaysAgo
+const sendInterestReminder2Freelance = async (freelance) => {
+  const url = `${await getTagUrl('SUPPLIER_DASHBOARD')}?id=${freelance._id}`
+  return sendNotification({
+    notification: SIB_IDS.FREELANCE_INTEREST_REMINDER,
+    destinee: freelance,
+    params: {
+      firstname: freelance.firstname,
+      update_profile_url: url,
     }
   })
-  if(freelances) {
-    const notificationPromises = freelances.map(async (freelance) => {
-      try {
-        const url=`${await getTagUrl('SUPPLIER_DASHBOARD')}?id=${freelance._id}`
-        await sendNotification({
-          notification: SIB_IDS.FREELANCE_INTEREST_REMINDER,
-          destinee: freelance,
-          params: {
-            firstname: freelance.firstname,
-            update_profile_url: url,
-          }
-        })
-      } catch (error) {
-        console.error(`Failed to send notification to ${freelance.email}: `, error);
-        throw error
-      }
-    })
-
-    const results = await Promise.allSettled(notificationPromises)
-
-    results.forEach((result, index) => {
-      if (result.status === 'fulfilled') {
-        console.log(`Notification sent to ${freelances[index].email}`)
-      } else {
-        console.error(`Failed to send notification to ${freelances[index].email}: `, result.reason)
-      }
-    })
   }
-}
 
 // Send reminder after 8, 15, 30, 60 days
 const sendRemidner2Freelance = async (freelance) => {
@@ -156,6 +127,6 @@ const sendRemidner2Freelance = async (freelance) => {
   })
 }
 module.exports = {
-  sendCustomerConfirmEmail, sendFreelanceConfirmEmail, sendSuggestion2Freelance, sendApplication2Customer, sendSuspension2User, checkFreelanceInterest,
+  sendCustomerConfirmEmail, sendFreelanceConfirmEmail, sendSuggestion2Freelance, sendApplication2Customer, sendSuspension2User, sendInterestReminder2Freelance,
   sendRemidner2Freelance
 }

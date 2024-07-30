@@ -1,10 +1,42 @@
 const moment=require('moment')
 const customCron = require("../../utils/cron");
-const { AVAILABILITY_CHECK_PERIODS, AVAILABILITY_UNDEFINED } = require("./consts");
-const { checkFreelanceInterest, sendRemidner2Freelance } = require("./mailing");
+const { AVAILABILITY_CHECK_PERIODS, AVAILABILITY_UNDEFINED, ROLE_FREELANCE } = require("./consts");
+const { sendRemidner2Freelance, sendInterestReminder2Freelance } = require("./mailing");
 const CustomerFreelance = require('../../models/CustomerFreelance')
 
 // Freelance whose availability date hasn't been changed for the past 45 days
+const checkFreelanceInterest = async () => {
+  try {
+    const startOfDay45DaysAgo = moment().subtract(45, 'days').startOf('day').toDate()
+    const endOfDay45DaysAgo = moment().subtract(45, 'days').endOf('day').toDate()
+    
+    const freelances = await CustomerFreelance.find({
+      role: ROLE_FREELANCE,
+      availability_last_update: {
+        $gte: startOfDay45DaysAgo,
+        $lte: endOfDay45DaysAgo
+      }
+    })
+    
+    if (freelances.length > 0) {
+      const notificationPromises = freelances.map(async (freelance) => {
+        try {
+          await sendInterestReminder2Freelance(freelance)
+          console.log(`Notification sent to ${freelance.email}`)
+        } catch (error) {
+          console.error(`Failed to send notification to ${freelance.email}: `, error)
+        }
+      })
+
+      await Promise.allSettled(notificationPromises)
+    }
+
+    console.log('Check freelance interest process completed.')
+  } catch (err) {
+    console.error('Error in check freelance interest process:', err)
+  }
+}
+
 customCron.schedule('0 9 * * * *', checkFreelanceInterest)
 
 // Freelance availability update
@@ -57,5 +89,5 @@ const availabilityPeriodUpdate = async () => {
 customCron.schedule('0 9 * * * *', availabilityPeriodUpdate)
 
 module.exports={
-  availabilityPeriodUpdate,
+  availabilityPeriodUpdate, checkFreelanceInterest
 }

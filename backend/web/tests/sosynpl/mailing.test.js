@@ -6,12 +6,11 @@ const Question = require('../../server/models/Question')
 const { CUSTOMER_DATA, FREELANCE_DATA, JOB_FILE_DATA, SECTOR_DATA, JOB_DATA } = require('./data/base_data')
 const { ROLE_ADMIN, SUSPEND_REASON, SUSPEND_REASON_INACTIVE, ROLE_FREELANCE, MOBILITY_CITY, WORK_MODE_REMOTE, COMPANY_SIZE_LESS_10, MOBILITY_FRANCE, LEGAL_STATUS, LEGAL_STATUS_CAE, AVAILABILITY_ON } = require('../../server/plugins/sosynpl/consts')
 const { suspendAccount } = require('../../server/plugins/sosynpl/actions')
-const { checkFreelanceInterest, sendRemidner2Freelance } = require('../../server/plugins/sosynpl/mailing')
 const JobFile = require('../../server/models/JobFile')
 const Job = require('../../server/models/Job')
 const Sector = require('../../server/models/Sector')
 const PageTag_ = require('../../server/models/PageTag_')
-const { availabilityPeriodUpdate } = require('../../server/plugins/sosynpl/cron')
+const { availabilityPeriodUpdate, checkFreelanceInterest } = require('../../server/plugins/sosynpl/cron')
 require('../../server/plugins/sosynpl/functions')
 
 describe('Mailing', () => {
@@ -69,11 +68,11 @@ describe('Mailing', () => {
     await suspendAccount({value:freelance._id, reason:SUSPEND_REASON_INACTIVE},admin)
   })
 
-  it('must send reminder if interested', async () => {
+  it.only('must send reminder if interested', async () => {
     await checkFreelanceInterest()
   })
 
-  it.only('must send reminders on intervals', async() => {
+  it('must send reminders on intervals', async() => {
     await availabilityPeriodUpdate()
   })
 })
