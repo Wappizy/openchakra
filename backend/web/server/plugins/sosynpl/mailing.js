@@ -117,14 +117,15 @@ const checkFreelanceInterest = async() => {
   if(freelances) {
     const notificationPromises = freelances.map(async (freelance) => {
       try {
+        const url=`${await getTagUrl('SUPPLIER_DASHBOARD')}?id=${freelance._id}`
         await sendNotification({
           notification: SIB_IDS.FREELANCE_INTEREST_REMINDER,
           destinee: freelance,
           params: {
             firstname: freelance.firstname,
-            email: freelance.email,
+            update_profile_url: url,
           }
-        });
+        })
       } catch (error) {
         console.error(`Failed to send notification to ${freelance.email}: `, error);
         throw error
