@@ -12,6 +12,10 @@ const axios = require('axios')
 const { PDFDocument, StandardFonts } = require('pdf-lib')
 const fs = require('fs').promises
 const validator = require('validator')
+const { getModel } = require('../server/utils/database')
+const { sendBufferToAWS } = require('../server/middlewares/aws')
+const mime=require('mime-types')
+const mongoose=require('mongoose')
 
 async function getPDFBytes(filePath) {
   const isUrl = validator.isURL(filePath)
@@ -144,6 +148,7 @@ async function fillForm(sourceLink, data, font = StandardFonts.Helvetica, fontSi
   }
 
   form.updateFieldAppearances(pdfFont)
+  form.flatten()
   return pdfDoc
 }
 
@@ -232,6 +237,56 @@ async function duplicateFields(sourcePDF, textFields, numberOfDuplicates = 1, ma
   return sourcePDF
 }
 
+const generateDocument = async(model, type, hiddenAttr, TEMPLATE_PATH, TEMPLATE_NAME, data) => {
+  if(data[hiddenAttr] != null && data[hiddenAttr] !== undefined){
+    return data[hiddenAttr]
+  }
+
+  const id = data._id
+  delete data._id
+  delete data[hiddenAttr]
+  
+  const pdf = await fillForm(TEMPLATE_PATH, data) 
+  const buffer=await pdf.save()
+  const filename=`${TEMPLATE_NAME}${id}.pdf`
+  console.log(filename)
+  const {Location}=await sendBufferToAWS({filename, buffer, type: type, mimeType: mime.lookup(filename)})
+  const mongooseModel = mongoose.connection.models[model]
+  await mongooseModel.findByIdAndUpdate(mongoose.Types.ObjectId(id), {[hiddenAttr]: Location})
+  return Location
+}
+
+const allFieldsExist = (data, fields) => {
+  const missingFields = []
+
+  const isDefined = (obj, path) => {
+    const keys = path.split('.')
+    for(let key of keys){
+      if(typeof(obj[key] == 'object') && obj[key]) {
+        obj = obj[key]
+      }
+      else if(Array.isArray(obj)) {
+        obj = obj[0][key]
+      }
+      else {
+        if(!obj[key]) missingFields.push(path)
+      }
+    }
+    return true
+  }
+
+  for (let field of fields) {
+    isDefined(data, field)
+  }
+
+  if (missingFields.length > 0) {
+    console.log('Missing fields for document:', missingFields)
+    return false
+  }
+
+  return true
+}
+
 module.exports = {
   getPDFBytes,
   copyPDF,
@@ -239,5 +294,7 @@ module.exports = {
   fillForm,
   savePDFFile,
   duplicateFields,
-  setFieldValue
+  setFieldValue,
+  generateDocument,
+  allFieldsExist,
 }

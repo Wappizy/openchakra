@@ -1,13 +1,15 @@
 const path = require('path')
 const { exec } = require('child_process')
-const { logFormFields, fillForm, savePDFFile, duplicateFields } = require('../../utils/fillForm')
+const { logFormFields, fillForm, savePDFFile, duplicateFields, allFieldsExist } = require('../../utils/fillForm')
 const Quotation = require('../../server/models/Quotation')
 const mongoose = require('mongoose')
 const { MONGOOSE_OPTIONS, loadFromDb } = require('../../server/utils/database')
 const { StandardFonts } = require('pdf-lib')
 const moment = require('moment')
 const { fillQuotationDetails } = require('../../server/plugins/sosynpl/quotation')
-const { customerFreelancerBill } = require('../../server/plugins/sosynpl/report')
+const { customerFreelancerBill, CF_BILL_FIELDS, CF_BILL_REQUIRED_FIELDS } = require('../../server/plugins/sosynpl/report')
+const Report = require('../../server/models/Report')
+const { REPORT_STATUS_ACCEPTED } = require('../../server/plugins/sosynpl/consts')
 require('../../server/plugins/sosynpl/functions')
 require('../../server/models/Sector')
 require('../../server/models/Job')
@@ -31,7 +33,7 @@ describe('Fill form test', () => {
 
   afterAll(async () => {})
 
-  it.only('must retrieve PDF fields', async () => {
+  it('must retrieve PDF fields', async () => {
     const fields = await logFormFields(FILEPATH2)
     console.log(JSON.stringify(Object.keys(fields), null, 2))
   })
@@ -69,41 +71,9 @@ describe('Fill form test', () => {
   })
 
   it.only('must fill customerFreelance bill', async() => {
-    const id = '669e1660637d485cf01cb092'
-
-    const fields= [
-      'creation_date',
-      'serial_number',
-
-      'mission.title',
-      'mission.serial_number',
-
-      'mission.customer.fullname',
-      'mission.customer.address',
-      'mission.customer.siren',
-
-      'mission.freelance.fullname',
-      'mission.freelance.vat_number',
-      'mission.freelance.address',
-      'mission.freelance.company_name',
-      'mission.freelance.siren',
-
-      'quotation.comments',
-      'quotation.deliverable',
-      'quotation.ht_total',
-      'quotation.ttc_customer_total',
-
-      'quotation.details.label',
-      'quotation.details.price',
-      'quotation.details.quantity',
-      'quotation.details.ht_total',
-      'quotation.details.vat_rate'
-    ]
-
-    const [report] = await loadFromDb({model: 'report', id, fields})
-    report.mission.freelance.vat_number = 123
-    const filledPDF = await customerFreelancerBill(FILEPATH2, report)
-    await savePDFFile(filledPDF, '/home/myalfred/bill.pdf')
-    const res = await exec(`xdg-open /home/myalfred/bill.pdf`)
+    const id = '6697b1c7203c34326ee54169'
+    await Report.findOneAndUpdate(id, {status: REPORT_STATUS_ACCEPTED})
+    const [report] = await loadFromDb({model: 'report', id, fields: ['cf_billing']})
+    const res = await exec(`xdg-open ${report.cf_billing}`)
   })
 })

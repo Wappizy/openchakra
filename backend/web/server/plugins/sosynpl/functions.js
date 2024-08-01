@@ -25,6 +25,7 @@ const { usersCount, customersCount, freelancesCount, currentMissionsCount, comin
 const Statistic = require("../../models/Statistic");
 const Mission = require("../../models/Mission");
 const Application = require("../../models/Application");
+const { CF_BILL_FIELDS, getCFBill } = require("./report");
 
 // TODO move in DB migration
 // Ensure softSkills
@@ -409,6 +410,7 @@ declareVirtualField({model: 'report', field: 'latest_quotations', instance: 'Arr
     options: { ref: 'quotation' }
   }
 })
+declareComputedField({model: 'report', field: 'cf_billing', instance: 'String', requires: [...CF_BILL_FIELDS,'status','_cf_billing'], getterFn: getCFBill })
 /** Report end */
 
 /** Search start */

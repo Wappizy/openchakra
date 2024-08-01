@@ -39,6 +39,14 @@ const ReportSchema = new Schema({
     type: String,
     required: [function() {return this.status==REPORT_STATUS_DISPUTE}, `La raison du refus est obligatoire`]
   },
+  _cf_billing: {
+    type: String,
+    required: false,
+  },
+  cf_billing: {
+    type: String,
+    required: false,
+  }
 }, schemaOptions
 );
 

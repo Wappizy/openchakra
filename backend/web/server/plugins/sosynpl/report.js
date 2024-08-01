@@ -1,9 +1,11 @@
 const { BadRequestError } = require("../../utils/errors")
 const moment=require('moment')
 const Report = require('../../models/Report')
-const { REPORT_STATUS, REPORT_STATUS_DRAFT, REPORT_STATUS_DISPUTE, REPORT_STATUS_SENT, REPORT_STATUS_ACCEPTED } = require("./consts")
+const { REPORT_STATUS, REPORT_STATUS_DRAFT, REPORT_STATUS_DISPUTE, REPORT_STATUS_SENT, REPORT_STATUS_ACCEPTED, REPORT_STATUS_PAID } = require("./consts")
 const { loadFromDb } = require("../../utils/database")
-const { fillForm } = require("../../../utils/fillForm")
+const { fillForm, allFieldsExist, generateDocument } = require("../../../utils/fillForm")
+const path = require('path')
+const ROOT = path.join(__dirname, `../../../static/assets/pdf`)
 
 // TODO: customer & freelance must have the required documents
 const canAcceptReport = async reportId => {
@@ -56,21 +58,65 @@ const sendReport = async reportId => {
   // TODO: send bills : from sosynpl to customer & sosynpl to freelance for commissions, from freelance to customer
 }
 
-const customerFreelancerBill = async (sourceLink, report) => {
-  const frAddr = report.mission.freelance.address
+const CF_BILL_REQUIRED_FIELDS= [
+  'creation_date',
+  'serial_number',
+  'mission.title',
+  'mission.serial_number',
+  'mission.customer.fullname',
+  'mission.customer.address',
+  'mission.customer.siren',
+  'mission.freelance.fullname',
+  'mission.freelance.vat_number',
+  'mission.freelance.address',
+  'mission.freelance.company_name',
+  'mission.freelance.siren',
+  'quotation.ht_total',
+  'quotation.ttc_customer_total',
+  'quotation.details.label',
+  'quotation.details.price',
+  'quotation.details.quantity',
+  'quotation.details.ht_total',
+  'quotation.details.vat_rate'
+]
+
+const CF_BILL_FIELDS= [
+  ...CF_BILL_REQUIRED_FIELDS,
+  'quotation.comments',
+  'quotation.deliverable',
+]
+
+const canGenerateCFBill = (data) => {
+  if(
+    !(data.status == REPORT_STATUS_ACCEPTED || data.status == REPORT_STATUS_PAID)
+    || !allFieldsExist(data, CF_BILL_REQUIRED_FIELDS)
+  ) {
+    return false
+  }
+  return true
+}
+
+const getCFBill = async (userId, params, data) => {
+  if(!canGenerateCFBill(data)) {
+    return null
+  }
+
+  const frAddr = data.mission.freelance.address
   const frAddrStr = `${frAddr.address}, ${frAddr.zip_code} ${frAddr.city}`
 
-  const custAddr = report.mission.freelance.address
+  const custAddr = data.mission.freelance.address
   const custAddrStr = `${custAddr.address}, ${custAddr.zip_code} ${custAddr.city}`
 
-  const freelance = report.mission.freelance
-  const customer = report.mission.customer
-  const quotation = report.quotation[0]
+  const freelance = data.mission.freelance
+  const customer = data.mission.customer
+  const quotation = data.quotation[0]
   
-  const data = {
-    creation_date: moment(report.creation_date).format("DD/MM/YYYY"),
-    mission_title: report.mission.title,
-    mission_serial_number: report.mission.serial_number,
+  const refactoredData = {
+    _id: data._id,
+    _cf_billing: data._cf_billing,
+    creation_date: moment(data.creation_date).format("DD/MM/YYYY"),
+    mission_title: data.mission.title,
+    mission_serial_number: data.mission.serial_number,
 
     customer_fullname: customer.fullname,
     customer_address : custAddrStr,
@@ -96,10 +142,12 @@ const customerFreelancerBill = async (sourceLink, report) => {
       vat_rate: detail.vat_rate.toString()
     }))
   }
-
-  return fillForm(sourceLink, data)
+  const TEMPLATE_NAME = 'sosynpl_customer_freelance_billing'
+  const TEMPLATE_PATH = `${path.join(ROOT, FILENAME)}.pdf`
+  const result = await generateDocument('report', 'billing', '_cf_billing', TEMPLATE_PATH, TEMPLATE_NAME, refactoredData)
+  return result
 }
 
 module.exports = {
-  canAcceptReport, acceptReport, canSendReport, sendReport, canRefuseReport, refuseReport, customerFreelancerBill
+  canAcceptReport, acceptReport, canSendReport, sendReport, canRefuseReport, refuseReport, getCFBill, CF_BILL_FIELDS, CF_BILL_REQUIRED_FIELDS, 
 }
