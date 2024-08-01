@@ -3,7 +3,7 @@ const Announce = require("../../models/Announce")
 const Search = require("../../models/Search")
 const { declareVirtualField, declareEnumField, callPostCreateData, setPostCreateData, setPreprocessGet, setPreCreateData, declareFieldDependencies, declareComputedField, setFilterDataUser, idEqual, setPrePutData, getModel } = require("../../utils/database");
 const { addAction } = require("../../utils/studio/actions");
-const { WORK_MODE, SOURCE, EXPERIENCE, ROLES, ROLE_CUSTOMER, ROLE_FREELANCE, WORK_DURATION, COMPANY_SIZE, LEGAL_STATUS, DEACTIVATION_REASON, SUSPEND_REASON, ACTIVITY_STATE, MOBILITY, AVAILABILITY, SOFT_SKILLS, SS_PILAR, DURATION_UNIT, ANNOUNCE_MOBILITY, ANNOUNCE_STATUS, APPLICATION_STATUS, AVAILABILITY_ON, SOSYNPL_LANGUAGES, ANNOUNCE_SUGGESTION, REFUSE_REASON, QUOTATION_STATUS, APPLICATION_REFUSE_REASON, MISSION_STATUS, REPORT_STATUS, SEARCH_MODE, FREELANCE_REQUIRED_ATTRIBUTES, SOFT_SKILLS_ATTR, FREELANCE_MANDATORY_ATTRIBUTES, CUSTOMER_REQUIRED_ATTRIBUTES, CUSTOMER_ANNOUNCE_ATTRIBUTES, CUSTOMER_CONTRACT_ATTRIBUTES } = require("./consts")
+const { WORK_MODE, SOURCE, EXPERIENCE, ROLES, ROLE_CUSTOMER, ROLE_FREELANCE, WORK_DURATION, COMPANY_SIZE, LEGAL_STATUS, DEACTIVATION_REASON, SUSPEND_REASON, ACTIVITY_STATE, MOBILITY, AVAILABILITY, SOFT_SKILLS, SS_PILAR, DURATION_UNIT, ANNOUNCE_MOBILITY, ANNOUNCE_STATUS, APPLICATION_STATUS, AVAILABILITY_ON, SOSYNPL_LANGUAGES, ANNOUNCE_SUGGESTION, REFUSE_REASON, QUOTATION_STATUS, APPLICATION_REFUSE_REASON, MISSION_STATUS, REPORT_STATUS, SEARCH_MODE, FREELANCE_REQUIRED_ATTRIBUTES, SOFT_SKILLS_ATTR, FREELANCE_MANDATORY_ATTRIBUTES, CUSTOMER_REQUIRED_ATTRIBUTES } = require("./consts")
 const Freelance=require('../../models/Freelance')
 const CustomerFreelance=require('../../models/CustomerFreelance')
 const HardSkillCategory=require('../../models/HardSkillCategory')
@@ -448,14 +448,14 @@ declareVirtualField({model: 'message', field: 'display_date', instance: 'String'
 const CUSTOMERFREELANCEMODELS = ['loggedUser', 'genericUser', 'customerFreelance', 'freelance']
 CUSTOMERFREELANCEMODELS.forEach(model => {
   declareVirtualField({
-    model, field: 'freelance_reports', instance: 'Array', multiple: true, requires:'freelance_missions.reports',
+    model, field: 'freelance_reports', instance: 'Array', multiple: true, requires:'freelance_missions.reports.mission.customer.fullname',
     caster: {
       instance: 'ObjectID',
       options: { ref: 'report' }
     },
   })
   declareVirtualField({
-    model, field: 'customer_reports', instance: 'Array', multiple: true, requires:'customer_missions.reports',
+    model, field: 'customer_reports', instance: 'Array', multiple: true, requires:'customer_missions.reports.mission.freelance.fullname',
     caster: {
       instance: 'ObjectID',
       options: { ref: 'report' }
@@ -470,16 +470,16 @@ CUSTOMERFREELANCEMODELS.forEach(model => {
   })
   declareVirtualField({model, field: 'customer_evaluations_count', instance:'Number'})
   declareVirtualField({model, field: 'freelance_evaluations_count', instance:'Number'})
-  declareVirtualField({model, field: 'freelance_profile_completion', requires:[...FREELANCE_REQUIRED_ATTRIBUTES, ...SOFT_SKILLS_ATTR, ...FREELANCE_MANDATORY_ATTRIBUTES, 'freelance_missing_attributes'].join(','), instance: 'Number'})
+  declareVirtualField({model, field: 'freelance_profile_completion', requires:[...FREELANCE_REQUIRED_ATTRIBUTES, ...SOFT_SKILLS_ATTR, ...FREELANCE_MANDATORY_ATTRIBUTES, 'freelance_missing_attributes', 'mobility_city', 'mobility_city_distance'].join(','), instance: 'Number'})
   declareVirtualField({
-    model, field: 'freelance_missing_attributes', instance: 'Array', multiple: true, requires:[...FREELANCE_REQUIRED_ATTRIBUTES, ...SOFT_SKILLS_ATTR, ...FREELANCE_MANDATORY_ATTRIBUTES].join(','),
+    model, field: 'freelance_missing_attributes', instance: 'Array', multiple: true, requires:[...FREELANCE_REQUIRED_ATTRIBUTES, ...SOFT_SKILLS_ATTR, ...FREELANCE_MANDATORY_ATTRIBUTES, 'mobility_city', 'mobility_city_distance'].join(','),
     caster: {
       instance: 'String',
     },
   })
-  declareVirtualField({model, field: 'customer_profile_completion', requires:[...CUSTOMER_REQUIRED_ATTRIBUTES, ...CUSTOMER_ANNOUNCE_ATTRIBUTES, ...CUSTOMER_CONTRACT_ATTRIBUTES, 'customer_missing_attributes'].join(','), instance: 'Number'})
+  declareVirtualField({model, field: 'customer_profile_completion', requires:[...CUSTOMER_REQUIRED_ATTRIBUTES, 'customer_missing_attributes'].join(','), instance: 'Number'})
   declareVirtualField({
-    model, field: 'customer_missing_attributes', instance: 'Array', multiple: true, requires:[...CUSTOMER_REQUIRED_ATTRIBUTES, ...CUSTOMER_ANNOUNCE_ATTRIBUTES, ...CUSTOMER_CONTRACT_ATTRIBUTES].join(','),
+    model, field: 'customer_missing_attributes', instance: 'Array', multiple: true, requires:[...CUSTOMER_REQUIRED_ATTRIBUTES].join(','),
     caster: {
       instance: 'String',
     },
@@ -512,6 +512,13 @@ declareVirtualField({model: 'mission', field: 'evaluation', instance: 'Array', m
     instance: 'ObjectID',
     options: { ref: 'evaluation' }
   },
+})
+//Announce Questions
+declareVirtualField({model: 'announce', field: 'questions', instance: 'Array', multiple: true,
+  caster :{
+    instance: 'ObjectID',
+    options: { ref: 'question' }
+  }
 })
 
 const soSynplRegister = props => {
@@ -574,9 +581,9 @@ const preProcessGet = async ({ model, fields, id, user, params }) => {
       return Conversation.findById(id)
         .then(async(conv) => {
           if(!conv){
-            const model = await getModel(id, ['mission','application','customerFreelance'])
+            const model = await getModel(id, ['mission','application','customerFreelance','user'])
             let customerId, freelanceId, applicationId, partnerId
-            if(model == 'customerFreelance') {
+            if(model == 'customerFreelance' || model == 'user') {
               partnerId = id
             }
             else if(model == 'mission') {
@@ -618,12 +625,15 @@ const preProcessGet = async ({ model, fields, id, user, params }) => {
       id = s._id
     // }
   }
+  if (model == 'question') params.creator=user
+  //If no Id when looking for questions, it means we're looking for FAQ and not all announces' questions
+  if (model == 'question' && !id) params['filter.announce'] = null
   return { model, fields, id, user, params }
 }
 
 setPreprocessGet(preProcessGet)
 
-const preCreate = async ({model, params, user}) => {
+const preCreate = async ({model, params, user, skip_validation}) => {
   if (['experience', 'communication', 'certification', 'training'].includes(model) && !params.user) {
     params.user=user
   }
@@ -664,7 +674,14 @@ const preCreate = async ({model, params, user}) => {
     params.conversation=conversation
     params.receiver=await conversation.getPartner(user)
   }
-  return Promise.resolve({model, params})
+  if (model == 'recommandation') {
+    skip_validation=true
+  }
+  if (model == 'question' ) {
+    skip_validation = true
+    params.announce = params.parent
+  }
+  return Promise.resolve({model, params, user, skip_validation})
 }
 
 setPreCreateData(preCreate)

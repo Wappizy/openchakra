@@ -1,18 +1,21 @@
-const { CUSTOMER_ANNOUNCE_ATTRIBUTES, CUSTOMER_CONTRACT_ATTRIBUTES, CUSTOMER_REQUIRED_ATTRIBUTES, CUSTOMER_OUTPUT_ATTRIBUTES } = require("./consts")
+const { CUSTOMER_REQUIRED_ATTRIBUTES, CUSTOMER_OUTPUT_ATTRIBUTES } = require("./consts")
 
 
 const customerProfileCompletion = (user) => {
   if (!user['customer_missing_attributes'] || user['customer_missing_attributes'].length === 0) return 1
-  const attrCount = [...CUSTOMER_ANNOUNCE_ATTRIBUTES, ...CUSTOMER_CONTRACT_ATTRIBUTES, ...CUSTOMER_REQUIRED_ATTRIBUTES].length
+  const attrCount = CUSTOMER_REQUIRED_ATTRIBUTES.length
   const missingCount = user['customer_missing_attributes'].length
-  return Math.floor(1-missingCount/attrCount)
+  return Math.floor(100-missingCount/attrCount*100)/100
 }
 
 const customerMissingAttributes = (user) => {
   let missingAttr = []
-  let i=0;
-  [...CUSTOMER_REQUIRED_ATTRIBUTES, ...CUSTOMER_ANNOUNCE_ATTRIBUTES, ...CUSTOMER_CONTRACT_ATTRIBUTES].forEach(attr => {
-    if (!user[attr]) missingAttr = [...missingAttr, CUSTOMER_OUTPUT_ATTRIBUTES[attr]]
+  const allAttributes = [...CUSTOMER_REQUIRED_ATTRIBUTES]
+  allAttributes.forEach((attr, index) => {
+    if (!user[attr]) {
+      const attributeString = index === allAttributes.length - 1 ? CUSTOMER_OUTPUT_ATTRIBUTES[attr] : `${CUSTOMER_OUTPUT_ATTRIBUTES[attr]} `
+      missingAttr = [...missingAttr, attributeString]
+    }
   })
   return missingAttr
 }
