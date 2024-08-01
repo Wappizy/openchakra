@@ -61,6 +61,7 @@ const sendReport = async reportId => {
 const CF_BILL_REQUIRED_FIELDS= [
   'creation_date',
   'serial_number',
+  'cf_serial_number',
   'mission.title',
   'mission.serial_number',
   'mission.customer.fullname',
@@ -114,6 +115,7 @@ const getCFBill = async (userId, params, data) => {
   const refactoredData = {
     _id: data._id,
     _cf_billing: data._cf_billing,
+    cf_serial_number: data.cf_serial_number,
     creation_date: moment(data.creation_date).format("DD/MM/YYYY"),
     mission_title: data.mission.title,
     mission_serial_number: data.mission.serial_number,
@@ -143,7 +145,7 @@ const getCFBill = async (userId, params, data) => {
     }))
   }
   const TEMPLATE_NAME = 'sosynpl_customer_freelance_billing'
-  const TEMPLATE_PATH = `${path.join(ROOT, FILENAME)}.pdf`
+  const TEMPLATE_PATH = `${path.join(ROOT, TEMPLATE_NAME)}.pdf`
   const result = await generateDocument('report', 'billing', '_cf_billing', TEMPLATE_PATH, TEMPLATE_NAME, refactoredData)
   return result
 }

@@ -411,6 +411,7 @@ declareVirtualField({model: 'report', field: 'latest_quotations', instance: 'Arr
   }
 })
 declareComputedField({model: 'report', field: 'cf_billing', instance: 'String', requires: [...CF_BILL_FIELDS,'status','_cf_billing'], getterFn: getCFBill })
+declareVirtualField({model: 'report', field: 'cf_serial_number', requires: '_counter', instance: 'String'})
 /** Report end */
 
 /** Search start */

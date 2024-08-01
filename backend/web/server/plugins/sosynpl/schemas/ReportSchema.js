@@ -80,6 +80,12 @@ ReportSchema.virtual('serial_number', DUMMY_REF).get(function() {
   return `C${moment().format('YY')}${this._counter.toString().padStart(5, 0)}`
 })
 
+ReportSchema.virtual('cf_serial_number', DUMMY_REF).get(function() {
+  if (!this._counter) {
+    return undefined
+  }
+  return `CF${moment().format('YY')}${this._counter.toString().padStart(5, 0)}`
+})
 /* eslint-enable prefer-arrow-callback */
 
 
