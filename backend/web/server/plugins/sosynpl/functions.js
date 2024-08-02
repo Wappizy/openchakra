@@ -26,6 +26,7 @@ const Statistic = require("../../models/Statistic");
 const Mission = require("../../models/Mission");
 const Application = require("../../models/Application");
 const { CF_BILL_FIELDS, getCFBill } = require("./report");
+const { QUOTATION_FIELDS, getQuotationPDF } = require("./quotation");
 
 // TODO move in DB migration
 // Ensure softSkills
@@ -374,6 +375,7 @@ declareVirtualField({model: 'quotation', field: 'ht_customer_commission', instan
 declareVirtualField({model: 'quotation', field: 'ttc_customer_commission', instance: 'Number', requires: 'ttc_total'})
 declareVirtualField({model: 'quotation', field: 'vat_customer_commission', instance: 'Number', requires: 'ht_customer_commission'})
 declareVirtualField({model: 'quotation', field: 'ttc_customer_total', instance: 'Number', requires: 'ttc_total,ttc_customer_commission'})
+declareComputedField({model: 'quotation', field: 'document', instance: 'String', requires: [...QUOTATION_FIELDS,'_document'], getterFn: getQuotationPDF })
 /** Quotation end */
 
 

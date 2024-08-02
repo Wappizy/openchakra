@@ -58,7 +58,15 @@ const QuotationSchema = new Schema({
   },
   _counter: {
     type: Number,
-  }
+  },
+  document: {
+    type: String,
+    required: false,
+  },
+  _document: {
+    type: String,
+    required: false,
+  },
 }, schemaOptions,
 )
 

@@ -153,8 +153,6 @@ async function fillForm(sourceLink, data, font = StandardFonts.Helvetica, fontSi
 }
 
 async function savePDFFile(pdf, outputFilePath) {
-  const form = pdf.getForm()
-  form.flatten()
   const pdfBytes = await pdf.save()
   const buffer = Buffer.from(pdfBytes)
   await fs.writeFile(outputFilePath, buffer)
@@ -238,10 +236,6 @@ async function duplicateFields(sourcePDF, textFields, numberOfDuplicates = 1, ma
 }
 
 const generateDocument = async(model, type, hiddenAttr, TEMPLATE_PATH, TEMPLATE_NAME, data) => {
-  if(data[hiddenAttr] != null && data[hiddenAttr] !== undefined){
-    return data[hiddenAttr]
-  }
-
   const id = data._id
   delete data._id
   delete data[hiddenAttr]
@@ -249,7 +243,6 @@ const generateDocument = async(model, type, hiddenAttr, TEMPLATE_PATH, TEMPLATE_
   const pdf = await fillForm(TEMPLATE_PATH, data) 
   const buffer=await pdf.save()
   const filename=`${TEMPLATE_NAME}${id}.pdf`
-  console.log(filename)
   const {Location}=await sendBufferToAWS({filename, buffer, type: type, mimeType: mime.lookup(filename)})
   const mongooseModel = mongoose.connection.models[model]
   await mongooseModel.findByIdAndUpdate(mongoose.Types.ObjectId(id), {[hiddenAttr]: Location})
@@ -269,7 +262,7 @@ const allFieldsExist = (data, fields) => {
         obj = obj[0][key]
       }
       else {
-        if(!obj[key]) missingFields.push(path)
+        if(typeof obj[key] === 'undefined') missingFields.push(path)
       }
     }
     return true

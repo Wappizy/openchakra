@@ -102,6 +102,10 @@ const getCFBill = async (userId, params, data) => {
     return null
   }
 
+  if(data._cf_billing) {
+    return data._cf_billing
+  }
+
   const frAddr = data.mission.freelance.address
   const frAddrStr = `${frAddr.address}, ${frAddr.zip_code} ${frAddr.city}`
 
