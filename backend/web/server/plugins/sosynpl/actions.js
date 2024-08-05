@@ -13,7 +13,7 @@ const { ROLE_ADMIN } = require("../smartdiet/consts")
 const { ACTIVITY_STATE_SUSPENDED, ACTIVITY_STATE_ACTIVE, ACTIVITY_STATE_DISABLED, ANNOUNCE_STATUS_DRAFT, ANNOUNCE_SUGGESTION_REFUSED, APPLICATION_STATUS_DRAFT, APPLICATION_STATUS_SENT, QUOTATION_STATUS_DRAFT, ANNOUNCE_STATUS_ACTIVE, ANNOUNCE_SUGGESTION_SENT, ROLE_FREELANCE, MISSION_STATUS_CURRENT, MISSION_STATUS, ROLE_CUSTOMER, MISSION_STATUS_FREELANCE_FINISHED} = require("./consts")
 const {clone, canCancel, cancelAnnounce} = require('./announce')
 const AnnounceSuggestion = require("../../models/AnnounceSuggestion")
-const { sendSuggestion2Freelance, sendApplication2Customer, sendSuspension2User } = require("./mailing")
+const { sendSuggestion2Freelance, sendApplication2Customer, sendSuspension2User, sendMissionFinishConfirm2Customer } = require("./mailing")
 const { sendQuotation } = require("./quotation")
 const { canAcceptApplication, acceptApplication, refuseApplication, canRefuseApplication } = require("./application")
 const { canAcceptReport, sendReport, acceptReport, refuseReport, canSendReport, canRefuseReport } = require("./report")
@@ -192,6 +192,12 @@ const finishMission = async ({value}, user) => {
       {mission: value._id, customer: mission.customer, freelance: mission.freelance},
       {upsert: true}
     )
+    try{
+      await sendMissionFinishConfirm2Customer(user, mission.title, mission.end_date)
+    }
+    catch(e) {
+      console.error(`Error sending mail: ${e.message}`, e.stack)
+    }
   }
   return Mission.findByIdAndUpdate(value._id, {[attribute]: moment()})
 }
@@ -371,4 +377,6 @@ const isActionAllowed = async ({ action, dataId, user, actionProps }) => {
 
 setAllowActionFn(isActionAllowed)
 
-module.exports={suspendAccount}
+module.exports={
+  suspendAccount, finishMission
+}

@@ -21,6 +21,7 @@ const SIB_IDS={
   FREELANCE_INTEREST_REMINDER: 25,
   FREELANCE_AVAILABILITY_REMINDER: 15,
   ADMIN_NEW_SIGNUPS_NOTIF: 24,
+  CUSTOMER_FINISH_MISSION: 29,
 }
 
 const SMS_CONTENTS={
@@ -132,7 +133,6 @@ const sendRemidner2Freelance = async (freelance) => {
 const sendNewSignUps2Admin = async (admin,nbnewuser) => {
   const tagUrl = await getTagUrl('LOGIN')
   const login=`${computeUrl(tagUrl)}`
-  console.log(login)
   return sendNotification({
     notification: SIB_IDS.ADMIN_NEW_SIGNUPS_NOTIF,
     destinee: admin,
@@ -143,7 +143,22 @@ const sendNewSignUps2Admin = async (admin,nbnewuser) => {
     }
   })
 }
+
+//Send mail to customer if freelance finished mission
+const sendMissionFinishConfirm2Customer = async (customer, mission_name, url) => {
+  const tagUrl = await getTagUrl('COMPANY_MISSION_PROGRESS')
+  const endmission=`${computeUrl(tagUrl)}`
+  return sendNotification({
+    notification: SIB_IDS.CUSTOMER_FINISH_MISSION,
+    destinee: customer,
+    params: {
+      firstname: customer.firstname,
+      mission_name,
+      endmission
+    }
+  })
+}
 module.exports = {
   sendCustomerConfirmEmail, sendFreelanceConfirmEmail, sendSuggestion2Freelance, sendApplication2Customer, sendSuspension2User, sendInterestReminder2Freelance,
-  sendRemidner2Freelance, sendNewSignUps2Admin
+  sendRemidner2Freelance, sendNewSignUps2Admin, sendMissionFinishConfirm2Customer
 }
