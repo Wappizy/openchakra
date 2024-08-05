@@ -1,7 +1,7 @@
 const moment=require('moment')
 const customCron = require("../../utils/cron");
-const { AVAILABILITY_CHECK_PERIODS, AVAILABILITY_UNDEFINED, ROLE_FREELANCE } = require("./consts");
-const { sendRemidner2Freelance, sendInterestReminder2Freelance } = require("./mailing");
+const { AVAILABILITY_CHECK_PERIODS, AVAILABILITY_UNDEFINED, ROLE_FREELANCE, ROLE_ADMIN } = require("./consts");
+const { sendRemidner2Freelance, sendInterestReminder2Freelance, sendNewSignUps2Admin } = require("./mailing");
 const CustomerFreelance = require('../../models/CustomerFreelance')
 
 // Freelance whose availability date hasn't been changed for the past 45 days
@@ -88,6 +88,22 @@ const availabilityPeriodUpdate = async () => {
 
 customCron.schedule('0 9 * * * *', availabilityPeriodUpdate)
 
+//Send email if new sign-ups today
+
+const checkNewSignUps = async () => {
+  const today = moment().startOf('day').toDate()
+  const newUsersCount = await CustomerFreelance.countDocuments({
+    role: ROLE_FREELANCE,
+    creation_date: { $gte: today }
+  })
+  console.log(newUsersCount)
+  if(newUsersCount > 0) {
+    const admins = await CustomerFreelance.find({role:ROLE_ADMIN})
+    admins.forEach(async(a) => await sendNewSignUps2Admin(a,newUsersCount))
+  }
+}
+customCron.schedule('0 17 * * * *', checkNewSignUps)
+
 module.exports={
-  availabilityPeriodUpdate, checkFreelanceInterest
+  availabilityPeriodUpdate, checkFreelanceInterest, checkNewSignUps
 }

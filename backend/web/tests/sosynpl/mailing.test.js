@@ -10,7 +10,7 @@ const JobFile = require('../../server/models/JobFile')
 const Job = require('../../server/models/Job')
 const Sector = require('../../server/models/Sector')
 const PageTag_ = require('../../server/models/PageTag_')
-const { availabilityPeriodUpdate, checkFreelanceInterest } = require('../../server/plugins/sosynpl/cron')
+const { availabilityPeriodUpdate, checkFreelanceInterest, checkNewSignUps } = require('../../server/plugins/sosynpl/cron')
 require('../../server/plugins/sosynpl/functions')
 
 describe('Mailing', () => {
@@ -54,9 +54,11 @@ describe('Mailing', () => {
 
     customer=await CustomerFreelance.create({...CUSTOMER_DATA})
 
-    admin = await CustomerFreelance.create({...CUSTOMER_DATA, role:ROLE_ADMIN})
+    admin = await CustomerFreelance.create({...CUSTOMER_DATA, role:ROLE_ADMIN, email:'seghir.oumohand@wappizy.com',})
 
     await PageTag_.create({tag:'SUPPLIER_DASHBOARD', url:'/supplier-dashboard'})
+    await PageTag_.create({tag:'ADMIN_DASHBOARD', url:'/admin-dashboard'})
+    await PageTag_.create({tag:'LOGIN', url:'/login'})
   })
 
   afterAll(async () => {
@@ -68,11 +70,15 @@ describe('Mailing', () => {
     await suspendAccount({value:freelance._id, reason:SUSPEND_REASON_INACTIVE},admin)
   })
 
-  it.only('must send reminder if interested', async () => {
+  it('must send reminder if interested', async () => {
     await checkFreelanceInterest()
   })
 
   it('must send reminders on intervals', async() => {
     await availabilityPeriodUpdate()
+  })
+
+  it.only('must send reminders if there are new users today', async() => {
+    await checkNewSignUps()
   })
 })

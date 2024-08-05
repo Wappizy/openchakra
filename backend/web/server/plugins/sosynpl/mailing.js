@@ -20,6 +20,7 @@ const SIB_IDS={
   USER_SEND_SUSPENSION: 23,
   FREELANCE_INTEREST_REMINDER: 25,
   FREELANCE_AVAILABILITY_REMINDER: 15,
+  ADMIN_NEW_SIGNUPS_NOTIF: 24,
 }
 
 const SMS_CONTENTS={
@@ -126,7 +127,23 @@ const sendRemidner2Freelance = async (freelance) => {
     }
   })
 }
+
+//Send mail if new sign-ups today
+const sendNewSignUps2Admin = async (admin,nbnewuser) => {
+  const tagUrl = await getTagUrl('LOGIN')
+  const login=`${computeUrl(tagUrl)}`
+  console.log(login)
+  return sendNotification({
+    notification: SIB_IDS.ADMIN_NEW_SIGNUPS_NOTIF,
+    destinee: admin,
+    params: {
+      firstname: admin.firstname,
+      nbnewuser: nbnewuser,
+      login: login,
+    }
+  })
+}
 module.exports = {
   sendCustomerConfirmEmail, sendFreelanceConfirmEmail, sendSuggestion2Freelance, sendApplication2Customer, sendSuspension2User, sendInterestReminder2Freelance,
-  sendRemidner2Freelance
+  sendRemidner2Freelance, sendNewSignUps2Admin
 }
