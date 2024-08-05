@@ -1,7 +1,7 @@
 const moment=require('moment')
 const customCron = require("../../utils/cron");
-const { AVAILABILITY_CHECK_PERIODS, AVAILABILITY_UNDEFINED, ROLE_FREELANCE, ROLE_ADMIN } = require("./consts");
-const { sendRemidner2Freelance, sendInterestReminder2Freelance, sendNewSignUps2Admin } = require("./mailing");
+const { AVAILABILITY_CHECK_PERIODS, AVAILABILITY_UNDEFINED, ROLE_FREELANCE, ROLE_ADMIN, ROLE_CUSTOMER } = require("./consts");
+const { sendRemidner2Freelance, sendInterestReminder2Freelance, sendNewSignUps2Admin, sendFirstAnnounceReminder2Customer } = require("./mailing");
 const CustomerFreelance = require('../../models/CustomerFreelance')
 
 // Freelance whose availability date hasn't been changed for the past 45 days
@@ -104,6 +104,27 @@ const checkNewSignUps = async () => {
 }
 customCron.schedule('0 17 * * * *', checkNewSignUps)
 
+//Send mail if customer hasn't published an announce 7 days after sign up
+const checkCustomerAnnounces = async () => {
+  const dateFilter = {
+    $gte: moment().subtract(7,'d').startOf('day').toDate(),
+    $lte: moment().subtract(7,'d').endOf('day').toDate(),
+  }
+  const newCustomers = await CustomerFreelance.find({
+    role: ROLE_CUSTOMER,
+    creation_date: dateFilter,
+  }).populate('announces')
+  if (newCustomers.length >0) {
+    newCustomers.forEach(async(c) => {
+      if(c.announces.length == 0) {
+        await sendFirstAnnounceReminder2Customer(c)
+      }
+    })
+  }
+}
+
+customCron.schedule('0 9 * * * *', checkCustomerAnnounces)
+
 module.exports={
-  availabilityPeriodUpdate, checkFreelanceInterest, checkNewSignUps
+  availabilityPeriodUpdate, checkFreelanceInterest, checkNewSignUps, checkCustomerAnnounces
 }

@@ -10,7 +10,7 @@ const JobFile = require('../../server/models/JobFile')
 const Job = require('../../server/models/Job')
 const Sector = require('../../server/models/Sector')
 const PageTag_ = require('../../server/models/PageTag_')
-const { availabilityPeriodUpdate, checkFreelanceInterest, checkNewSignUps } = require('../../server/plugins/sosynpl/cron')
+const { availabilityPeriodUpdate, checkFreelanceInterest, checkNewSignUps, checkCustomerAnnounces } = require('../../server/plugins/sosynpl/cron')
 const HardSkillCategory = require('../../server/models/HardSkillCategory')
 const Expertise = require('../../server/models/Expertise')
 const HardSkill = require('../../server/models/HardSkill')
@@ -63,7 +63,7 @@ describe('Mailing', () => {
     await CustomerFreelance.create({ ...FREELANCE_ATTR, availability_last_update: dateFilter(30), })
     await CustomerFreelance.create({ ...FREELANCE_ATTR, availability_last_update: dateFilter(60), })
 
-    customer = await CustomerFreelance.create({ ...CUSTOMER_DATA })
+    customer = await CustomerFreelance.create({ ...CUSTOMER_DATA, email: 'seghir.oumohand@wappizy.com' })
 
     admin = await CustomerFreelance.create({ ...CUSTOMER_DATA, role: ROLE_ADMIN, email: 'seghir.oumohand@wappizy.com', })
 
@@ -89,39 +89,39 @@ describe('Mailing', () => {
       latitude: 49.4431,
       longitude: 1.0993,
     }
-    announce = await Announce.create({
-      user: customer._id,
-      title: 'dev',
-      experience: Object.keys(EXPERIENCE)[0],
-      duration: 2,
-      duration_unit: DURATION_MONTH,
-      budget: '6969669',
-      mobility_days_per_month: 2,
-      mobility: MOBILITY_NONE,
-      city: rouen,
-      sectors: [sector._id],
-      expertises: [expertise1._id, expertise2._id, expertise3._id],
-      pinned_expertises: [expertise1._id, expertise2._id, expertise3._id],
-      softwares: [software._id],
-      languages: [language._id],
-    })
-    application = await Application.create({
-      announce: announce._id,
-      customer: customer._id,
-      freelance: freelance._id,
-    })
+    // announce = await Announce.create({
+    //   user: customer._id,
+    //   title: 'dev',
+    //   experience: Object.keys(EXPERIENCE)[0],
+    //   duration: 2,
+    //   duration_unit: DURATION_MONTH,
+    //   budget: '6969669',
+    //   mobility_days_per_month: 2,
+    //   mobility: MOBILITY_NONE,
+    //   city: rouen,
+    //   sectors: [sector._id],
+    //   expertises: [expertise1._id, expertise2._id, expertise3._id],
+    //   pinned_expertises: [expertise1._id, expertise2._id, expertise3._id],
+    //   softwares: [software._id],
+    //   languages: [language._id],
+    // })
+    // application = await Application.create({
+    //   announce: announce._id,
+    //   customer: customer._id,
+    //   freelance: freelance._id,
+    // })
 
-    announce.accepted_application = application._id
-    await announce.save()
+    // announce.accepted_application = application._id
+    // await announce.save()
 
-    mission = await Mission.create({
-      application: application._id,
-      customer: customer._id,
-      freelance: freelance._id,
-      title: 'dev',
-      start_date: new Date(),
-      end_date: new Date('2025-06-06'),
-    })
+    // mission = await Mission.create({
+    //   application: application._id,
+    //   customer: customer._id,
+    //   freelance: freelance._id,
+    //   title: 'dev',
+    //   start_date: new Date(),
+    //   end_date: new Date('2025-06-06'),
+    // })
   })
 
   afterAll(async () => {
@@ -145,9 +145,12 @@ describe('Mailing', () => {
     await checkNewSignUps()
   })
 
-  it.only('must send confirm mission mail to customer when freelance finishes', async () => {
+  it('must send confirm mission mail to customer when freelance finishes', async () => {
     const [mission] = await loadFromDb({model:'mission', fields:['title','status']})
     const res= await finishMission({value:mission}, freelance)
-    console.log(res)
+  })
+
+  it.only(`must send reminder to customer that hasn't published announce yet`, async() => {
+    await checkCustomerAnnounces()
   })
 })

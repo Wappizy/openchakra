@@ -22,6 +22,7 @@ const SIB_IDS={
   FREELANCE_AVAILABILITY_REMINDER: 15,
   ADMIN_NEW_SIGNUPS_NOTIF: 24,
   CUSTOMER_FINISH_MISSION: 29,
+  CUSTOMER_FIRST_ANNOUCE : 46,
 }
 
 const SMS_CONTENTS={
@@ -147,7 +148,7 @@ const sendNewSignUps2Admin = async (admin,nbnewuser) => {
 }
 
 //Send mail to customer if freelance finished mission
-const sendMissionFinishConfirm2Customer = async (customer, mission_name, url) => {
+const sendMissionFinishConfirm2Customer = async (customer, mission_name) => {
   const tagUrl = await getTagUrl('COMPANY_MISSION_PROGRESS')
   const endmission=`${computeUrl(tagUrl)}`
   return sendNotification({
@@ -160,7 +161,21 @@ const sendMissionFinishConfirm2Customer = async (customer, mission_name, url) =>
     }
   })
 }
+
+//Send mail to customer if he didn't post an announce 7 days after sign up
+const sendFirstAnnounceReminder2Customer = async (customer) => {
+  const tagUrl = await getTagUrl('LOGIN')
+  const login=`${computeUrl(tagUrl)}`
+  return sendNotification({
+    notification: SIB_IDS.CUSTOMER_FIRST_ANNOUCE,
+    destinee: customer,
+    params: {
+      firstname: customer.firstname,
+      login
+    }
+  })
+}
 module.exports = {
   sendCustomerConfirmEmail, sendFreelanceConfirmEmail, sendSuggestion2Freelance, sendApplication2Customer, sendSuspension2User, sendInterestReminder2Freelance,
-  sendRemidner2Freelance, sendNewSignUps2Admin, sendMissionFinishConfirm2Customer
+  sendRemidner2Freelance, sendNewSignUps2Admin, sendMissionFinishConfirm2Customer, sendFirstAnnounceReminder2Customer
 }
