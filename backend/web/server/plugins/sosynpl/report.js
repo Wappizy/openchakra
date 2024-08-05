@@ -98,9 +98,10 @@ const canGenerateCFBill = (data) => {
 }
 
 const getCFBill = async (userId, params, data) => {
-  if(!canGenerateCFBill(data)) {
-    return null
-  }
+  console.log(data.mission.customer.id)
+  // if(!canGenerateCFBill(data)) {
+  //   return null
+  // }
 
   if(data._cf_billing) {
     return data._cf_billing

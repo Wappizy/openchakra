@@ -100,6 +100,7 @@ const setFieldValue = (form, field, value, fallbackFont, fallbackFontSize) => {
       widget.setRectangle(rect)
 
       field.setText(wrappedValue)
+      field.updateAppearances(form.getDefaultFont())
     })
 
     form.updateFieldAppearances(fallbackFont)

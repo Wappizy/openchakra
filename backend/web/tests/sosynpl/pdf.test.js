@@ -38,13 +38,13 @@ describe('Fill form test', () => {
     console.log(JSON.stringify(Object.keys(fields), null, 2))
   })
 
-  it.only('must fill quotation document', async () => {
+  it('must fill quotation document', async () => {
     const id = '668561c4f8aa59121b5cad40'
     const [quotation] = await loadFromDb({ model: 'quotation', id, fields: ['document']})
     const res = await exec(`xdg-open ${quotation.document}`)
   })
 
-  it('must fill customerFreelance bill', async() => {
+  it.only('must fill customerFreelance bill', async() => {
     const id = '6697b1c7203c34326ee54169'
     const [report] = await loadFromDb({model: 'report', id, fields: ['cf_billing']})
     const res = await exec(`xdg-open ${report.cf_billing}`)
