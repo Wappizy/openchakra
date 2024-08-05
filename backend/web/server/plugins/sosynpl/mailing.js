@@ -105,7 +105,8 @@ const sendSuspension2User = async ({value}) => {
 
 // Send reminder if still interested in SoSynpl
 const sendInterestReminder2Freelance = async (freelance) => {
-  const url = `${await getTagUrl('SUPPLIER_DASHBOARD')}?id=${freelance._id}`
+  const tagUrl = `${await getTagUrl('SUPPLIER_DASHBOARD')}?id=${freelance._id}`
+  const url = `${computeUrl(tagUrl)}`
   return sendNotification({
     notification: SIB_IDS.FREELANCE_INTEREST_REMINDER,
     destinee: freelance,
@@ -118,7 +119,8 @@ const sendInterestReminder2Freelance = async (freelance) => {
 
 // Send reminder after 8, 15, 30, 60 days
 const sendRemidner2Freelance = async (freelance) => {
-  const url=`${await getTagUrl('SUPPLIER_DASHBOARD')}?id=${freelance._id}`
+  const tagUrl=`${await getTagUrl('SUPPLIER_DASHBOARD')}?id=${freelance._id}`
+  const url = `${computeUrl(tagUrl)}`
   return sendNotification({
     notification: SIB_IDS.FREELANCE_AVAILABILITY_REMINDER,
     destinee: freelance,
