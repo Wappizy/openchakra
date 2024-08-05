@@ -194,7 +194,7 @@ FREELANCE_MODELS.forEach(model => {
       options: { ref: 'training' }
     },
   })
-  declareComputedField({model, field: 'hard_skills_categories', requires: 'main_job.job_file', getterFn: computeUserHardSkillsCategories})
+  declareComputedField({model, field: 'hard_skills_categories', requires: 'main_job.job_file.hard_skills', getterFn: computeUserHardSkillsCategories})
   declareEnumField( {model, field: 'mobility', enumValues: MOBILITY})
   declareEnumField( {model, field: 'mobility_regions', enumValues: REGIONS})
   declareVirtualField({model, field: 'mobility_str', instance: 'String', requires: 'mobility,mobility_regions,mobility_city,mobility_city_distance'})
@@ -470,9 +470,9 @@ CUSTOMERFREELANCEMODELS.forEach(model => {
   })
   declareVirtualField({model, field: 'customer_evaluations_count', instance:'Number'})
   declareVirtualField({model, field: 'freelance_evaluations_count', instance:'Number'})
-  declareVirtualField({model, field: 'freelance_profile_completion', requires:[...FREELANCE_REQUIRED_ATTRIBUTES, ...SOFT_SKILLS_ATTR, ...FREELANCE_MANDATORY_ATTRIBUTES, 'freelance_missing_attributes'].join(','), instance: 'Number'})
+  declareVirtualField({model, field: 'freelance_profile_completion', requires:[...FREELANCE_REQUIRED_ATTRIBUTES, ...SOFT_SKILLS_ATTR, ...FREELANCE_MANDATORY_ATTRIBUTES, 'freelance_missing_attributes', 'mobility_city', 'mobility_city_distance'].join(','), instance: 'Number'})
   declareVirtualField({
-    model, field: 'freelance_missing_attributes', instance: 'Array', multiple: true, requires:[...FREELANCE_REQUIRED_ATTRIBUTES, ...SOFT_SKILLS_ATTR, ...FREELANCE_MANDATORY_ATTRIBUTES].join(','),
+    model, field: 'freelance_missing_attributes', instance: 'Array', multiple: true, requires:[...FREELANCE_REQUIRED_ATTRIBUTES, ...SOFT_SKILLS_ATTR, ...FREELANCE_MANDATORY_ATTRIBUTES, 'mobility_city', 'mobility_city_distance'].join(','),
     caster: {
       instance: 'String',
     },
@@ -483,6 +483,30 @@ CUSTOMERFREELANCEMODELS.forEach(model => {
     caster: {
       instance: 'String',
     },
+  })
+  declareVirtualField({
+    model, field: 'customer_current_missions_count', instance: 'Number',
+  })
+  declareVirtualField({
+    model, field: 'freelance_current_missions_count', instance: 'Number',
+  })
+  declareVirtualField({
+    model, field: 'customer_coming_missions_count', instance: 'Number',
+  })
+  declareVirtualField({
+    model, field: 'freelance_coming_missions_count', instance: 'Number',
+  })
+  declareVirtualField({
+    model, field: 'customer_active_announces_count', instance: 'Number',
+  })
+  declareVirtualField({
+    model, field: 'customer_published_announces_count', instance: 'Number',
+  })
+  declareVirtualField({
+    model, field: 'customer_received_applications_count', instance: 'Number', requires: 'announces.received_applications_count'
+  })
+  declareVirtualField({
+    model, field: 'customer_sent_reports_count', instance: 'Number', requires: 'customer_missions'
   })
 })
 
@@ -513,7 +537,7 @@ declareVirtualField({model: 'mission', field: 'evaluation', instance: 'Array', m
     options: { ref: 'evaluation' }
   },
 })
-//Announce Questions
+//Announce
 declareVirtualField({model: 'announce', field: 'questions', instance: 'Array', multiple: true,
   caster :{
     instance: 'ObjectID',
@@ -625,15 +649,13 @@ const preProcessGet = async ({ model, fields, id, user, params }) => {
       id = s._id
     // }
   }
-  if (model == 'question') params.creator=user
-  //If no Id when looking for questions, it means we're looking for FAQ and not all announces' questions
-  if (model == 'question' && !id) params['filter.announce'] = null
   return { model, fields, id, user, params }
 }
 
 setPreprocessGet(preProcessGet)
 
 const preCreate = async ({model, params, user, skip_validation}) => {
+  params.creator=user
   if (['experience', 'communication', 'certification', 'training'].includes(model) && !params.user) {
     params.user=user
   }
@@ -676,10 +698,15 @@ const preCreate = async ({model, params, user, skip_validation}) => {
   }
   if (model == 'recommandation') {
     skip_validation=true
+    params.freelance=user
   }
   if (model == 'question' ) {
     skip_validation = true
     params.announce = params.parent
+  }
+  //If no Id when looking for questions, it means we're looking for FAQ and not all announces' questions
+  if (model == 'question' && !id) {
+    params['filter.announce'] = null
   }
   return Promise.resolve({model, params, user, skip_validation})
 }
