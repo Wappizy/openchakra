@@ -4,13 +4,13 @@ const { MONGOOSE_OPTIONS, loadFromDb } = require('../../server/utils/database')
 const CustomerFreelance = require('../../server/models/CustomerFreelance')
 const Question = require('../../server/models/Question')
 const { CUSTOMER_DATA, FREELANCE_DATA, JOB_FILE_DATA, SECTOR_DATA, JOB_DATA, CATEGORY_DATA } = require('./data/base_data')
-const { ROLE_ADMIN, SUSPEND_REASON, SUSPEND_REASON_INACTIVE, ROLE_FREELANCE, MOBILITY_CITY, WORK_MODE_REMOTE, COMPANY_SIZE_LESS_10, MOBILITY_FRANCE, LEGAL_STATUS, LEGAL_STATUS_CAE, AVAILABILITY_ON, EXPERIENCE, DURATION_MONTH, MOBILITY_NONE } = require('../../server/plugins/sosynpl/consts')
+const { ROLE_ADMIN, SUSPEND_REASON, SUSPEND_REASON_INACTIVE, ROLE_FREELANCE, MOBILITY_CITY, WORK_MODE_REMOTE, COMPANY_SIZE_LESS_10, MOBILITY_FRANCE, LEGAL_STATUS, LEGAL_STATUS_CAE, AVAILABILITY_ON, EXPERIENCE, DURATION_MONTH, MOBILITY_NONE, QUOTATION_STATUS_SENT, REPORT_STATUS_SENT } = require('../../server/plugins/sosynpl/consts')
 const { suspendAccount, finishMission } = require('../../server/plugins/sosynpl/actions')
 const JobFile = require('../../server/models/JobFile')
 const Job = require('../../server/models/Job')
 const Sector = require('../../server/models/Sector')
 const PageTag_ = require('../../server/models/PageTag_')
-const { availabilityPeriodUpdate, checkFreelanceInterest, checkNewSignUps, checkCustomerAnnounces } = require('../../server/plugins/sosynpl/cron')
+const { availabilityPeriodUpdate, checkFreelanceInterest, checkNewSignUps, checkCustomerAnnounces, checkFreelanceMission } = require('../../server/plugins/sosynpl/cron')
 const HardSkillCategory = require('../../server/models/HardSkillCategory')
 const Expertise = require('../../server/models/Expertise')
 const HardSkill = require('../../server/models/HardSkill')
@@ -22,7 +22,10 @@ const Application = require('../../server/models/Application')
 require('../../server/plugins/sosynpl/functions')
 const lodash = require('lodash')
 const Mission = require('../../server/models/Mission')
-
+const { sendMissionFinishConfirm2Freelance } = require('../../server/plugins/sosynpl/mailing')
+const Quotation = require('../../server/models/Quotation')
+const QuotationDetail = require('../../server/models/QuotationDetail')
+const Report = require('../../server/models/Report')
 
 describe('Mailing', () => {
   let admin, freelance, customer, application, mission, announce, category1, category2, expertise1, expertise2, expertise3, language, software
@@ -71,6 +74,7 @@ describe('Mailing', () => {
     await PageTag_.create({ tag: 'ADMIN_DASHBOARD', url: '/admin-dashboard' })
     await PageTag_.create({ tag: 'LOGIN', url: '/login' })
     await PageTag_.create({ tag: 'COMPANY_MISSION_PROGRESS', url: '/company-mission-progress' })
+    await PageTag_.create({ tag: 'SUPPLIER_MISSION_PROGRESS', url: '/supplier-mission-progress' })
 
     const category1=await HardSkillCategory.create({...CATEGORY_DATA, name: `Catégorie 1`})
     const category2=await HardSkillCategory.create({...CATEGORY_DATA, name: `Catégorie 2`})
@@ -89,39 +93,61 @@ describe('Mailing', () => {
       latitude: 49.4431,
       longitude: 1.0993,
     }
-    // announce = await Announce.create({
-    //   user: customer._id,
-    //   title: 'dev',
-    //   experience: Object.keys(EXPERIENCE)[0],
-    //   duration: 2,
-    //   duration_unit: DURATION_MONTH,
-    //   budget: '6969669',
-    //   mobility_days_per_month: 2,
-    //   mobility: MOBILITY_NONE,
-    //   city: rouen,
-    //   sectors: [sector._id],
-    //   expertises: [expertise1._id, expertise2._id, expertise3._id],
-    //   pinned_expertises: [expertise1._id, expertise2._id, expertise3._id],
-    //   softwares: [software._id],
-    //   languages: [language._id],
-    // })
-    // application = await Application.create({
-    //   announce: announce._id,
-    //   customer: customer._id,
-    //   freelance: freelance._id,
-    // })
+    announce = await Announce.create({
+      user: customer._id,
+      title: 'dev',
+      experience: Object.keys(EXPERIENCE)[0],
+      duration: 2,
+      duration_unit: DURATION_MONTH,
+      budget: '6969669',
+      mobility_days_per_month: 2,
+      mobility: MOBILITY_NONE,
+      city: rouen,
+      sectors: [sector._id],
+      expertises: [expertise1._id, expertise2._id, expertise3._id],
+      pinned_expertises: [expertise1._id, expertise2._id, expertise3._id],
+      softwares: [software._id],
+      languages: [language._id],
+    })
+    application = await Application.create({
+      announce: announce._id,
+      customer: customer._id,
+      freelance: freelance._id,
+    })
 
-    // announce.accepted_application = application._id
-    // await announce.save()
+    announce.accepted_application = application._id
+    await announce.save()
 
-    // mission = await Mission.create({
-    //   application: application._id,
-    //   customer: customer._id,
-    //   freelance: freelance._id,
-    //   title: 'dev',
-    //   start_date: new Date(),
-    //   end_date: new Date('2025-06-06'),
-    // })
+    mission = await Mission.create({
+      application: application._id,
+      customer: customer._id,
+      freelance: freelance._id,
+      title: 'dev',
+      start_date: new Date(),
+      end_date: new Date('2025-06-06'),
+    })
+
+    const report = await Report.create({
+      mission: mission._id,
+      status: REPORT_STATUS_SENT,
+      sent_date: new Date(),
+    })
+
+    const quotation = await Quotation.create({
+      application: application._id,
+      expiration_date: new Date('2025-06-06'),
+      start_date: new Date('2025-01-01'),
+      end_date: new Date('2025-06-06'),
+      status: QUOTATION_STATUS_SENT,
+    })
+
+    const quotationDetail = await QuotationDetail.create({
+      quotation: quotation._id,
+      label: 'test',
+      quantity: 20,
+      price: 600,
+      vat_rate: 0.8
+    })
   })
 
   afterAll(async () => {
@@ -150,7 +176,11 @@ describe('Mailing', () => {
     const res= await finishMission({value:mission}, freelance)
   })
 
-  it.only(`must send reminder to customer that hasn't published announce yet`, async() => {
+  it(`must send reminder to customer that hasn't published announce yet`, async() => {
     await checkCustomerAnnounces()
+  })
+
+  it('must check missions progress and send mails to freelance to confirm', async () => {
+    await checkFreelanceMission()
   })
 })

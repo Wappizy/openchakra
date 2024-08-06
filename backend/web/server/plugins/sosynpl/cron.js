@@ -1,8 +1,12 @@
 const moment=require('moment')
 const customCron = require("../../utils/cron");
-const { AVAILABILITY_CHECK_PERIODS, AVAILABILITY_UNDEFINED, ROLE_FREELANCE, ROLE_ADMIN, ROLE_CUSTOMER } = require("./consts");
-const { sendRemidner2Freelance, sendInterestReminder2Freelance, sendNewSignUps2Admin, sendFirstAnnounceReminder2Customer } = require("./mailing");
-const CustomerFreelance = require('../../models/CustomerFreelance')
+const { AVAILABILITY_CHECK_PERIODS, AVAILABILITY_UNDEFINED, ROLE_FREELANCE, ROLE_ADMIN, ROLE_CUSTOMER, MISSION_STATUS_CURRENT } = require("./consts");
+const { sendRemidner2Freelance, sendInterestReminder2Freelance, sendNewSignUps2Admin, sendFirstAnnounceReminder2Customer, sendMissionFinishConfirm2Freelance } = require("./mailing");
+const CustomerFreelance = require('../../models/CustomerFreelance');
+const Mission = require('../../models/Mission');
+const { loadFromDb } = require('../../utils/database');
+require('./functions')
+
 
 // Freelance whose availability date hasn't been changed for the past 45 days
 const checkFreelanceInterest = async () => {
@@ -125,6 +129,19 @@ const checkCustomerAnnounces = async () => {
 
 customCron.schedule('0 9 * * * *', checkCustomerAnnounces)
 
+//Send mail to freelance when mission finished
+const checkFreelanceMission = async () => {
+  const missions = await loadFromDb({model:'mission', fields:['progress', 'status', 'freelance', 'title']})
+  missions.forEach(async(m) => {
+    if (m.status == MISSION_STATUS_CURRENT && m.progress == 1){
+      await sendMissionFinishConfirm2Freelance(m.freelance, m.title)
+    }
+  })
+}
+
+//Every monday at 9 am
+customCron.schedule('0 9 * * 1', checkFreelanceMission)
+
 module.exports={
-  availabilityPeriodUpdate, checkFreelanceInterest, checkNewSignUps, checkCustomerAnnounces
+  availabilityPeriodUpdate, checkFreelanceInterest, checkNewSignUps, checkCustomerAnnounces, checkFreelanceMission
 }
