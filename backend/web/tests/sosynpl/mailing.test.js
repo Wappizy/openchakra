@@ -75,6 +75,7 @@ describe('Mailing', () => {
     await PageTag_.create({ tag: 'LOGIN', url: '/login' })
     await PageTag_.create({ tag: 'COMPANY_MISSION_PROGRESS', url: '/company-mission-progress' })
     await PageTag_.create({ tag: 'SUPPLIER_MISSION_PROGRESS', url: '/supplier-mission-progress' })
+    await PageTag_.create({ tag: 'COMPANY_APPLICATIONS', url: '/company-applications' })
 
     const category1=await HardSkillCategory.create({...CATEGORY_DATA, name: `Catégorie 1`})
     const category2=await HardSkillCategory.create({...CATEGORY_DATA, name: `Catégorie 2`})

@@ -24,6 +24,7 @@ const SIB_IDS={
   CUSTOMER_FINISH_MISSION: 29,
   CUSTOMER_FIRST_ANNOUCE : 46,
   FREELANCE_FINISH_MISSION: 45,
+
 }
 
 const SMS_CONTENTS={
@@ -82,12 +83,14 @@ const sendSuggestion2Freelance = async ({user, announce}) => {
 
 // Send suggestion of 'announce'to 'user'
 const sendApplication2Customer = async ({freelance, announce, customer}) => {
+  const announceUrl=`${await getTagUrl('ANNOUNCE')}?id=${announce._id}`
   return sendNotification({
     notification: SIB_IDS.CUSTOMER_SEND_APPLICATION,
     destinee: customer,
     params: {
       firstname: freelance.firstname,
       annonce_name: announce.title,
+      proposition: announceUrl
     },
   })
 }
