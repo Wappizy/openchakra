@@ -8,7 +8,10 @@ const {COMPANY_SIZE, WORK_MODE, WORK_DURATION, SOURCE, SOSYNPL, DISCRIMINATOR_KE
   MOBILITY, MOBILITY_REGIONS, MOBILITY_CITY, MOBILITY_FRANCE, AVAILABILITY, AVAILABILITY_UNDEFINED, AVAILABILITY_OFF, AVAILABILITY_ON, SS_MEDALS_GOLD, SS_MEDALS_SILVER, SS_MEDALS_BRONZE, SS_PILAR_CREATOR, SS_PILAR,
   CF_MAX_GOLD_SOFT_SKILLS,
   CF_MAX_SILVER_SOFT_SKILLS,
-  CF_MAX_BRONZE_SOFT_SKILLS} = require('../consts')
+  CF_MAX_BRONZE_SOFT_SKILLS,
+  ANNOUNCE_STATUS_ACTIVE,
+  ANNOUNCE_STATUS_DRAFT,
+  REPORT_STATUS_SENT} = require('../consts')
 const { DUMMY_REF } = require('../../../utils/database')
 const { REGIONS } = require('../../../../utils/consts')
 const { computePilars, computePilar } = require('../soft_skills')
@@ -423,7 +426,7 @@ CustomerFreelanceSchema.virtual('search_visible').get(function() {
 CustomerFreelanceSchema.virtual('mobility_str', DUMMY_REF).get(function() {
   switch(this.mobility) {
     case MOBILITY_FRANCE: return MOBILITY[MOBILITY_FRANCE]
-    case MOBILITY_REGIONS: return this.mobility_regions.map(i => REGIONS[i]).join(',')
+    case MOBILITY_REGIONS: return this.mobility_regions?.map(i => REGIONS[i]).join(',')
     case MOBILITY_CITY: return `${this.mobility_city.city} dans un rayon de ${this.mobility_city_distance} km`
   }
 })
@@ -545,6 +548,84 @@ CustomerFreelanceSchema.virtual('freelance_reports', DUMMY_REF).get(function() {
     : []
 })
 
+CustomerFreelanceSchema.virtual('freelance_current_missions_count', {
+  ref: 'mission',
+  localField: '_id',
+  foreignField: 'freelance',
+  match: {
+    start_date: {$lt: new Date()},
+    end_date: {$gt: new Date()},
+  },
+  count: true,
+})
+
+CustomerFreelanceSchema.virtual('customer_current_missions_count', {
+  ref: 'mission',
+  localField: '_id',
+  foreignField: 'customer',
+  match: {
+    start_date: {$lt: new Date()},
+    end_date: {$gt: new Date()},
+  },
+  count: true,
+})
+
+CustomerFreelanceSchema.virtual('freelance_coming_missions_count', {
+  ref: 'mission',
+  localField: '_id',
+  foreignField: 'freelance',
+  match: {
+    start_date: {$gt: new Date()},
+  },
+  count: true,
+})
+
+CustomerFreelanceSchema.virtual('customer_coming_missions_count', {
+  ref: 'mission',
+  localField: '_id',
+  foreignField: 'customer',
+  match: {
+    start_date: {$gt: new Date()},
+  },
+  count: true,
+})
+
+CustomerFreelanceSchema.virtual('customer_active_announces_count', {
+  ref: 'announce',
+  localField: '_id',
+  foreignField: 'user',
+  match: {
+    status: ANNOUNCE_STATUS_ACTIVE,
+  },
+  count: true,
+})
+
+CustomerFreelanceSchema.virtual('customer_published_announces_count', {
+  ref: 'announce',
+  localField: '_id',
+  foreignField: 'user',
+  match: {
+    status: {$ne:ANNOUNCE_STATUS_DRAFT},
+  },
+  count: true,
+})
+
+CustomerFreelanceSchema.virtual('customer_received_applications_count', DUMMY_REF).get(function() {
+  if(!this.announces) {
+    return
+  }
+  return lodash.sumBy(this.announces,'received_applications_count')
+})
+
+
+CustomerFreelanceSchema.virtual('customer_sent_reports_count', DUMMY_REF).get(function() {
+  return this.customer_missions 
+    ? Object.keys(this.customer_missions)
+        .map(key => this.customer_missions[key].reports)
+        .flat()
+        .filter(report => report && report.status === REPORT_STATUS_SENT).length
+    : 0
+})
 
 /* eslint-enable prefer-arrow-callback */
 
