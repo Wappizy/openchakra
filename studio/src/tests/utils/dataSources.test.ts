@@ -56,5 +56,4 @@ describe('DataSources tests', () => {
     const fields:String[] = getFieldsForDataProvider('root', components)
     return expect(fields).toEqual(EXPECTED)
   })
-
 })

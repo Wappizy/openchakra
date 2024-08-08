@@ -15,5 +15,4 @@ describe('Code generation', () => {
         })
       }))
   })
-
 })

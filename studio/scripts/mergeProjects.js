@@ -18,5 +18,3 @@ const result={
     ...toMerge.pages,
   }
 }
-
-console.log(JSON.stringify(result, null, 2))
