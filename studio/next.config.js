@@ -8,9 +8,9 @@ module.exports = {
     // https://webpack.js.org/guides/asset-modules/
     config.module.rules.unshift({
       test: /pdf\.worker\.(min\.)?js/,
-      type: "asset/resource",
+      type: `asset/resource`,
       generator: {
-        filename: "static/worker/[hash][ext][query]"
+        filename: `static/worker/[hash][ext][query]`
       }
     });
 

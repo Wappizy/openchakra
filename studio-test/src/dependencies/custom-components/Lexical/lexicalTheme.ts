@@ -65,6 +65,5 @@ const exampleTheme = {
       variable: "editor-tokenVariable"
     }
   };
-  
+
   export default exampleTheme;
-  

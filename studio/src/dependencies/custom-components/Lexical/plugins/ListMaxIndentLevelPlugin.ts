@@ -1,5 +1,5 @@
-import { $getListDepth, $isListItemNode, $isListNode } from "@lexical/list";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { $getListDepth, $isListItemNode, $isListNode } from `@lexical/list`;
+import { useLexicalComposerContext } from `@lexical/react/LexicalComposerContext`;
 import {
   $getSelection,
   $isElementNode,
@@ -7,8 +7,8 @@ import {
   INDENT_CONTENT_COMMAND,
   COMMAND_PRIORITY_HIGH,
   RangeSelection
-} from "lexical";
-import { useEffect } from "react";
+} from `lexical`;
+import { useEffect } from `react`;
 
 function getElementNodesInSelection(selection: RangeSelection) {
   const nodesInSelection = selection.getNodes();
@@ -43,7 +43,7 @@ function isIndentPermitted(maxDepth: number) {
       const parent = elementNode.getParent();
       if (!$isListNode(parent)) {
         throw new Error(
-          "ListMaxIndentLevelPlugin: A ListItemNode must have a ListNode for a parent."
+          `ListMaxIndentLevelPlugin: A ListItemNode must have a ListNode for a parent.`
         );
       }
 

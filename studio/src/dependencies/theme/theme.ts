@@ -1,5 +1,5 @@
-import { extendTheme } from "@chakra-ui/react";
-import { colors } from "./colors";
+import { extendTheme } from '@chakra-ui/react';
+import { colors } from './colors';
 
 const brand:string = process.env.NEXT_PUBLIC_PROJECT_NAME || 'default'
 
@@ -9,4 +9,3 @@ const theme = {
 }
 
 export default extendTheme(theme)
-

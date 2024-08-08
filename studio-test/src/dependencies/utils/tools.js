@@ -49,7 +49,7 @@ async function generatePDF(targetId, fileName){
       pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
     }
-    fileName=fileName +'_'+moment().format("YYYY-MM-DD-HH-mm-ss"); 
+    fileName=fileName +'_'+moment().format(`YYYY-MM-DD-HH-mm-ss`); 
     return pdf.save(`${fileName}.pdf`);
     
   });

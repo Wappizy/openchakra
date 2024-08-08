@@ -93,7 +93,7 @@ export const iconStuff = ({
     default:
       if (Object.keys(icons).includes(icon)) {
         IconFromSet = icons[icon as keyof typeof icons]
-        iconProps = {color: colorHexa, width: "auto", height: "auto", boxSize: size, path: ""}
+        iconProps = {color: colorHexa, width: `auto`, height: `auto`, boxSize: size, path: ``}
       }
     break;
   }

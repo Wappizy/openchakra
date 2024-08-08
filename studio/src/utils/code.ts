@@ -454,8 +454,8 @@ const buildBlock = ({
         })
 
       // Access to fire clear and clear notification
-      propsContent += " fireClearComponents={fireClearComponents} "
-      propsContent += " clearComponents={clearComponents} "
+      propsContent += ` fireClearComponents={fireClearComponents} `
+      propsContent += ` clearComponents={clearComponents} `
       if (isFilterComponent(childComponent, components)) {
         const stateName = childComponent.id.replace(/^comp-/, '')
         propsContent += ` onChange={ev => set${stateName}(ev.target.value)}`
@@ -575,7 +575,7 @@ const getIconsImports = (components: IComponents, lib?: string | null) => {
       .filter(prop => prop.toLowerCase().includes('icon'))
       .filter(() => {
         if (components[name].props?.['data-lib']) {
-          return components[name].props?.['data-lib'].includes(lib ?? "chakra")
+          return components[name].props?.['data-lib'].includes(lib ?? `chakra`)
         } else {
           return !lib
         }
@@ -979,7 +979,7 @@ export const generateCode = async (
     }, [])`
   }
   let renderNullCode=''
-  if(components.root.props.allowNotConnected=="false"){
+  if(components.root.props.allowNotConnected==`false`){
     renderNullCode+= `if(!user){
       return null
     }`
@@ -1033,7 +1033,7 @@ const ${componentName} = () => {
 
   const {user}=useUserContext()
   ${autoRedirect}
-  ${components.root.props.allowNotConnected=="true" ? '' : storeRedirectCode(loginUrl)}
+  ${components.root.props.allowNotConnected==`true` ? '' : storeRedirectCode(loginUrl)}
   /** Force reload on history.back */
   ${reloadOnBackScript}
   const query = process.browser ? Object.fromEntries(new URL(window.location).searchParams) : {}
@@ -1072,7 +1072,7 @@ const ${componentName} = () => {
   
   ${hooksCode}
   ${filterStates}
-  ${components.root.props.allowNotConnected=="true" ? '' : storeRedirectCode(loginUrl)}
+  ${components.root.props.allowNotConnected==`true` ? '' : storeRedirectCode(loginUrl)}
   ${generateTagSend()}
   
   ${renderNullCode}

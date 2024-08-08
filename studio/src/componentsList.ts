@@ -210,10 +210,10 @@ let menuItems: MenuItems = {
   },
   VisuallyHidden: {},
 
-  /*"Tabs",
-  "TabList",
-  "TabPanel",
-  "TabPanels"*/
+  /*`Tabs`,
+  `TabList`,
+  `TabPanel`,
+  `TabPanels`*/
 }
 
 const componentsList: ComponentType[] = [

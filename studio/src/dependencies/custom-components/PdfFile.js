@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {Flex, Button} from '@chakra-ui/react'
 import { Document, Page, pdfjs } from 'react-pdf';
-import workerSrc from "./PdfWorker";
+import workerSrc from `./PdfWorker`;
 
 pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
 

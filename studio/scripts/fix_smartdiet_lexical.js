@@ -8,7 +8,7 @@ Object.values(project.pages)
       .filter(comp => comp.type=='Lexical' || /^<p /.test(comp.props.value))
       .forEach(comp => {
         console.log(comp.type, comp.props.value)
-        comp.props.value=""
+        comp.props.value=``
       })
   })
 

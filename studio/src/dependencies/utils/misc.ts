@@ -12,7 +12,7 @@ export function isJsonString(str: string) {
   return true
 }
 
-export const NOT_CONNECTED="NOT_CONNECTED"
+export const NOT_CONNECTED=`NOT_CONNECTED`
 
 export const normalize = (str:string) => {
   str = str
@@ -58,7 +58,7 @@ export const imageSrcSetPaths = (originalSrc:string, withDimension=true) => {
    */
   let srcSet = undefined
 
-  const filePathParts = originalSrc.split(encodeURIComponent("_srcset:"));
+  const filePathParts = originalSrc.split(encodeURIComponent(`_srcset:`));
   const filenameextension = originalSrc.substring(originalSrc.lastIndexOf('.') + 1, originalSrc.length)
       
       if (filePathParts.length > 1) {

@@ -27,7 +27,7 @@ async function main() {
             const output = args[3] || defaultOutputLink
             const pdf= await fillForm(link, data)
             await savePDFFile(pdf)
-            console.log("Form filled successfully.")
+            console.log(`Form filled successfully.`)
         }
     } catch (error) {
         console.error('Error:', error)
@@ -63,7 +63,7 @@ async function fillForm(sourceLink, data) {
     const form = sourcePDF.getForm()
     const fields = form.getFields()
     if (fields.length != data.length) {
-        console.log("Data length does not match the number of form fields")
+        console.log(`Data length does not match the number of form fields`)
         return false
     }
     

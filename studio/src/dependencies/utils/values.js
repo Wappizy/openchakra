@@ -21,7 +21,7 @@ export const getComponentDataValue = (componentId, suffix) => {
   while (true) {
     const subCompId=`${componentId}${suffixes.join('_')}`
 
-    if (typeof window === "object") {
+    if (typeof window === `object`) {
       const component = document && document.getElementById(subCompId)
       if (component) {
         const value=component?.value || component?.getAttribute('value') || component?.getAttribute('data-value')

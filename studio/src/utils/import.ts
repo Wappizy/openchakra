@@ -1,6 +1,6 @@
 import { fileOpen, fileSave } from 'browser-fs-access'
 import { INITIAL_COMPONENTS } from '~core/models/project'
-import { upgradeProject } from "~utils/upgrade"
+import { upgradeProject } from '~utils/upgrade'
 import { ProjectState } from '~core/models/project'
 
 export async function loadFromJSON() {

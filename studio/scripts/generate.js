@@ -1,4 +1,4 @@
-const TypeDoc = require("typedoc");
+const TypeDoc = require(`typedoc`);
 
 const app = new TypeDoc.Application();
 
@@ -7,24 +7,24 @@ app.options.addReader(new TypeDoc.TSConfigReader());
 app.options.addReader(new TypeDoc.TypeDocReader());
 
 app.bootstrap({
-  mode: "file",
+  mode: `file`,
   includeDeclarations: true,
   excludeExternals: true
 });
 
 //node_modules/@chakra-ui/core/dist/theme/icons.d.ts
 const COMPONENTS = [
-  "Badge",
-  "Checkbox",
-  "Button",
-  "Image",
-  "Badge",
-  "Icon",
-  "Text",
-  "Avatar",
-  "AvatarGroup",
-  "AvatarBadge",
-  "Tag"
+  `Badge`,
+  `Checkbox`,
+  `Button`,
+  `Image`,
+  `Badge`,
+  `Icon`,
+  `Text`,
+  `Avatar`,
+  `AvatarGroup`,
+  `AvatarBadge`,
+  `Tag`
 ];
 const project = app.convert(
   app.expandInputFiles(
@@ -36,5 +36,5 @@ const project = app.convert(
 
 if (project) {
   // Project may not have converted correctly
-  app.generateJson(project, "types.json");
+  app.generateJson(project, `types.json`);
 }

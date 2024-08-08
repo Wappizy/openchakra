@@ -673,7 +673,7 @@ export const onboarding: IComponents = {
     parent: 'comp-K6H058BAEDGV1',
     id: 'comp-K6H058BA2BOTV',
     props: {
-      children: "I'm an Alert preset",
+      children: `I'm an Alert preset`,
     },
     rootParentType: 'Alert',
   },
@@ -788,7 +788,7 @@ export const onboarding: IComponents = {
     id: 'comp-K6H0RNTHVY7IT',
     props: {
       children:
-        "On the right hand side, you can find the inspectror panel. You will find the tools to edit the component's props and style.",
+        `On the right hand side, you can find the inspectror panel. You will find the tools to edit the component's props and style.`,
       fontSize: 'md',
       color: 'gray.600',
     },
