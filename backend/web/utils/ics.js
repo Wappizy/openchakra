@@ -6,7 +6,7 @@ const generateIcs = async ({start, end, title, description, ...rest}) => {
     throw new Error(`ICS:At least start and end are required`)
   }
   const formatMoment = date => {
-    return moment(date).format('YYYY-M-D-H-m').split("-").map((a) => parseInt(a))
+    return moment(date).format('YYYY-M-D-H-m').split(`-`).map((a) => parseInt(a))
   }
 
   const event={

@@ -104,7 +104,7 @@ const validateSimpleRegisterInput = data => {
   if (data.company) {
     if (Validator.isEmpty(data.company.name)) {
       console.warn('Missing company name')
-      errors.siret="Entrez un nom d'entreprise"
+      errors.siret=`Entrez un nom d'entreprise`
     }
     if (Validator.isEmpty(data.company.siret)) {
       console.warn('Missing company name')
@@ -194,11 +194,11 @@ const validateCompanyProfile = data => {
   }
 
   if (!Validator.isEmpty(data.activity) && !Object.keys(COMPANY_ACTIVITY).includes(data.activity)) {
-    errors.activity = "Secteur d'activité incorrect"
+    errors.activity = `Secteur d'activité incorrect`
   }
 
   if (!Validator.isEmpty(data.size) && !Object.keys(COMPANY_SIZE).includes(data.size)) {
-    errors.size = "Effectif de l'entreprise incorrect"
+    errors.size = `Effectif de l'entreprise incorrect`
   }
 
   /**
@@ -208,7 +208,7 @@ const validateCompanyProfile = data => {
   */
   
   if (data.admin_email && !Validator.isEmail(data.admin_email)) {
-    errors.admin_email = "Email de l'administrateur incorrect"
+    errors.admin_email = `Email de l'administrateur incorrect`
   }
 
   // Admin : all or nothing
@@ -309,15 +309,15 @@ const validateAvocotesCustomer = data => {
   }
 
   if (!data.address) {
-    errors.address = "L'adresse est requise"
+    errors.address = `L'adresse est requise`
   }
 
   if (data.address && !('gps' in data.address)) {
-    errors.address = "Veuillez sélectionner l'adresse dans la liste"
+    errors.address = `Veuillez sélectionner l'adresse dans la liste`
   }
 
   if (!Validator.isEmail(data.email)) {
-    errors.email = "L'email est invalide"
+    errors.email = `L'email est invalide`
   }
 
   if (!data.service) {

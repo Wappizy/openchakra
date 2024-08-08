@@ -226,10 +226,10 @@ CoachingSchema.virtual('spent_credits', {
 })
 
 // all diets (hidden)
-CoachingSchema.virtual("_all_diets", {
-  ref: "user", // The Model to use
-  localField: "dummy", // Find in Model, where localField
-  foreignField: "dummy", // is equal to foreignField
+CoachingSchema.virtual(`_all_diets`, {
+  ref: `user`, // The Model to use
+  localField: `dummy`, // Find in Model, where localField
+  foreignField: `dummy`, // is equal to foreignField
   options: {
     match: {role: ROLE_EXTERNAL_DIET},
   },

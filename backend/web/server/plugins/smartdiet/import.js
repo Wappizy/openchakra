@@ -172,7 +172,7 @@ const fixAppointments = async directory => {
   const keys=[...Object.keys(records[0]), ASS_HEADER]
   const result=[keys.join(';')]
   records.forEach(record => {
-    const line=keys.map(k => k==ASS_HEADER ? (firstAppointments[record.SDPROGRAMID]==record.SDCONSULTID ? "1" : "0"): record[k])
+    const line=keys.map(k => k==ASS_HEADER ? (firstAppointments[record.SDPROGRAMID]==record.SDCONSULTID ? `1` : `0`): record[k])
     result.push(line.join(';'))
   })
 

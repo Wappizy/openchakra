@@ -12,11 +12,11 @@ const GiftSchema = new Schema({
   },
   description: {
     type: String,
-    required: [true, "La description est obligatoire"],
+    required: [true, `La description est obligatoire`],
   },
   picture: {
     type: String,
-    required: [true, "L'illustration est obligatoire"],
+    required: [true, `L'illustration est obligatoire`],
   },
 }, schemaOptions)
 

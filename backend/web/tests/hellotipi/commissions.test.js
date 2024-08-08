@@ -42,7 +42,7 @@ describe('Compute commissions tests', () => {
     await mongoose.connection.close()
   })
 
-  it("Must compute quotation billings", async() => {
+  it(`Must compute quotation billings`, async() => {
     const models=await getModels()
     const quotation_fields=Object.keys(models.quotation.attributes).filter(f => !f.includes('.'))
     const [loaded_quotation]=await loadFromDb({model: 'quotation', id: quotation._id, fields:quotation_fields})
@@ -64,7 +64,7 @@ describe('Compute commissions tests', () => {
     expect(loaded_quotation.ti_total).toEqual(20.4)
   })
 
-  it("Must compute mission billings", async() => {
+  it(`Must compute mission billings`, async() => {
     const models=await getModels()
     const mission_fields=Object.keys(models.mission.attributes).filter(f => !f.includes('.'))
     const [loaded_mission]=await loadFromDb({model: 'mission', id: mission._id, fields:mission_fields})

@@ -24,7 +24,7 @@ describe('Tests users extraction', () => {
     await mongoose.connection.close()
   })
 
-  it("Must export users list", async() => {
+  it(`Must export users list`, async() => {
     const list=await getUsersList()
     const linesCount=list.split(`\n`).length
     const headerCount=list.split(`\n`)[0].split(`;`).length
@@ -33,7 +33,7 @@ describe('Tests users extraction', () => {
   })
 
 
-  it("Must send users list", () => {
+  it(`Must send users list`, () => {
     return sendUsersList({email: 'hello+test@wappizy.com'})
   })
 })

@@ -9,7 +9,7 @@ const ChallengeUserPipSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: 'teamMember',
-    required: [true, "Le compte dans l'équipe est obligatoire"],
+    required: [true, `Le compte dans l'équipe est obligatoire`],
   },
   pip: {
     type: Schema.Types.ObjectId,

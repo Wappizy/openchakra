@@ -24,46 +24,46 @@ const COACHING={
   COACH_NONE: 'Pas accompagné.e',
 }
 
-const COMPANY_STATUS_EI="COMPANY_STATUS_EI"
-const COMPANY_STATUS_EURL="COMPANY_STATUS_EURL"
-const COMPANY_STATUS_SARL="COMPANY_STATUS_SARL"
-const COMPANY_STATUS_SA="COMPANY_STATUS_SA"
-const COMPANY_STATUS_SAS="COMPANY_STATUS_SAS"
-const COMPANY_STATUS_SASU="COMPANY_STATUS_SASU"
-const COMPANY_STATUS_SNC="COMPANY_STATUS_SNC"
-const COMPANY_STATUS_SCOP="COMPANY_STATUS_SCOP"
-const COMPANY_STATUS_SCA="COMPANY_STATUS_SCA"
-const COMPANY_STATUS_SCS="COMPANY_STATUS_SCS"
+const COMPANY_STATUS_EI=`COMPANY_STATUS_EI`
+const COMPANY_STATUS_EURL=`COMPANY_STATUS_EURL`
+const COMPANY_STATUS_SARL=`COMPANY_STATUS_SARL`
+const COMPANY_STATUS_SA=`COMPANY_STATUS_SA`
+const COMPANY_STATUS_SAS=`COMPANY_STATUS_SAS`
+const COMPANY_STATUS_SASU=`COMPANY_STATUS_SASU`
+const COMPANY_STATUS_SNC=`COMPANY_STATUS_SNC`
+const COMPANY_STATUS_SCOP=`COMPANY_STATUS_SCOP`
+const COMPANY_STATUS_SCA=`COMPANY_STATUS_SCA`
+const COMPANY_STATUS_SCS=`COMPANY_STATUS_SCS`
 
 const COMPANY_STATUS={
-  COMPANY_STATUS_EI:"Entreprise individuelle",
-  COMPANY_STATUS_EURL:"Entreprise unipersonnelle à responsabilité limitée",
-  COMPANY_STATUS_SARL:"Société anonyme à responsabilité limitée",
-  COMPANY_STATUS_SA:"Société anonyme",
-  COMPANY_STATUS_SAS:"Société par actions simplifiées",
-  COMPANY_STATUS_SASU:"Société par actions simplifiées unipersonnelle",
-  COMPANY_STATUS_SNC:"Société en nom collectif",
-  COMPANY_STATUS_SCOP:"Société coopérative de production",
-  COMPANY_STATUS_SCA:"Société en commandite par actions",
-  COMPANY_STATUS_SCS:"Société en commandite simple",
+  COMPANY_STATUS_EI:`Entreprise individuelle`,
+  COMPANY_STATUS_EURL:`Entreprise unipersonnelle à responsabilité limitée`,
+  COMPANY_STATUS_SARL:`Société anonyme à responsabilité limitée`,
+  COMPANY_STATUS_SA:`Société anonyme`,
+  COMPANY_STATUS_SAS:`Société par actions simplifiées`,
+  COMPANY_STATUS_SASU:`Société par actions simplifiées unipersonnelle`,
+  COMPANY_STATUS_SNC:`Société en nom collectif`,
+  COMPANY_STATUS_SCOP:`Société coopérative de production`,
+  COMPANY_STATUS_SCA:`Société en commandite par actions`,
+  COMPANY_STATUS_SCS:`Société en commandite simple`,
 }
 
-const AVAILABILITY_AVAILABLE="AVAILABILITY_AVAILABLE"
-const AVAILABILITY_NOT_AVAILABLE="AVAILABILITY_NOT_AVAILABLE"
+const AVAILABILITY_AVAILABLE=`AVAILABILITY_AVAILABLE`
+const AVAILABILITY_NOT_AVAILABLE=`AVAILABILITY_NOT_AVAILABLE`
 
 const AVAILABILITY={
- AVAILABILITY_AVAILABLE:"Disponible",
- AVAILABILITY_NOT_AVAILABLE:"Indisponible",
+ AVAILABILITY_AVAILABLE:`Disponible`,
+ AVAILABILITY_NOT_AVAILABLE:`Indisponible`,
 }
 
-const EXPERIENCE_LESS_1="EXPERIENCE_LESS_1"
-const EXPERIENCE_1_TO_5="EXPERIENCE_1_TO_5"
-const EXPERIENCE_MORE_5="EXPERIENCE_MORE_5"
+const EXPERIENCE_LESS_1=`EXPERIENCE_LESS_1`
+const EXPERIENCE_1_TO_5=`EXPERIENCE_1_TO_5`
+const EXPERIENCE_MORE_5=`EXPERIENCE_MORE_5`
 
 const EXPERIENCE={
- EXPERIENCE_LESS_1:"< 1 an",
- EXPERIENCE_1_TO_5:"de 1 à 5 ans",
- EXPERIENCE_MORE_5:"> 5 ans",
+ EXPERIENCE_LESS_1:`< 1 an`,
+ EXPERIENCE_1_TO_5:`de 1 à 5 ans`,
+ EXPERIENCE_MORE_5:`> 5 ans`,
 }
 
 const COMPANY_ACTIVITY_AGROALIMENTAIRE='COMPANY_ACTIVITY_AGROALIMENTAIRE'
@@ -142,58 +142,58 @@ const COMPANY_ACTIVITY={
   COMPANY_ACTIVITY_OTHER: 'Autre',
 }
 
-const COMPANY_SIZE_LESS_10="COMPANY_SIZE_LESS_10"
-const COMPANY_SIZE_10_TO_250="COMPANY_SIZE_10_TO_250"
-const COMPANY_SIZE_250_TO_5000="COMPANY_SIZE_250_TO_5000"
-const COMPANY_SIZE_MORE_5000="COMPANY_SIZE_MORE_5000"
+const COMPANY_SIZE_LESS_10=`COMPANY_SIZE_LESS_10`
+const COMPANY_SIZE_10_TO_250=`COMPANY_SIZE_10_TO_250`
+const COMPANY_SIZE_250_TO_5000=`COMPANY_SIZE_250_TO_5000`
+const COMPANY_SIZE_MORE_5000=`COMPANY_SIZE_MORE_5000`
 
 const COMPANY_SIZE={
- COMPANY_SIZE_LESS_10:"<10",
- COMPANY_SIZE_10_TO_250:"10 à 250",
- COMPANY_SIZE_250_TO_5000:"250 à 5000",
- COMPANY_SIZE_MORE_5000:">5000",
+ COMPANY_SIZE_LESS_10:`<10`,
+ COMPANY_SIZE_10_TO_250:`10 à 250`,
+ COMPANY_SIZE_250_TO_5000:`250 à 5000`,
+ COMPANY_SIZE_MORE_5000:`>5000`,
 }
 
-const CONTRACT_TYPE_CDD="CONTRACT_TYPE_CDD"
-const CONTRACT_TYPE_CDI="CONTRACT_TYPE_CDI"
-const CONTRACT_TYPE_STAGE="CONTRACT_TYPE_STAGE"
-const CONTRACT_TYPE_ALTERNANCE="CONTRACT_TYPE_ALTERNANCE"
-const CONTRACT_TYPE_FREELANCE="CONTRACT_TYPE_FREELANCE"
+const CONTRACT_TYPE_CDD=`CONTRACT_TYPE_CDD`
+const CONTRACT_TYPE_CDI=`CONTRACT_TYPE_CDI`
+const CONTRACT_TYPE_STAGE=`CONTRACT_TYPE_STAGE`
+const CONTRACT_TYPE_ALTERNANCE=`CONTRACT_TYPE_ALTERNANCE`
+const CONTRACT_TYPE_FREELANCE=`CONTRACT_TYPE_FREELANCE`
 
 const CONTRACT_TYPE={
-  CONTRACT_TYPE_CDD:"CDD",
-  CONTRACT_TYPE_CDI:"CDI",
-  CONTRACT_TYPE_STAGE:"Stage",
-  CONTRACT_TYPE_ALTERNANCE:"Alternance",
-  CONTRACT_TYPE_FREELANCE:"Freelance",
+  CONTRACT_TYPE_CDD:`CDD`,
+  CONTRACT_TYPE_CDI:`CDI`,
+  CONTRACT_TYPE_STAGE:`Stage`,
+  CONTRACT_TYPE_ALTERNANCE:`Alternance`,
+  CONTRACT_TYPE_FREELANCE:`Freelance`,
 }
 
-const MISSION_STATUS_ASKING="MISSION_STATUS_ASKING"
-const MISSION_STATUS_ASKING_ALLE="MISSION_STATUS_ASKING_ALLE"
-const MISSION_STATUS_TI_REFUSED="MISSION_STATUS_TI_REFUSED"
-const MISSION_STATUS_CUST_CANCELLED="MISSION_STATUS_CUST_CANCELLED"
-const MISSION_STATUS_QUOT_SENT="MISSION_STATUS_QUOT_SENT"
-const MISSION_STATUS_PAYMENT_PENDING="MISSION_STATUS_PAYMENT_PENDING"
-const MISSION_STATUS_QUOT_ACCEPTED="MISSION_STATUS_QUOT_ACCEPTED"
-const MISSION_STATUS_QUOT_REFUSED="MISSION_STATUS_QUOT_REFUSED"
-const MISSION_STATUS_TO_BILL="MISSION_STATUS_TO_BILL"
-const MISSION_STATUS_BILL_SENT="MISSION_STATUS_BILL_SENT"
-const MISSION_STATUS_FINISHED="MISSION_STATUS_FINISHED"
-const MISSION_STATUS_DISPUTE="MISSION_STATUS_DISPUTE"
+const MISSION_STATUS_ASKING=`MISSION_STATUS_ASKING`
+const MISSION_STATUS_ASKING_ALLE=`MISSION_STATUS_ASKING_ALLE`
+const MISSION_STATUS_TI_REFUSED=`MISSION_STATUS_TI_REFUSED`
+const MISSION_STATUS_CUST_CANCELLED=`MISSION_STATUS_CUST_CANCELLED`
+const MISSION_STATUS_QUOT_SENT=`MISSION_STATUS_QUOT_SENT`
+const MISSION_STATUS_PAYMENT_PENDING=`MISSION_STATUS_PAYMENT_PENDING`
+const MISSION_STATUS_QUOT_ACCEPTED=`MISSION_STATUS_QUOT_ACCEPTED`
+const MISSION_STATUS_QUOT_REFUSED=`MISSION_STATUS_QUOT_REFUSED`
+const MISSION_STATUS_TO_BILL=`MISSION_STATUS_TO_BILL`
+const MISSION_STATUS_BILL_SENT=`MISSION_STATUS_BILL_SENT`
+const MISSION_STATUS_FINISHED=`MISSION_STATUS_FINISHED`
+const MISSION_STATUS_DISPUTE=`MISSION_STATUS_DISPUTE`
 
 const QUOTATION_STATUS={
-  MISSION_STATUS_ASKING:"Demande de mission",
-  MISSION_STATUS_ASKING_ALLE:"Demande de mission TIPI",
-  MISSION_STATUS_TI_REFUSED:"Mission refusée",
-  MISSION_STATUS_CUST_CANCELLED: "Mission annulée",
-  MISSION_STATUS_QUOT_SENT:"Devis transmis",
-  MISSION_STATUS_PAYMENT_PENDING: "Paiement en cours",
-  MISSION_STATUS_QUOT_ACCEPTED:"Devis accepté",
-  MISSION_STATUS_QUOT_REFUSED:"Devis refusé",
-  MISSION_STATUS_TO_BILL:"A facturer",
-  MISSION_STATUS_BILL_SENT:"Facture transmise",
-  MISSION_STATUS_FINISHED:"Terminée",
-  MISSION_STATUS_DISPUTE:"Litige",
+  MISSION_STATUS_ASKING:`Demande de mission`,
+  MISSION_STATUS_ASKING_ALLE:`Demande de mission TIPI`,
+  MISSION_STATUS_TI_REFUSED:`Mission refusée`,
+  MISSION_STATUS_CUST_CANCELLED: `Mission annulée`,
+  MISSION_STATUS_QUOT_SENT:`Devis transmis`,
+  MISSION_STATUS_PAYMENT_PENDING: `Paiement en cours`,
+  MISSION_STATUS_QUOT_ACCEPTED:`Devis accepté`,
+  MISSION_STATUS_QUOT_REFUSED:`Devis refusé`,
+  MISSION_STATUS_TO_BILL:`A facturer`,
+  MISSION_STATUS_BILL_SENT:`Facture transmise`,
+  MISSION_STATUS_FINISHED:`Terminée`,
+  MISSION_STATUS_DISPUTE:`Litige`,
 }
 
 const MISSION_FREQUENCY_WEEKLY='MISSION_FREQUENCY_WEEKLY'
@@ -202,49 +202,49 @@ const MISSION_FREQUENCY_SEASONLY='MISSION_FREQUENCY_SEASONLY'
 const MISSION_FREQUENCY_MULTI_YEARLY='MISSION_FREQUENCY_MULTI_YEARLY'
 
 const MISSION_FREQUENCY={
- [MISSION_FREQUENCY_WEEKLY]:"Hebdomadaire",
- [MISSION_FREQUENCY_MONTHLY]:"Mensuelle",
- [MISSION_FREQUENCY_SEASONLY]:"Saisonnière",
- [MISSION_FREQUENCY_MULTI_YEARLY]:"Pluriannuelle",
+ [MISSION_FREQUENCY_WEEKLY]:`Hebdomadaire`,
+ [MISSION_FREQUENCY_MONTHLY]:`Mensuelle`,
+ [MISSION_FREQUENCY_SEASONLY]:`Saisonnière`,
+ [MISSION_FREQUENCY_MULTI_YEARLY]:`Pluriannuelle`,
 }
 
 const TI_TIPS= {
-  MISSION_STATUS_ASKING:"Une demande de mission vous a été adressée, la création d’un devis et la validation de celui-ci par l'entreprise est nécessaire pour démarrer la mission",
-  MISSION_STATUS_ASKING_ALLE:"",
-  MISSION_STATUS_TI_REFUSED:"Vous avez refusé la mission. Restez disponible pour d'autres missions",
-  MISSION_STATUS_CUST_CANCELLED:"Le client a annulé sa demande de mission",
-  MISSION_STATUS_QUOT_SENT:"Votre devis a bien été envoyé à l'entreprise et est en attente d'acceptation",
-  MISSION_STATUS_QUOT_ACCEPTED:"Votre devis a été accepté. N'hésitez pas à contacter votre client si vous avez besoin de précisions complémentaires",
-  MISSION_STATUS_QUOT_REFUSED:"L'entreprise a refusé votre devis. Vous pouvez la contacter pour plus d'informations",
-  MISSION_STATUS_TO_BILL:"La mission est terminée. Vous devez à présent déposer votre facture pour obtenir le paiement de votre mission",
-  MISSION_STATUS_BILL_SENT:"Votre facture a été transmise à l'entreprise. Elle dispose de 48h pour la valider. Au delà de ce délai, le paiement de votre missions sera automatiquement effectué",
-  MISSION_STATUS_FINISHED:"La mission s'achève. L'entreprise a la possibilité de laisser un avis sur votre mission. Gardez un oeil sur votre profil",
-  MISSION_STATUS_DISPUTE:"L'entreprise a refusé votre facture. TIPI en est informé, vous pouvez également contacter l'entreprise pour régler le litige",
+  MISSION_STATUS_ASKING:`Une demande de mission vous a été adressée, la création d’un devis et la validation de celui-ci par l'entreprise est nécessaire pour démarrer la mission`,
+  MISSION_STATUS_ASKING_ALLE:``,
+  MISSION_STATUS_TI_REFUSED:`Vous avez refusé la mission. Restez disponible pour d'autres missions`,
+  MISSION_STATUS_CUST_CANCELLED:`Le client a annulé sa demande de mission`,
+  MISSION_STATUS_QUOT_SENT:`Votre devis a bien été envoyé à l'entreprise et est en attente d'acceptation`,
+  MISSION_STATUS_QUOT_ACCEPTED:`Votre devis a été accepté. N'hésitez pas à contacter votre client si vous avez besoin de précisions complémentaires`,
+  MISSION_STATUS_QUOT_REFUSED:`L'entreprise a refusé votre devis. Vous pouvez la contacter pour plus d'informations`,
+  MISSION_STATUS_TO_BILL:`La mission est terminée. Vous devez à présent déposer votre facture pour obtenir le paiement de votre mission`,
+  MISSION_STATUS_BILL_SENT:`Votre facture a été transmise à l'entreprise. Elle dispose de 48h pour la valider. Au delà de ce délai, le paiement de votre missions sera automatiquement effectué`,
+  MISSION_STATUS_FINISHED:`La mission s'achève. L'entreprise a la possibilité de laisser un avis sur votre mission. Gardez un oeil sur votre profil`,
+  MISSION_STATUS_DISPUTE:`L'entreprise a refusé votre facture. TIPI en est informé, vous pouvez également contacter l'entreprise pour régler le litige`,
 }
 
 const CUSTOMER_TIPS= {
-  MISSION_STATUS_ASKING:"Votre demande de mission a été transmise à l'indépendant.e",
-  MISSION_STATUS_ASKING_ALLE:"Votre demande de mission a été transmise à TIPI",
-  MISSION_STATUS_TI_REFUSED:"L'indépendant.e a refusé la mission. Vous pouvez en chercher un autre ou faire votre demande à TIPI",
-  MISSION_STATUS_CUST_CANCELLED:"Vous avez annulé cette demande de mission",
-  MISSION_STATUS_QUOT_SENT:"Un devis vous a été envoyé. Pour confirmer la mission, vous devez accepter le devis",
-  MISSION_STATUS_QUOT_ACCEPTED:"Vous avez accepté ce devis. La mission commencera à la date indiquée.",
-  MISSION_STATUS_QUOT_REFUSED:"Vous avez refusé le devis. Vous pouvez contacter l'indépendant.e pour en obteniur un nouveau",
-  MISSION_STATUS_TO_BILL:"La mission est terminée. L'indépendant.e va déposer sa facture. Vous serez notifié dès que la facture sera disponible pour validation",
-  MISSION_STATUS_BILL_SENT:"La facture est disponible. Vous disposez d'un délai de 48h pour la valider. Sans validation de votre part, le paiement sera automatiquement versé à l'indépendant.e",
-  MISSION_STATUS_FINISHED:"La mission s'achève. Vous avez la possibilité de laisser un avis à cet.te indépendant.e",
-  MISSION_STATUS_DISPUTE:"Vous avez refusé la facture. TIPI en est informé, vous pouvez également contacter l'indépendant.e pour régler le litige",
+  MISSION_STATUS_ASKING:`Votre demande de mission a été transmise à l'indépendant.e`,
+  MISSION_STATUS_ASKING_ALLE:`Votre demande de mission a été transmise à TIPI`,
+  MISSION_STATUS_TI_REFUSED:`L'indépendant.e a refusé la mission. Vous pouvez en chercher un autre ou faire votre demande à TIPI`,
+  MISSION_STATUS_CUST_CANCELLED:`Vous avez annulé cette demande de mission`,
+  MISSION_STATUS_QUOT_SENT:`Un devis vous a été envoyé. Pour confirmer la mission, vous devez accepter le devis`,
+  MISSION_STATUS_QUOT_ACCEPTED:`Vous avez accepté ce devis. La mission commencera à la date indiquée.`,
+  MISSION_STATUS_QUOT_REFUSED:`Vous avez refusé le devis. Vous pouvez contacter l'indépendant.e pour en obteniur un nouveau`,
+  MISSION_STATUS_TO_BILL:`La mission est terminée. L'indépendant.e va déposer sa facture. Vous serez notifié dès que la facture sera disponible pour validation`,
+  MISSION_STATUS_BILL_SENT:`La facture est disponible. Vous disposez d'un délai de 48h pour la valider. Sans validation de votre part, le paiement sera automatiquement versé à l'indépendant.e`,
+  MISSION_STATUS_FINISHED:`La mission s'achève. Vous avez la possibilité de laisser un avis à cet.te indépendant.e`,
+  MISSION_STATUS_DISPUTE:`Vous avez refusé la facture. TIPI en est informé, vous pouvez également contacter l'indépendant.e pour régler le litige`,
 }
 
-const UNACTIVE_REASON_MISUNDERSTAND="UNACTIVE_REASON_MISUNDERSTAND"
-const UNACTIVE_REASON_UNLIKE="UNACTIVE_REASON_UNLIKE"
-const UNACTIVE_REASON_NONEED="UNACTIVE_REASON_NONEED"
-const UNACTIVE_REASON_NOCOMPANY="UNACTIVE_REASON_NOCOMPANY"
-const UNACTIVE_REASON_NOTENOUGH="UNACTIVE_REASON_NOTENOUGH"
-const UNACTIVE_REASON_OTHERACCOUNTS="UNACTIVE_REASON_OTHERACCOUNTS"
-const UNACTIVE_REASON_PRIVACY="UNACTIVE_REASON_PRIVACY"
-const UNACTIVE_REASON_BUSY="UNACTIVE_REASON_BUSY"
-const UNACTIVE_REASON_OTHER="UNACTIVE_REASON_OTHER"
+const UNACTIVE_REASON_MISUNDERSTAND=`UNACTIVE_REASON_MISUNDERSTAND`
+const UNACTIVE_REASON_UNLIKE=`UNACTIVE_REASON_UNLIKE`
+const UNACTIVE_REASON_NONEED=`UNACTIVE_REASON_NONEED`
+const UNACTIVE_REASON_NOCOMPANY=`UNACTIVE_REASON_NOCOMPANY`
+const UNACTIVE_REASON_NOTENOUGH=`UNACTIVE_REASON_NOTENOUGH`
+const UNACTIVE_REASON_OTHERACCOUNTS=`UNACTIVE_REASON_OTHERACCOUNTS`
+const UNACTIVE_REASON_PRIVACY=`UNACTIVE_REASON_PRIVACY`
+const UNACTIVE_REASON_BUSY=`UNACTIVE_REASON_BUSY`
+const UNACTIVE_REASON_OTHER=`UNACTIVE_REASON_OTHER`
 
 const UNACTIVE_REASON={
   UNACTIVE_REASON_MISUNDERSTAND:'Je ne comprends pas la plateforme',
@@ -268,22 +268,22 @@ const CONTACT_STATUS={
   [CONTACT_STATUS_OTHER]: 'Autre',
 }
 
-const PAYMENT_STATUS_REQUIRES_PAYMENT_METHOD="PAYMENT_STATUS_REQUIRES_PAYMENT_METHOD"
-const PAYMENT_STATUS_REQUIRES_CONFIRMATION="PAYMENT_STATUS_REQUIRES_CONFIRMATION"
-const PAYMENT_STATUS_REQUIRES_ACTION="PAYMENT_STATUS_REQUIRES_ACTION"
-const PAYMENT_STATUS_PROCESSING="PAYMENT_STATUS_PROCESSING"
-const PAYMENT_STATUS_REQUIRES_CAPTURE="PAYMENT_STATUS_REQUIRES_CAPTURE"
-const PAYMENT_STATUS_CANCELED="PAYMENT_STATUS_CANCELED"
-const PAYMENT_STATUS_SUCCEEDED="PAYMENT_STATUS_SUCCEEDED"
+const PAYMENT_STATUS_REQUIRES_PAYMENT_METHOD=`PAYMENT_STATUS_REQUIRES_PAYMENT_METHOD`
+const PAYMENT_STATUS_REQUIRES_CONFIRMATION=`PAYMENT_STATUS_REQUIRES_CONFIRMATION`
+const PAYMENT_STATUS_REQUIRES_ACTION=`PAYMENT_STATUS_REQUIRES_ACTION`
+const PAYMENT_STATUS_PROCESSING=`PAYMENT_STATUS_PROCESSING`
+const PAYMENT_STATUS_REQUIRES_CAPTURE=`PAYMENT_STATUS_REQUIRES_CAPTURE`
+const PAYMENT_STATUS_CANCELED=`PAYMENT_STATUS_CANCELED`
+const PAYMENT_STATUS_SUCCEEDED=`PAYMENT_STATUS_SUCCEEDED`
 
 const PAYMENT_STATUS={
- PAYMENT_STATUS_REQUIRES_PAYMENT_METHOD:"Paiement attendu",
- PAYMENT_STATUS_REQUIRES_CONFIRMATION:"En attente de confirmation",
- PAYMENT_STATUS_REQUIRES_ACTION:"En attente de validation",
- PAYMENT_STATUS_PROCESSING:"En cours de traitement",
- PAYMENT_STATUS_REQUIRES_CAPTURE:"En attente de blocage des fonds",
- PAYMENT_STATUS_CANCELED:"Annulé",
- PAYMENT_STATUS_SUCCEEDED:"Réussi",
+ PAYMENT_STATUS_REQUIRES_PAYMENT_METHOD:`Paiement attendu`,
+ PAYMENT_STATUS_REQUIRES_CONFIRMATION:`En attente de confirmation`,
+ PAYMENT_STATUS_REQUIRES_ACTION:`En attente de validation`,
+ PAYMENT_STATUS_PROCESSING:`En cours de traitement`,
+ PAYMENT_STATUS_REQUIRES_CAPTURE:`En attente de blocage des fonds`,
+ PAYMENT_STATUS_CANCELED:`Annulé`,
+ PAYMENT_STATUS_SUCCEEDED:`Réussi`,
 }
 
 const DEPARTEMENTS=require('../../../utils/departements.json')
@@ -302,22 +302,22 @@ const VAT_RATE=0.2
 
 const MIN_AGE=18
 
-const BOOLEAN_YES="BOOLEAN_YES"
-const BOOLEAN_NO="BOOLEAN_NO"
+const BOOLEAN_YES=`BOOLEAN_YES`
+const BOOLEAN_NO=`BOOLEAN_NO`
 
 const BOOLEAN={
- [BOOLEAN_YES]:"Oui",
- [BOOLEAN_NO]:"Non",
+ [BOOLEAN_YES]:`Oui`,
+ [BOOLEAN_NO]:`Non`,
 }
 
-const GENDER_MALE="GENDER_MALE"
-const GENDER_FEMALE="GENDER_FEMALE"
-const GENDER_UNKOWN="GENDER_UNKOWN"
+const GENDER_MALE=`GENDER_MALE`
+const GENDER_FEMALE=`GENDER_FEMALE`
+const GENDER_UNKOWN=`GENDER_UNKOWN`
 
 const GENDER={
- [GENDER_MALE]:"Homme",
- [GENDER_FEMALE]:"Femme",
- [GENDER_UNKOWN]:"Non genré",
+ [GENDER_MALE]:`Homme`,
+ [GENDER_FEMALE]:`Femme`,
+ [GENDER_UNKOWN]:`Non genré`,
 }
 
 module.exports={

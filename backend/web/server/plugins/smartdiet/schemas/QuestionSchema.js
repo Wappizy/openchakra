@@ -16,7 +16,7 @@ const QuestionSchema = new Schema({
   },
   picture: {
     type: String,
-    required: [true, "L'illustration est obligatoire"],
+    required: [true, `L'illustration est obligatoire`],
   },
   order: {
     type: Number,
@@ -24,7 +24,7 @@ const QuestionSchema = new Schema({
     index: {
       unique: [true, 'Chaque quesiton doit avoir un ordre différent'],
     },
-    required: [true, "L'ordre est obligatoire"]
+    required: [true, `L'ordre est obligatoire`]
   },
   description: {
     type: String,

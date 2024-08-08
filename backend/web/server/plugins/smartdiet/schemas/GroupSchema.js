@@ -53,15 +53,15 @@ const GroupSchema = new Schema({
 }, schemaOptions)
 
 GroupSchema.virtual('messages', {
-  ref: "message", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "group" // is equal to foreignField
+  ref: `message`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `group` // is equal to foreignField
 });
 
 GroupSchema.virtual('messages_count', {
-  ref: "message", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "group", // is equal to foreignField
+  ref: `message`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `group`, // is equal to foreignField
   count: true,
 });
 

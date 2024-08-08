@@ -110,19 +110,19 @@ exports.leads_count = leads_count
 exports.specificities_users = async ({ companyFilter }) => {
   const specificities_count=await User.aggregate([
     { $match: { role: ROLE_CUSTOMER, company: companyFilter}},
-    { $unwind: "$specificity_targets" },
-    { $group: { _id: "$specificity_targets", count: { $sum: 1 }}},
+    { $unwind: `$specificity_targets` },
+    { $group: { _id: `$specificity_targets`, count: { $sum: 1 }}},
     { $lookup: {
-        from: "targets", 
-        localField: "_id",
-        foreignField: "_id",
-        as: "target"
+        from: `targets`, 
+        localField: `_id`,
+        foreignField: `_id`,
+        as: `target`
       }
     },
-    { $unwind: "$target"},
+    { $unwind: `$target`},
     { $project: {
         _id: 0,
-        name: "$target.name",
+        name: `$target.name`,
         count: 1
       }
     },
@@ -140,19 +140,19 @@ const reasons_users = async ({ companyFilter }) => {
     }
     const reasons_count=await Coaching.aggregate([
         userMatch,
-        { $unwind: "$reasons" },
-        { $group: { _id: "$reasons", count: { $sum: 1 }}},
+        { $unwind: `$reasons` },
+        { $group: { _id: `$reasons`, count: { $sum: 1 }}},
         { $lookup: {
-            from: "targets",
-            localField: "_id",
-            foreignField: "_id",
-            as: "target"
+            from: `targets`,
+            localField: `_id`,
+            foreignField: `_id`,
+            as: `target`
             }
         },
-        { $unwind: "$target"},
+        { $unwind: `$target`},
         { $project: {
             _id: 0,
-            name: "$target.name",
+            name: `$target.name`,
             count: 1
             }
         },
@@ -322,7 +322,7 @@ exports.webinars_by_company_ = webinars_by_company_
 
 const getOperatorName = async (operatorId) => {
   const user = await User.findById(operatorId)
-  return user ? user.fullname : "unknown"
+  return user ? user.fullname : `unknown`
 }
 
 
@@ -388,17 +388,17 @@ const calls_stats = async ({ companyFilter, company }) => {
 
   return {
     totals: [
-      { name: "Appels Entrants", value: incallsTotal },
-      { name: "Appels Sortants", value: outcallsTotal },
-      { name: "Total Appels", value: callsTotal },
-      { name: "Conseils Nut", value: nutAdvicesTotal },
-      { name: "Coachings", value: coachingsTotal },
-      { name: "Refusés", value: declinedTotal },
-      { name: "Injoignables", value: unreachablesTotal },
-      { name: "Contacts utiles", value: usefulContactsTotal },
-      { name: "Coachings Renouvelés", value: renewedCoachingsTotal },
-      { name: "Transformation COA/CU", value: coaCuTransformationTotal },
-      { name: "Transformation CN/CU", value: cnCuTransformationTotal },
+      { name: `Appels Entrants`, value: incallsTotal },
+      { name: `Appels Sortants`, value: outcallsTotal },
+      { name: `Total Appels`, value: callsTotal },
+      { name: `Conseils Nut`, value: nutAdvicesTotal },
+      { name: `Coachings`, value: coachingsTotal },
+      { name: `Refusés`, value: declinedTotal },
+      { name: `Injoignables`, value: unreachablesTotal },
+      { name: `Contacts utiles`, value: usefulContactsTotal },
+      { name: `Coachings Renouvelés`, value: renewedCoachingsTotal },
+      { name: `Transformation COA/CU`, value: coaCuTransformationTotal },
+      { name: `Transformation CN/CU`, value: cnCuTransformationTotal },
     ],
   }
 }
@@ -813,14 +813,14 @@ exports.validated_appts = async ({company, start_date, end_date, diet}) => {
     },
     {
       $lookup:{
-        from:"appointments",
-        localField:"_id",
-        foreignField: "user",
-        as:"appointments"
+        from:`appointments`,
+        localField:`_id`,
+        foreignField: `user`,
+        as:`appointments`
       }
     },
     {
-      $unwind:"$appointments"
+      $unwind:`$appointments`
     },
     {
       $project:{
@@ -838,7 +838,7 @@ exports.validated_appts = async ({company, start_date, end_date, diet}) => {
     },
     {
       $group:{
-        _id:"$appointments"
+        _id:`$appointments`
       }
     }
   ])

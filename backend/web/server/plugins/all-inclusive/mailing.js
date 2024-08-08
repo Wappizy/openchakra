@@ -40,7 +40,7 @@ const SIB_IDS={
 
 const SMS_CONTENTS={
   [SIB_IDS.CUSTOMER_QUOTATION_SENT_2_CUSTOMER]: 'Bonjour, {{params.user_full_name}} vous soumet un devis',
-  [SIB_IDS.MISSION_REMINDER_TI]: "Bonjour, une prestation de service est réservée sur TIPI et aura lieu très prochainement. Tenez-vous prêt⋅e et contactez votre client⋅e via la messagerir TIPI pour préciser certains éléments au besoin. Belle mission! L'équipe TIPI",
+  [SIB_IDS.MISSION_REMINDER_TI]: `Bonjour, une prestation de service est réservée sur TIPI et aura lieu très prochainement. Tenez-vous prêt⋅e et contactez votre client⋅e via la messagerir TIPI pour préciser certains éléments au besoin. Belle mission! L'équipe TIPI`,
 }
 
 setSmsContents(SMS_CONTENTS)

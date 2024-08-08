@@ -3,13 +3,13 @@
   - make studio accept objects (have evaluation.customer instead of starting from a flex with evaluation to access customer)
 */
 
-const mongoose = require("mongoose")
-const moment = require("moment")
-const lodash = require("lodash")
+const mongoose = require(`mongoose`)
+const moment = require(`moment`)
+const lodash = require(`lodash`)
 const { schemaOptions } = require('../../../utils/schemas');
 const autoIncrement = require('mongoose-auto-increment')
-const { DUMMY_REF } = require("../../../utils/database");
-const { MISSION_STATUS_TO_COME, MISSION_STATUS_CUSTOMER_FINISHED, MISSION_STATUS_FREELANCE_FINISHED, MISSION_STATUS_CLOSED, MISSION_STATUS_CURRENT } = require("../consts");
+const { DUMMY_REF } = require(`../../../utils/database`);
+const { MISSION_STATUS_TO_COME, MISSION_STATUS_CUSTOMER_FINISHED, MISSION_STATUS_FREELANCE_FINISHED, MISSION_STATUS_CLOSED, MISSION_STATUS_CURRENT } = require(`../consts`);
 
 const Schema = mongoose.Schema;
 

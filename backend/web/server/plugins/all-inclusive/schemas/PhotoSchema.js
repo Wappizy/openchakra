@@ -10,7 +10,7 @@ const PhotoSchema = new Schema({
   },
   job: {
     type: Schema.Types.ObjectId,
-    ref: "jobUser",
+    ref: `jobUser`,
     required: [true, `Le métier est obligatoire`],
   },
 }, schemaOptions

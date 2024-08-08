@@ -184,7 +184,7 @@ mongoose.connection.on('open', function () {
                   if (isAwsFile) {
                     
                     /* does filename contains pattern with srcset (already with sizes) */
-                    const filePathParts = currentValue.split(encodeURIComponent("_srcset:")) || [];
+                    const filePathParts = currentValue.split(encodeURIComponent(`_srcset:`)) || [];
                     
                     if (filePathParts.length === 1) {  
                       const futurefilename = generateFilename(currentValue)

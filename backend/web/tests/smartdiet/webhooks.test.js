@@ -1,14 +1,14 @@
-const axios = require("axios")
+const axios = require(`axios`)
 const https=require('https')
 const mongoose=require('mongoose')
 
 describe('Registration', () => {
 
   const DATAOK={
-    "patient_email": "sebastien.auvray@wappizy.com",
-    "diet_email": "annelaure.meunier75@gmail.com",
-    "coaching_date": "2019-09-18 14:00:00",
-    "assessment": true
+    'patient_email': `sebastien.auvray@wappizy.com`,
+    'diet_email': `annelaure.meunier75@gmail.com`,
+    'coaching_date': `2019-09-18 14:00:00`,
+    'assessment': true
   }
 
 

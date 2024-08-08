@@ -1,6 +1,6 @@
-const Quotation = require("../../models/Quotation")
-const { ForbiddenError } = require("../../utils/errors")
-const { QUOTATION_STATUS_SENT, QUOTATION_STATUS_DRAFT } = require("./consts")
+const Quotation = require(`../../models/Quotation`)
+const { ForbiddenError } = require(`../../utils/errors`)
+const { QUOTATION_STATUS_SENT, QUOTATION_STATUS_DRAFT } = require(`./consts`)
 
 const sendQuotation = async quotationId => {
   const quotation=await Quotation.findById(quotationId)

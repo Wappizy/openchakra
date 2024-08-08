@@ -16,16 +16,16 @@ const PartnerApplicationSchema = new Schema({
   },
   url: {
     type: String,
-    required: [true, "Le lien est obligatoire"],
+    required: [true, `Le lien est obligatoire`],
   },
   picture: {
     type: String,
-    required: [true, "L'illustration est obligatoire"],
+    required: [true, `L'illustration est obligatoire`],
   },
   key: {
     type: Schema.Types.ObjectId,
     ref: 'key',
-    required: [true, "La clé est obligatoire"],
+    required: [true, `La clé est obligatoire`],
   },
 }, schemaOptions)
 

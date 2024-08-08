@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require(`mongoose`)
 const bcrypt=require('bcryptjs')
 const { schemaOptions } = require('../../../utils/schemas')
 const { AVAILABILITY, COACHING, EXPERIENCE, ROLES } = require('../consts')
@@ -17,12 +17,12 @@ const CommentSchema = new Schema({
   },
   user: {
     type: Schema.Types.ObjectId,
-    ref: "user",
+    ref: `user`,
     required: [true, 'Le créateur est obligatoire'],
   },
   mission: {
     type: Schema.Types.ObjectId,
-    ref: "mission",
+    ref: `mission`,
     required: [true, 'La mission est obligatoire'],
   },
 }, schemaOptions

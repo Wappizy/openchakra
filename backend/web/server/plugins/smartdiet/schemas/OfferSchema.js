@@ -48,7 +48,7 @@ const OfferSchema = new Schema({
   infographies_credit: {
     type: Number,
     default: 0,
-    required: [function() {return !this?.infographies_unlimited}, "Le crédit d'infographies est obligatoire"],
+    required: [function() {return !this?.infographies_unlimited}, `Le crédit d'infographies est obligatoire`],
   },
   infographies_unlimited: {
     type: Boolean,

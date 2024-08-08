@@ -10,7 +10,7 @@ const TeamMemberSchema = new Schema({
   team: {
     type: Schema.Types.ObjectId,
     ref: 'team',
-    required: [true, "L'équipe est obligatoire"],
+    required: [true, `L'équipe est obligatoire`],
   },
   user: {
     type: Schema.Types.ObjectId,

@@ -469,7 +469,7 @@ const preCreate = async ({ model, params, user }) => {
     if (errors) {return errors}
     // Convert URL to Readable
     if (params.attachment) {
-      const attStream=await axios.get(params.attachment, {responseType: "stream"})
+      const attStream=await axios.get(params.attachment, {responseType: `stream`})
         .then(res => res.data)
       params.attachment=attStream
     }
@@ -1825,7 +1825,7 @@ const getUserContents = async (userId, params, data) => {
 
 const getUserPassedChallenges = (userId, params, data) => {
   return User.findById(userId, 'passed_events')
-    .populate({ path: 'passed_events', match: { "__t": "individualChallenge", key: data._id } })
+    .populate({ path: 'passed_events', match: { "__t": `individualChallenge`, key: data._id } })
     .then(res => {
       return res.passed_events?.length || 0
     })
@@ -1833,7 +1833,7 @@ const getUserPassedChallenges = (userId, params, data) => {
 
 const getUserPassedWebinars = (userId, params, data) => {
   return User.findById(userId, 'passed_events')
-    .populate({ path: 'passed_events', match: { "__t": "webinar", key: data._id } })
+    .populate({ path: 'passed_events', match: { "__t": `webinar`, key: data._id } })
     .then(res => {
       return res.passed_events?.length || 0
     })
@@ -2006,7 +2006,7 @@ setPostDeleteData(postDelete)
 
 const ensureChallengePipsConsistency = () => {
   // Does every challenge have all pips ?
-  return Promise.all([Pip.find({}, "_id"), CollectiveChallenge.find({}, "_id"),
+  return Promise.all([Pip.find({}, `_id`), CollectiveChallenge.find({}, `_id`),
   TeamMember.find().populate('team'), ChallengeUserPip.find()])
     .then(([pips, challenges, teamMembers, challengeUserPips]) => {
       // Ensure all challenge pips exist
@@ -2297,7 +2297,7 @@ const agendaHookFn = received => {
   console.log(`Received hook ${JSON.stringify(received)}`)
   const { senderSite, action, objId, objClass, data: { obj: { presta_id, equipe_id, client_id, start_date_gmt, end_date_gmt, internet } } } = received
   const AGENDA_NAME = getSmartAgendaConfig().SMARTAGENDA_URL_PART
-  if ([HOOK_DELETE, HOOK_INSERT].includes(action) && AGENDA_NAME == senderSite && internet == "O") {
+  if ([HOOK_DELETE, HOOK_INSERT].includes(action) && AGENDA_NAME == senderSite && internet == `O`) {
     return console.log(`Event coming for ourself: skipping`)
   }
   if (objClass != 'pdo_events') {
@@ -2361,22 +2361,22 @@ const agendaHookFn = received => {
 
 /**
  *   {
-    "event": "open",
-    "time": 1708609191,
-    "MessageID": 104145742346117660,
-    "Message_GUID": "4f7f7a42-e645-443f-ad96-3b7a34bb599f",
-    "email": "sebastien.auvray@wappizy.com",
-    "mj_campaign_id": 7657476082,
-    "mj_contact_id": 5754145803,
-    "customcampaign": "mj.nl=10755340",
-    "ip": "66.249.93.231",
-    "geo": "EU",
-    "agent": "Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)",
-    "CustomID": "",
-    "Payload": ""
+    `event`: `open`,
+    `time`: 1708609191,
+    `MessageID`: 104145742346117660,
+    `Message_GUID`: `4f7f7a42-e645-443f-ad96-3b7a34bb599f`,
+    `email`: `sebastien.auvray@wappizy.com`,
+    `mj_campaign_id`: 7657476082,
+    `mj_contact_id`: 5754145803,
+    `customcampaign`: `mj.nl=10755340`,
+    `ip`: `66.249.93.231`,
+    `geo`: `EU`,
+    `agent`: `Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)`,
+    `CustomID`: ``,
+    `Payload`: ``
   }
 */
-// On "open" event received, tag the lead as mailOpened
+// On `open` event received, tag the lead as mailOpened
 const mailjetHookFn = received => {
   events=received.filter(e => e.event=='open')
   console.log('Mailjet received', events.length, ' "open" events')

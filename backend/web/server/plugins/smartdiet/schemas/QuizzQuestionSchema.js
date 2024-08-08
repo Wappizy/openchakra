@@ -58,9 +58,9 @@ const QuizzQuestionSchema = new Schema({
 
 /* eslint-disable prefer-arrow-callback */
 
-QuizzQuestionSchema.virtual("available_answers", {
-  ref: "item", // The Model to use
-  localField: "_id", // Find in Model, where localField
+QuizzQuestionSchema.virtual(`available_answers`, {
+  ref: `item`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
   foreignField: 'quizzQuestion' // is equal to foreignField
 });
 

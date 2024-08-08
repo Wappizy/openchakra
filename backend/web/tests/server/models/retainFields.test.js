@@ -1,4 +1,4 @@
-const { retainRequiredFields } = require("../../../server/utils/database")
+const { retainRequiredFields } = require(`../../../server/utils/database`)
 
 describe('Retain fields test', () => {
 

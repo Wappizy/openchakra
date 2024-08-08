@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require(`mongoose`)
 const { schemaOptions } = require('../../../utils/schemas')
 const { isEmailOk, isPhoneOk } = require('../../../../utils/sms')
 const { CONTACT_STATUS, DEPARTEMENTS } = require('../consts')
@@ -22,8 +22,8 @@ const CompanySchema = new Schema({
   },
   email: {
     type: String,
-    validate: [isEmailOk, "L'email est invalide"],
-    required: [true, "L'email est obligatoire"]
+    validate: [isEmailOk, `L'email est invalide`],
+    required: [true, `L'email est obligatoire`]
   },
   phone: {
     type: String,

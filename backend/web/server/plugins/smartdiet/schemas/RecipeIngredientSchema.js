@@ -16,7 +16,7 @@ const RecipeIngredientSchema = new Schema({
   ingredient: {
     type: Schema.Types.ObjectId,
     ref: 'ingredient',
-    required: [true, "L'ingrédient est obligatoire"],
+    required: [true, `L'ingrédient est obligatoire`],
   },
   recipe: {
     type: Schema.Types.ObjectId,

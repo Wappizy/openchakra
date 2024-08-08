@@ -19,7 +19,7 @@ const UserQuestionSchema = new Schema({
   // Redundant with Question but useful
   order: {
     type: Number,
-    required: [true, "L'ordre est obligatoire"],
+    required: [true, `L'ordre est obligatoire`],
   },
   answer: {
     type:  String,

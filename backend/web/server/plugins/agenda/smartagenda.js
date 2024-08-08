@@ -232,7 +232,7 @@ const getAvailabilities = ({diet_id, from, to, appointment_type, remaining_calls
       ])
     )
     .then(([{data}, app_types]) => {
-      // TODO Sometimes returned data is "". WTF ???
+      // TODO Sometimes returned data is ``. WTF ???
       if (!data.filter) {
         console.warn(`getAvailabilities diet ${diet_id},app type ${appointment_type} returned ${JSON.stringify(data)}:returning []`)
         return []

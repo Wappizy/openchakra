@@ -57,14 +57,14 @@ UserQuizzQuestionSchema.virtual('order', DUMMY_REF).get(function() {
   return 0
 })
 
-UserQuizzQuestionSchema.virtual("multiple_answers", {
-  ref: "item", // The Model to use
-  localField: "_id", // Find in Model, where localField
+UserQuizzQuestionSchema.virtual(`multiple_answers`, {
+  ref: `item`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
   foreignField: 'userQuizzQuestion' // is equal to foreignField
 });
 
 // Message depending on success/error
-UserQuizzQuestionSchema.virtual("answer_status", DUMMY_REF).get(function()  {
+UserQuizzQuestionSchema.virtual(`answer_status`, DUMMY_REF).get(function()  {
   if (this.single_enum_answer && this.quizz_question.correct_answer) {
     const correct=idEqual(this.single_enum_answer._id, this.quizz_question.correct_answer._id)
     return correct ? ANSWER_STATUS_CORRECT : ANSWER_STATUS_UNCORRECT
@@ -72,7 +72,7 @@ UserQuizzQuestionSchema.virtual("answer_status", DUMMY_REF).get(function()  {
 })
 
 // Message depending on success/error
-UserQuizzQuestionSchema.virtual("answer_message", DUMMY_REF).get(function()  {
+UserQuizzQuestionSchema.virtual(`answer_message`, DUMMY_REF).get(function()  {
   const question=this.quizz_question
   if (!question) {
     //console.warn(`${this._id}:could not get quizz_question`)

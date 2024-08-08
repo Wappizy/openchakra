@@ -976,7 +976,7 @@ const lean = ({model, data}) => {
 }
 
 const display = data => {
-  console.trace("Data", JSON.stringify(data))
+  console.trace(`Data`, JSON.stringify(data))
   return data
 }
 

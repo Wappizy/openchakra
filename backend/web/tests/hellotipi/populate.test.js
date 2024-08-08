@@ -47,7 +47,7 @@ describe('Test whole populates', () => {
 
   it('mongo must load job.missions.job', async() => {
     const job=await JobUser.findOne()
-      .populate({path: "missions",populate: {"path": "job", populate: {path: 'user'}}})
+      .populate({path: `missions`,populate: {'path': `job`, populate: {path: 'user'}}})
     expect(job.missions?.[0]?.job?.user?.full_name).toEqual(user.full_name)
   })
 

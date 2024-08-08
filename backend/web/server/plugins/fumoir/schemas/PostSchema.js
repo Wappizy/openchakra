@@ -17,7 +17,7 @@ const PostSchema = new Schema({
   author: {
     type: Schema.Types.ObjectId,
     ref: 'user',
-    required: [true, "L'auteur est obligatoire"],
+    required: [true, `L'auteur est obligatoire`],
   },
 
 }, schemaOptions)

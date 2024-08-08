@@ -1,5 +1,5 @@
 const { CONTRACT_TYPE } = require('../consts')
-const mongoose = require("mongoose")
+const mongoose = require(`mongoose`)
 const { schemaOptions } = require('../../../utils/schemas')
 
 const Schema = mongoose.Schema;
@@ -36,7 +36,7 @@ const ExperienceSchema = new Schema({
   },
   job: {
     type: Schema.Types.ObjectId,
-    ref: "jobUser",
+    ref: `jobUser`,
     required: [true, `Le métier est obligatoire`],
   },
 }, schemaOptions

@@ -22,7 +22,7 @@ const {
   TI_TIPS
 } = require('../consts')
 const { capitalize } = require('../../../../utils/text')
-const mongoose = require("mongoose")
+const mongoose = require(`mongoose`)
 const lodash=require('lodash')
 const { schemaOptions } = require('../../../utils/schemas')
 
@@ -49,7 +49,7 @@ const MissionSchema = new Schema({
   // Mission address
   address: {
     type: String,
-    required: [function() { return this.customer_location}, "L'adresse de mission est obligatoire"],
+    required: [function() { return this.customer_location}, `L'adresse de mission est obligatoire`],
   },
   required_services: {
     type: String,
@@ -83,12 +83,12 @@ const MissionSchema = new Schema({
   // Customer
   user: {
     type: Schema.Types.ObjectId,
-    ref: "user",
+    ref: `user`,
     required: [true, `Le client est obligatoire`],
   },
   job: {
     type: Schema.Types.ObjectId,
-    ref: "jobUser",
+    ref: `jobUser`,
     required: false,
   },
   // Date when quotation is sent to customer
@@ -189,32 +189,32 @@ MissionSchema.virtual('status').get(function() {
 })
 
 /* eslint-disable prefer-arrow-callback */
-MissionSchema.virtual("ti_tip").get(function() {
+MissionSchema.virtual(`ti_tip`).get(function() {
   return TI_TIPS[this.status] || ''
 })
 
-MissionSchema.virtual("customer_tip").get(function() {
+MissionSchema.virtual(`customer_tip`).get(function() {
   return CUSTOMER_TIPS[this.status] || ''
 })
 
-MissionSchema.virtual("quotations", {
-  ref: "quotation", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "mission" // is equal to foreignField
+MissionSchema.virtual(`quotations`, {
+  ref: `quotation`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `mission` // is equal to foreignField
 });
 
-MissionSchema.virtual("comments", {
-  ref: "comment", // The Model to use
-  localField: "_id", // Find in Model, where localField
+MissionSchema.virtual(`comments`, {
+  ref: `comment`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
   foreignField: 'mission' // is equal to foreignField
 });
 
 
-MissionSchema.virtual("location_str").get(function() {
+MissionSchema.virtual(`location_str`).get(function() {
   const locations=[]
-  if (this.customer_location) { locations.push("chez le client")}
-  if (this.foreign_location) { locations.push("à distance")}
-  return capitalize(locations.join(" et "))
+  if (this.customer_location) { locations.push(`chez le client`)}
+  if (this.foreign_location) { locations.push(`à distance`)}
+  return capitalize(locations.join(` et `))
 })
 
 MissionSchema.methods.canRefuseMission = function(user) {

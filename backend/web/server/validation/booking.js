@@ -63,7 +63,7 @@ const validateBooking = ({customer, serviceUserId, prestations, location, date, 
       }
       // Check date
       if (moment(date)<su.deadline) {
-        throw new BadRequestError("Le délai de prévenance n'est pas respecté")
+        throw new BadRequestError(`Le délai de prévenance n'est pas respecté`)
       }
       // Check location
       const LOCS=

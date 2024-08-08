@@ -39,7 +39,7 @@ const CompanySchema = new Schema(
     },
     parent: {
       type: Schema.Types.ObjectId,
-      ref: "company",
+      ref: `company`,
     },
     // Check (or not) wether the account must satisfy lead's integrity
     // during registration
@@ -109,20 +109,20 @@ const CompanySchema = new Schema(
 
 CompanySchema.virtual('users', {
   ref: 'user', // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "company", // is equal to foreignField
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `company`, // is equal to foreignField
 });
 
-CompanySchema.virtual("offers", {
-  ref: "offer", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "company", // is equal to foreignField
+CompanySchema.virtual(`offers`, {
+  ref: `offer`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `company`, // is equal to foreignField
 });
 
-CompanySchema.virtual("current_offer", {
-  ref: "offer", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "company", // is equal to foreignField
+CompanySchema.virtual(`current_offer`, {
+  ref: `offer`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `company`, // is equal to foreignField
   options: { 
     match : () => {
       return {validity_start: {$lt: Date.now()}}
@@ -132,23 +132,23 @@ CompanySchema.virtual("current_offer", {
   justOne: true,
 });
 
-CompanySchema.virtual("webinars", {
-  ref: "webinar", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "companies", // is equal to foreignField
+CompanySchema.virtual(`webinars`, {
+  ref: `webinar`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `companies`, // is equal to foreignField
 });
 
-CompanySchema.virtual("administrators", {
-  ref: "user", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "company", // is equal to foreignField
+CompanySchema.virtual(`administrators`, {
+  ref: `user`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `company`, // is equal to foreignField
   justOne: true,
 });
 
-CompanySchema.virtual("groups", {
-  ref: "group", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "companies", // is equal to foreignField
+CompanySchema.virtual(`groups`, {
+  ref: `group`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `companies`, // is equal to foreignField
 });
 
 CompanySchema.virtual('groups_count', {localField: 'tagada', foreignField: 'tagada'}).get(function() {
@@ -188,22 +188,22 @@ CompanySchema.virtual('comments_count', DUMMY_REF).get(function() {
     })
 })
 
-CompanySchema.virtual("children", {
-  ref: "company", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "parent", // is equal to foreignField
+CompanySchema.virtual(`children`, {
+  ref: `company`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `parent`, // is equal to foreignField
 });
 
-CompanySchema.virtual("collective_challenges", {
-  ref: "collectiveChallenge", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "company", // is equal to foreignField
+CompanySchema.virtual(`collective_challenges`, {
+  ref: `collectiveChallenge`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `company`, // is equal to foreignField
 });
 
 CompanySchema.virtual('leads', {
   ref: 'lead', // The Model to use
-  localField: "code", // Find in Model, where localField
-  foreignField: "company_code", // is equal to foreignField
+  localField: `code`, // Find in Model, where localField
+  foreignField: `company_code`, // is equal to foreignField
 });
 
 module.exports = CompanySchema

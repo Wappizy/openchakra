@@ -1,9 +1,9 @@
 const moment=require('moment')
-const { paymentPlugin } = require("../../../config/config")
-const { PURCHASE_STATUS_COMPLETE } = require("../../../utils/consts")
-const Pack = require("../../models/Pack")
-const Purchase = require("../../models/Purchase")
-const { COACHING_STATUS_STARTED } = require("./consts")
+const { paymentPlugin } = require(`../../../config/config`)
+const { PURCHASE_STATUS_COMPLETE } = require(`../../../utils/consts`)
+const Pack = require(`../../models/Pack`)
+const Purchase = require(`../../models/Purchase`)
+const { COACHING_STATUS_STARTED } = require(`./consts`)
 
 const paymentCb = async ({checkout_id, success}) => {
   console.log(`Checkout ${checkout_id} ${success ? 'OK': 'NOK'}`)

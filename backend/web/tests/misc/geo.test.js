@@ -1,6 +1,6 @@
 const moment=require('moment')
 const fs=require('fs')
-const { generateIcs } = require("../../utils/ics")
+const { generateIcs } = require(`../../utils/ics`)
 const { getLocationSuggestions } = require('../../utils/geo')
 
 describe('GEO tests', () => {

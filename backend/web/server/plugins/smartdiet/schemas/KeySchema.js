@@ -29,11 +29,11 @@ const KeySchema = new Schema({
   },
   trophy_on_picture: {
     type: String,
-    required: [true, "L'illustration de trophée obtenu est obligatoire"],
+    required: [true, `L'illustration de trophée obtenu est obligatoire`],
   },
   trophy_off_picture: {
     type: String,
-    required: [true, "L'illustration de trophée non obtenu est obligatoire"],
+    required: [true, `L'illustration de trophée non obtenu est obligatoire`],
   },
   migration_id: {
     type: Number,

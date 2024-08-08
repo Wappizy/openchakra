@@ -109,15 +109,15 @@ const UserSchema = new Schema(
 
 UserSchema.path('subscription_start').required(function() {
   return this.role==FUMOIR_MEMBER
-}, "La date de début d'abonnement est obligatoire")
+}, `La date de début d'abonnement est obligatoire`)
 
 UserSchema.path('subscription_end').required(function() {
   return this.role==FUMOIR_MEMBER
-}, "La date de fin d'abonnement est obligatoire")
+}, `La date de fin d'abonnement est obligatoire`)
 
 UserSchema.path('subscription_price').required(function() {
   return this.role==FUMOIR_MEMBER
-}, "Le prix de l'abonnement est obligatoire")
+}, `Le prix de l'abonnement est obligatoire`)
 
 UserSchema.virtual('full_name').get(function() {
   return `${this.firstname} ${this.lastname}`

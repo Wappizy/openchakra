@@ -1,13 +1,13 @@
 const moment=require('moment')
 const mongoose=require('mongoose')
 const lodash=require('lodash')
-const Coaching = require("../../models/Coaching")
-require("../../models/Appointment")
-const Company = require("../../models/Company")
-const Quizz = require("../../models/Quizz")
+const Coaching = require(`../../models/Coaching`)
+require(`../../models/Appointment`)
+const Company = require(`../../models/Company`)
+const Quizz = require(`../../models/Quizz`)
 const { COACHING_STATUS_NOT_STARTED, COACHING_STATUS_STARTED, COACHING_STATUS_FINISHED, COACHING_END_DELAY, COACHING_STATUS_DROPPED, 
   COACHING_STATUS_STOPPED, QUIZZ_TYPE_PROGRESS, AVAILABILITIES_RANGE_DAYS
-} = require("./consts")
+} = require(`./consts`)
 const { getAvailabilities } = require('../agenda/smartagenda')
 const Availability = require('../../models/Availability')
 const Range = require('../../models/Range')

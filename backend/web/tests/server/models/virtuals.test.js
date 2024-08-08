@@ -13,22 +13,22 @@ describe('Virtuals test', () => {
     await mongoose.connect(`mongodb://localhost/test${moment().unix()}`, MONGOOSE_OPTIONS)
       const ParentSchema=new Schema({name: String}, schemaOptions)
       ParentSchema.virtual('grandChildren', {
-        ref: "grandChild", // The Model to use
-        localField: "_id", // Find in Model, where localField
-        foreignField: "parent.parent" // is equal to foreignField
+        ref: `grandChild`, // The Model to use
+        localField: `_id`, // Find in Model, where localField
+        foreignField: `parent.parent` // is equal to foreignField
       })
       const ChildSchema=new Schema({
         name: String,
         parent: {
           type: Schema.Types.ObjectId,
-          ref: "parent",
+          ref: `parent`,
           required: true,
         },
       }, schemaOptions)
       const GrandChildSchema=new Schema({
         parent: {
           type: Schema.Types.ObjectId,
-          ref: "child",
+          ref: `child`,
           required: true,
         },
       })

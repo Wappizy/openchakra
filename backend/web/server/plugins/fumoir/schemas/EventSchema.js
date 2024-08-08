@@ -44,7 +44,7 @@ const EventSchema = new Schema(
     max_guests_per_member: {
       type: Number,
       get: v => 1,
-      required: [true, "Le nombre d'invités maximum par membre obligatoire"],
+      required: [true, `Le nombre d'invités maximum par membre obligatoire`],
     },
     max_people: {
       type: Number,

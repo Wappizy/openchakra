@@ -47,16 +47,16 @@ const PipSchema = new Schema({
 }, schemaOptions)
 
 PipSchema.virtual('comments', {
-  ref: "comment", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "pip", // is equal to foreignField
+  ref: `comment`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `pip`, // is equal to foreignField
   match: {parent: null},
 });
 
 PipSchema.virtual('comments_count', {
-  ref: "comment", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "pip", // is equal to foreignField
+  ref: `comment`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `pip`, // is equal to foreignField
   match: {parent: null},
   count: true,
 });

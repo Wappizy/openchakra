@@ -1,6 +1,6 @@
-const mongoose = require("mongoose")
+const mongoose = require(`mongoose`)
 const { schemaOptions } = require('../../../utils/schemas');
-const { DUMMY_REF } = require("../../../utils/database");
+const { DUMMY_REF } = require(`../../../utils/database`);
 
 const Schema = mongoose.Schema;
 

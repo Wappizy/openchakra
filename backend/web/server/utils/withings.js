@@ -60,7 +60,7 @@ const getNonce = () => {
 // From https://developer.withings.com/sdk/v2/tree/sdk-webviews/required-web-services#user-creation-api
 const createUser = org_user => {
 
-  // Use "local copy"
+  // Use `local copy`
   user={...org_user.toObject()}
 
   console.log(`Creating Dekuple user ${JSON.stringify(user)}`)

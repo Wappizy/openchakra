@@ -85,7 +85,7 @@ describe('Conversation', () => {
       await loadFromDb({ model: 'conversation', user: customer, id: freelance._id, fields: ['messages_count', 'users'] })
       throw new Error('Expected method to reject.')
     } catch (err) {
-      expect(err.message).toBe("Vous ne pouvez converser qu'avec un ADMIN ou dans le cadre d'une candidature")
+      expect(err.message).toBe(`Vous ne pouvez converser qu'avec un ADMIN ou dans le cadre d'une candidature`)
     }
   })
   it('must accept creating a conversation with an ADMIN', async () => {

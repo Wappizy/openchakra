@@ -1,6 +1,6 @@
 const {
 } = require('../consts')
-const mongoose = require("mongoose")
+const mongoose = require(`mongoose`)
 const bcrypt=require('bcryptjs')
 const { schemaOptions } = require('../../../utils/schemas')
 const IBANValidator = require('iban-validator-js')
@@ -10,7 +10,7 @@ const Schema = mongoose.Schema;
 const QuotationDetailSchema = new Schema({
   label: {
     type: String,
-    required: [true, "L'intitulé est obligatoire"],
+    required: [true, `L'intitulé est obligatoire`],
   },
   quantity: {
     type: Number,
@@ -30,7 +30,7 @@ const QuotationDetailSchema = new Schema({
   },
   quotation: {
     type: Schema.Types.ObjectId,
-    ref: "quotation",
+    ref: `quotation`,
     required: [true, 'La ligne doit être attaché à un devis'],
   },
 }, schemaOptions

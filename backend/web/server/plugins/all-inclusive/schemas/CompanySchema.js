@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require(`mongoose`)
 const { schemaOptions } = require('../../../utils/schemas')
 const siret = require('siret')
 const { COMPANY_STATUS } = require('../consts')
@@ -26,7 +26,7 @@ const AddressSchema = require('../../../models/AddressSchema')
       validate: [v => siret.isSIRET(v)||siret.isSIREN(v), 'Le SIRET ou SIREN est invalide'],
       required: false,
     },
-    // In french: "Avis de situation"
+    // In french: `Avis de situation`
     status_report: {
       type: String,
     },

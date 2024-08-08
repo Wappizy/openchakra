@@ -1,4 +1,4 @@
-const { CUSTOMER_REQUIRED_ATTRIBUTES, CUSTOMER_OUTPUT_ATTRIBUTES } = require("./consts")
+const { CUSTOMER_REQUIRED_ATTRIBUTES, CUSTOMER_OUTPUT_ATTRIBUTES } = require(`./consts`)
 
 
 const customerProfileCompletion = (user) => {

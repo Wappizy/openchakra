@@ -1,7 +1,7 @@
 const lodash=require('lodash')
-const HardSkillCategory = require("../../models/HardSkillCategory")
-const HardSkill = require("../../models/HardSkill")
-const { idEqual } = require("../../utils/database")
+const HardSkillCategory = require(`../../models/HardSkillCategory`)
+const HardSkill = require(`../../models/HardSkill`)
+const { idEqual } = require(`../../utils/database`)
 const User = require('../../models/User')
 
 // Returns HS categories tree for user job & extra skills

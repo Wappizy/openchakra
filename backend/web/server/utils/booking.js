@@ -1,21 +1,21 @@
-const moment = require("moment");
+const moment = require(`moment`);
 const {
   BOOK_STATUS,
   TRANSACTION_SUCCEEDED,
   LOCATION_CLIENT,
   LOCATION_ALFRED
-} = require("../../utils/consts");
-const MarketplacePayment = require("../plugins/payment/marketplacePayment");
-const PlatformPayment = require("../plugins/payment/platformPayment");
-const { computeDistanceKm } = require("../../utils/functions");
-const ServiceUser = require("../models/ServiceUser");
-require("../models/Service");
-const { computeBookingReference } = require("../../utils/text");
-const Booking = require("../models/Booking");
-const { upsertChatroom } = require("./chatroom");
-const { NotFoundError } = require("./errors");
+} = require(`../../utils/consts`);
+const MarketplacePayment = require(`../plugins/payment/marketplacePayment`);
+const PlatformPayment = require(`../plugins/payment/platformPayment`);
+const { computeDistanceKm } = require(`../../utils/functions`);
+const ServiceUser = require(`../models/ServiceUser`);
+require(`../models/Service`);
+const { computeBookingReference } = require(`../../utils/text`);
+const Booking = require(`../models/Booking`);
+const { upsertChatroom } = require(`./chatroom`);
+const { NotFoundError } = require(`./errors`);
 
-moment.locale("fr");
+moment.locale(`fr`);
 
 const computeServiceDistance = ({ location, serviceUser, customer }) => {
   if (location != LOCATION_CLIENT) {
@@ -54,10 +54,10 @@ const createBooking = ({
   };
   let serviceUser = null;
   return ServiceUser.findById(serviceUserId)
-    .populate("user")
-    .populate("service")
-    .populate({ path: "prestations", populate: "prestation" })
-    .populate("customer_booking")
+    .populate(`user`)
+    .populate(`service`)
+    .populate({ path: `prestations`, populate: `prestation` })
+    .populate(`customer_booking`)
     .then(result => {
       if (!result) {
         throw new NotFoundError(`ServiceUser ${serviceUserId} introuvable`);

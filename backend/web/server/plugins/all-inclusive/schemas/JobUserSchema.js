@@ -1,5 +1,5 @@
 const { capitalize } = require('../../../../utils/text')
-const mongoose = require("mongoose")
+const mongoose = require(`mongoose`)
 const bcrypt=require('bcryptjs')
 const { schemaOptions } = require('../../../utils/schemas')
 const { AVAILABILITY, COACHING, EXPERIENCE, ROLES } = require('../consts')
@@ -22,7 +22,7 @@ const JobUserSchema = new Schema({
   // TI
   user: {
     type: Schema.Types.ObjectId,
-    ref: "user",
+    ref: `user`,
     required: [true, `Le TI est obligatoire`],
   },
   experience: {
@@ -76,7 +76,7 @@ const JobUserSchema = new Schema({
 );
 
 /* eslint-disable prefer-arrow-callback */
-JobUserSchema.virtual("search_field").get(function() {
+JobUserSchema.virtual(`search_field`).get(function() {
   let res=[this.name]
   if (this.skills) {
     res=[...res, this.skills.map(s => s.name)]
@@ -87,53 +87,53 @@ JobUserSchema.virtual("search_field").get(function() {
   return res.join(',')
 })
 
-JobUserSchema.virtual("location_str").get(function() {
+JobUserSchema.virtual(`location_str`).get(function() {
   const locations=[]
-  if (this.customer_location) { locations.push("chez le client")}
-  if (this.foreign_location) { locations.push("à distance")}
-  return capitalize(locations.join(" et "))
+  if (this.customer_location) { locations.push(`chez le client`)}
+  if (this.foreign_location) { locations.push(`à distance`)}
+  return capitalize(locations.join(` et `))
 })
 
-JobUserSchema.virtual("activities", {
-  ref: "activity", // The Model to use
-  localField: "_id", // Find in Model, where localField
+JobUserSchema.virtual(`activities`, {
+  ref: `activity`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
   foreignField: 'job' // is equal to foreignField
 });
 
-JobUserSchema.virtual("skills", {
-  ref: "skill", // The Model to use
-  localField: "_id", // Find in Model, where localField
+JobUserSchema.virtual(`skills`, {
+  ref: `skill`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
   foreignField: 'job' // is equal to foreignField
 });
 
-JobUserSchema.virtual("experiences", {
-  ref: "experience", // The Model to use
-  localField: "_id", // Find in Model, where localField
+JobUserSchema.virtual(`experiences`, {
+  ref: `experience`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
   foreignField: 'job' // is equal to foreignField
 });
 
-JobUserSchema.virtual("diploma", {
-  ref: "diploma", // The Model to use
-  localField: "_id", // Find in Model, where localField
+JobUserSchema.virtual(`diploma`, {
+  ref: `diploma`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
   foreignField: 'job' // is equal to foreignField
 });
 
-JobUserSchema.virtual("photos", {
-  ref: "photo", // The Model to use
-  localField: "_id", // Find in Model, where localField
+JobUserSchema.virtual(`photos`, {
+  ref: `photo`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
   foreignField: 'job' // is equal to foreignField
 });
 
-JobUserSchema.virtual("recommandations", {
-  ref: "recommandation", // The Model to use
-  localField: "_id", // Find in Model, where localField
+JobUserSchema.virtual(`recommandations`, {
+  ref: `recommandation`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
   foreignField: 'job' // is equal to foreignField
 });
 
-JobUserSchema.virtual("missions", {
-  ref: "mission", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "job" // is equal to foreignField
+JobUserSchema.virtual(`missions`, {
+  ref: `mission`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `job` // is equal to foreignField
 });
 
 JobUserSchema.virtual('pinned').get(function() {
@@ -146,7 +146,7 @@ JobUserSchema.virtual('recommandations_count').get(function() {
 
 
 JobUserSchema.virtual('rate_str').get(function() {
-  return this.on_quotation ?  "sur devis"
+  return this.on_quotation ?  `sur devis`
   :  this.rate ? `${this.rate}€/h`
   : null
 })

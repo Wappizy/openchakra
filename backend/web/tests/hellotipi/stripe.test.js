@@ -25,16 +25,16 @@ describe('Test stripe account update', () => {
   afterAll(async() => {
   })
 
-  it.skip("Must update acounts", () => {
+  it.skip(`Must update acounts`, () => {
     return updateAccounts()
   })
 
-  it("Must list customers", () => {
+  it(`Must list customers`, () => {
     return getCustomers()
       .then(cust => console.log(cust))
   })
 
-  it.only("Must list providers", () => {
+  it.only(`Must list providers`, () => {
     return getAccounts()
       .then(cust => console.log(cust))
   })

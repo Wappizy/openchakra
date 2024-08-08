@@ -66,7 +66,7 @@ describe('Jira tickets tests ', () => {
 
   it('must create a ticket with URL attachment', async() => {
     const attachmentStream=await axios.get(ATTACHEMENT_URL, {
-      responseType: "stream",
+      responseType: `stream`,
     })
       .then(res => res.data)
     const data={

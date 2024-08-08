@@ -18,8 +18,8 @@ const UserSchema = new Schema(
     email: {
       type: String,
       set: v => v?.toLowerCase().trim(),
-      validate: [value => isEmailOk(value), "L'email est invalide"],
-      required: [true, "L'email est obligatoire"],
+      validate: [value => isEmailOk(value), `L'email est invalide`],
+      required: [true, `L'email est obligatoire`],
     },
     password: {
       type: String,

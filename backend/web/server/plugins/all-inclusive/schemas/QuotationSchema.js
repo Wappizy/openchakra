@@ -38,7 +38,7 @@ const QuotationSchema = new Schema({
   },
   email: {
     type: String,
-    required: [true, "L'email est obligatoire"],
+    required: [true, `L'email est obligatoire`],
   },
   company_name: {
     type: String,

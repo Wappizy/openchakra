@@ -17,7 +17,7 @@ const WebinarSchema = new Schema({
   }],
   url: {
     type: String,
-    required: [true, "L'URL est obligatoire"],
+    required: [true, `L'URL est obligatoire`],
   },
   animator:{
     type: String,

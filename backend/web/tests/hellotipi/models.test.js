@@ -38,7 +38,7 @@ describe('Test DB', () => {
 
   it('must load skills', async() => {
     const skill=await Skill.findOne()
-    const user=await User.findOne().populate({"path":"jobs","populate":"skills"})
+    const user=await User.findOne().populate({'path':`jobs`,'populate':`skills`})
     expect(user.jobs[0].skills[0].toObject()).toMatchObject(skill.toObject())
   })
 

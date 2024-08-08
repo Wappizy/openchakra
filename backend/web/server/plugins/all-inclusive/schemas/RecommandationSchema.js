@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require(`mongoose`)
 const bcrypt=require('bcryptjs')
 const { schemaOptions } = require('../../../utils/schemas')
 const { AVAILABILITY, COACHING, EXPERIENCE, ROLES } = require('../consts')
@@ -29,7 +29,7 @@ const RecommandationSchema = new Schema({
   },
   job: {
     type: Schema.Types.ObjectId,
-    ref: "jobUser",
+    ref: `jobUser`,
     required: [true, 'Le métier du TI est obligatoire'],
   },
   dummy: {

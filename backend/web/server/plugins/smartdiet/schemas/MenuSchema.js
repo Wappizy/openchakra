@@ -48,10 +48,10 @@ MenuSchema.virtual('people_count', DUMMY_REF).get(function() {
   return MENU_PEOPLE_COUNT
 })
 
-MenuSchema.virtual("recipes", {
-  ref: "menuRecipe", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "menu" // is equal to foreignField
+MenuSchema.virtual(`recipes`, {
+  ref: `menuRecipe`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `menu` // is equal to foreignField
 });
 
 module.exports = MenuSchema

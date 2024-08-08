@@ -1,10 +1,10 @@
-const { ROLE_CUSTOMER, SOURCE, EXPERIENCE, WORK_DURATION, DURATION_MONTH, MOBILITY_NONE } = require("../../../server/plugins/sosynpl/consts");
+const { ROLE_CUSTOMER, SOURCE, EXPERIENCE, WORK_DURATION, DURATION_MONTH, MOBILITY_NONE } = require(`../../../server/plugins/sosynpl/consts`);
 
 const CUSTOMER_DATA = { 
-    password: "tagada",
-    email: "test@test.com",
-    firstname: "firstname",
-    lastname: "lastname",
+    password: `tagada`,
+    email: `test@test.com`,
+    firstname: `firstname`,
+    lastname: `lastname`,
     role: ROLE_CUSTOMER,
     siren: '850148867',
     company_name: 'Wappizy',

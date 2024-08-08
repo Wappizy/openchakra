@@ -31,7 +31,7 @@ class MAILJET_V6 {
     }
 
     if (attachment) {
-      message.Attachments=[{Filename: attachment.name, Base64Content: attachment.content, ContentType: "text/calendar"}]
+      message.Attachments=[{Filename: attachment.name, Base64Content: attachment.content, ContentType: `text/calendar`}]
     }
 
     return this.smtpInstance
@@ -87,7 +87,7 @@ class MAILJET_V6 {
   checkContactsListsJob(jobId) {
     return this.smtpInstance
     .get(`contact`, {'version': 'v3'})
-    	.action("managemanycontacts")
+    	.action(`managemanycontacts`)
       .id(jobId)
     	.request()
       .then(res => {

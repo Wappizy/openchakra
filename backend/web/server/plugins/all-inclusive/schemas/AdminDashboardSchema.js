@@ -7,7 +7,7 @@ const {
 
 const { CREATED_AT_ATTRIBUTE } = require('../../../../utils/consts')
 const moment = require('moment')
-const mongoose = require("mongoose")
+const mongoose = require(`mongoose`)
 const { schemaOptions } = require('../../../utils/schemas')
 
 const Schema = mongoose.Schema;

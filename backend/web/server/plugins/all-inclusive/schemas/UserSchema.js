@@ -28,7 +28,7 @@ const Validator = require('validator')
 const { idEqual } = require('../../../utils/database')
 const siret = require('siret')
 const NATIONALITIES=require('../nationalities')
-const mongoose = require("mongoose")
+const mongoose = require(`mongoose`)
 const bcrypt=require('bcryptjs')
 const { schemaOptions } = require('../../../utils/schemas')
 const lodash=require('lodash')
@@ -54,8 +54,8 @@ const UserSchema = new Schema({
   email: {
     type: String,
     set: v => v?.toLowerCase().trim(),
-    validate: [value => isEmailOk(value), "L'email est invalide"],
-    required: [true, "L'email est obligatoire"],
+    validate: [value => isEmailOk(value), `L'email est invalide`],
+    required: [true, `L'email est obligatoire`],
   },
   admin_comment: {
     type: String,
@@ -104,7 +104,7 @@ const UserSchema = new Schema({
   coaching: {
     type: String,
     enum: Object.keys(COACHING),
-    required: [function() { return this.role==ROLE_TI}, "Le mode d'accompagnement est obligatoire"],
+    required: [function() { return this.role==ROLE_TI}, `Le mode d'accompagnement est obligatoire`],
   },
   coaching_company: {
     type: String,
@@ -148,7 +148,7 @@ const UserSchema = new Schema({
   },
   iban: {
     type: String,
-    validate: [v => IBANValidator.isValid(v), "L'IBAN est invalide"],
+    validate: [v => IBANValidator.isValid(v), `L'IBAN est invalide`],
   },
   availability: {
     type: String,
@@ -157,7 +157,7 @@ const UserSchema = new Schema({
   },
   address: {
     type: String,
-    required: [function() { return [ROLE_TI].includes(this.role)}, "L'adresse est obligatoire"],
+    required: [function() { return [ROLE_TI].includes(this.role)}, `L'adresse est obligatoire`],
   },
   zip_code: {
     type: String,
@@ -186,7 +186,7 @@ const UserSchema = new Schema({
     validate: [v => siret.isSIRET(v)||siret.isSIREN(v), 'Le SIRET ou SIREN est invalide'],
     required: false,
   },
-  // In french: "Avis de situation"
+  // In french: `Avis de situation`
   status_report: {
     type: String,
   },
@@ -253,12 +253,12 @@ const UserSchema = new Schema({
 }, schemaOptions
 );
 
-UserSchema.virtual("full_name").get(function() {
+UserSchema.virtual(`full_name`).get(function() {
   return `${this.firstname} ${this.lastname}`;
 });
 
 // For password checking only
-UserSchema.virtual("password2")
+UserSchema.virtual(`password2`)
 
 const PROFILE_ATTRIBUTES={
   firstname: 'prénom',
@@ -268,22 +268,22 @@ const PROFILE_ATTRIBUTES={
   birthday : 'date de naissance',
   nationality : 'nationalité',
   picture : 'photo de profil',
-  identity_proof_1 : "pièce d'identité",
+  identity_proof_1 : `pièce d'identité`,
   company_name : 'nom de la société',
   company_status : 'statut',
   siret : 'siret',
   status_report : 'avis de situation',
-  insurance_type : "type d'assurance",
-  insurance_report : "justificatif d'assurance",
-  company_picture : "logo de l'entreprise",
+  insurance_type : `type d'assurance`,
+  insurance_report : `justificatif d'assurance`,
+  company_picture : `logo de l'entreprise`,
   iban : 'iban',
   jobs: 'métier',
 }
 
-const STEP_1=["firstname", "lastname", "email", "phone", "birthday", "nationality", "picture", "identity_proof_1"]
-const STEP_2=["company_name", "company_status", "siret", "status_report", "insurance_type", "insurance_report", "company_picture"]
-const STEP_3=["iban"]
-const STEP_4=["jobs"]
+const STEP_1=[`firstname`, `lastname`, `email`, `phone`, `birthday`, `nationality`, `picture`, `identity_proof_1`]
+const STEP_2=[`company_name`, `company_status`, `siret`, `status_report`, `insurance_type`, `insurance_report`, `company_picture`]
+const STEP_3=[`iban`]
+const STEP_4=[`jobs`]
 
 const getFilledAttributes = (self, attributes) => {
   // TODO: birthday (Date type) is considered empty by lodash
@@ -323,20 +323,20 @@ UserSchema.virtual('missing_attributes_step_4').get(function() {
   return compute_missing_attributes(this, STEP_4)
 })
 
-UserSchema.virtual("jobs", {
-  ref: "jobUser", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "user" // is equal to foreignField
+UserSchema.virtual(`jobs`, {
+  ref: `jobUser`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `user` // is equal to foreignField
 });
 
 // All missions
-UserSchema.virtual("_missions", {
-  ref: "mission", // The Model to use
-  localField: "dummy", // Find in Model, where localField
-  foreignField: "dummy" // is equal to foreignField
+UserSchema.virtual(`_missions`, {
+  ref: `mission`, // The Model to use
+  localField: `dummy`, // Find in Model, where localField
+  foreignField: `dummy` // is equal to foreignField
 });
 
-UserSchema.virtual("missions", {localField: 'dummy', foreignField: 'dummy'}).get(function() {
+UserSchema.virtual(`missions`, {localField: 'dummy', foreignField: 'dummy'}).get(function() {
   if (this.role==ROLE_COMPANY_BUYER) {
     return this._missions?.filter(m => idEqual(m.user?._id, this._id))
   }
@@ -346,7 +346,7 @@ UserSchema.virtual("missions", {localField: 'dummy', foreignField: 'dummy'}).get
   return []
 })
 
-UserSchema.virtual("missions_with_bill", {localField: 'dummy', foreignField: 'dummy'}).get(function() {
+UserSchema.virtual(`missions_with_bill`, {localField: 'dummy', foreignField: 'dummy'}).get(function() {
   if (this.role==ROLE_COMPANY_BUYER) {
     return this._missions?.filter(m => m.bill && idEqual(m.user?._id, this._id))
   }
@@ -357,21 +357,21 @@ UserSchema.virtual("missions_with_bill", {localField: 'dummy', foreignField: 'du
 })
 
 
-UserSchema.virtual("requests", {
-  ref: "request", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "user" // is equal to foreignField
+UserSchema.virtual(`requests`, {
+  ref: `request`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `user` // is equal to foreignField
 });
 
-UserSchema.virtual("qualified_str").get(function() {
+UserSchema.virtual(`qualified_str`).get(function() {
   return this.qualified ? 'qualifié' : 'à qualifier'
 });
 
-UserSchema.virtual("visible_str").get(function() {
+UserSchema.virtual(`visible_str`).get(function() {
   return this.hidden ? 'masqué' : 'visible'
 });
 
-UserSchema.virtual("finished_missions_count").get(function() {
+UserSchema.virtual(`finished_missions_count`).get(function() {
   if (lodash.isEmpty(this.missions)) {
     return 0
   }
@@ -379,38 +379,38 @@ UserSchema.virtual("finished_missions_count").get(function() {
 })
 
 // All recommandations
-UserSchema.virtual("_all_recommandations", {
-  ref: "recommandation", // The Model to use
-  localField: "dummy", // Find in Model, where localField
-  foreignField: "dummy" // is equal to foreignField
+UserSchema.virtual(`_all_recommandations`, {
+  ref: `recommandation`, // The Model to use
+  localField: `dummy`, // Find in Model, where localField
+  foreignField: `dummy` // is equal to foreignField
 });
 
-UserSchema.virtual("recommandations", {localField: 'tagada', foreignField: 'tagada'}).get(function() {
+UserSchema.virtual(`recommandations`, {localField: 'tagada', foreignField: 'tagada'}).get(function() {
   const recos=this._all_recommandations?.filter(a => idEqual(a?.job?.user?._id, this._id)) || []
   return recos
 })
 
-UserSchema.virtual("recommandations_count", {localField: 'tagada', foreignField: 'tagada'}).get(function() {
+UserSchema.virtual(`recommandations_count`, {localField: 'tagada', foreignField: 'tagada'}).get(function() {
   return this.recommandations?.length || 0
 })
 
-UserSchema.virtual("recommandations_note").get(function() {
+UserSchema.virtual(`recommandations_note`).get(function() {
   const recos=this.recommandations || []
   return lodash.sumBy(recos, 'note')/recos.length
 })
 
-UserSchema.virtual("comments_count").get(function() {
+UserSchema.virtual(`comments_count`).get(function() {
   const recos=lodash(this.missions||[]).map(j => j.comments || []).flatten()
   return recos.size()
 })
 
-UserSchema.virtual("comments_note").get(function() {
+UserSchema.virtual(`comments_note`).get(function() {
   const recos=lodash(this.missions||[]).map(j => j.comments || []).flatten()
   return recos.sumBy('note')/recos.size()
 })
 
 // Achieved revenue : accepeted bills
-UserSchema.virtual("revenue").get(function() {
+UserSchema.virtual(`revenue`).get(function() {
   if (this.role!=ROLE_TI) {
     return 0
   }
@@ -420,7 +420,7 @@ UserSchema.virtual("revenue").get(function() {
 })
 
 // Achieved revenue : accepted quotation
-UserSchema.virtual("revenue_to_come").get(function() {
+UserSchema.virtual(`revenue_to_come`).get(function() {
   if (this.role!=ROLE_TI) {
     return 0
   }
@@ -429,24 +429,24 @@ UserSchema.virtual("revenue_to_come").get(function() {
       .sumBy(m => m.quotations[0].ti_total)
 })
 
-UserSchema.virtual("accepted_quotations_count").get(function() {
+UserSchema.virtual(`accepted_quotations_count`).get(function() {
   return this.missions?.filter(m => m.status==MISSION_STATUS_QUOT_ACCEPTED ).length
 })
 
-UserSchema.virtual("pending_quotations_count").get(function() {
+UserSchema.virtual(`pending_quotations_count`).get(function() {
   return this.missions?.filter(m => m.status==MISSION_STATUS_QUOT_SENT).length
 })
 
-UserSchema.virtual("pending_bills_count").get(function() {
+UserSchema.virtual(`pending_bills_count`).get(function() {
   return this.missions?.filter(m => m.status==MISSION_STATUS_BILL_SENT).length
 })
 
-UserSchema.virtual("profile_shares_count").get(function() {
+UserSchema.virtual(`profile_shares_count`).get(function() {
   return 0
 })
 
 // Customer spent
-UserSchema.virtual("spent").get(function() {
+UserSchema.virtual(`spent`).get(function() {
   if (this.role!=ROLE_COMPANY_BUYER) {
     return 0
   }
@@ -456,7 +456,7 @@ UserSchema.virtual("spent").get(function() {
       .sumBy(m => m.quotations[0]?.customer_total || 0)
 })
 
-UserSchema.virtual("spent_to_come").get(function() {
+UserSchema.virtual(`spent_to_come`).get(function() {
   if (this.role!=ROLE_COMPANY_BUYER) {
     return 0
   }
@@ -466,29 +466,29 @@ UserSchema.virtual("spent_to_come").get(function() {
     .sumBy(m => m.quotations[0]?.customer_total || 0)
 })
 
-UserSchema.virtual("pending_bills").get(function() {
+UserSchema.virtual(`pending_bills`).get(function() {
   return lodash(this.missions)
     .filter(m => [MISSION_STATUS_BILL_SENT].includes(m.status))
     // TODO: finished mission should have a quotations
     .sumBy(m => m.quotations[0]?.customer_total || 0)
 })
 
-UserSchema.virtual("profile_shares_count").get(function() {
+UserSchema.virtual(`profile_shares_count`).get(function() {
   return 0
 })
 
 // All jobs
-UserSchema.virtual("_all_jobs", {
-  ref: "jobUser", // The Model to use
-  localField: "dummy", // Find in Model, where localField
-  foreignField: "dummy" // is equal to foreignField
+UserSchema.virtual(`_all_jobs`, {
+  ref: `jobUser`, // The Model to use
+  localField: `dummy`, // Find in Model, where localField
+  foreignField: `dummy` // is equal to foreignField
 });
 
 UserSchema.virtual('pinned_jobs', {localField: 'tagada', foreignField: 'tagada'}).get(function () {
   return this?._all_jobs?.filter(j => j.pins?.some(p => idEqual(p._id, this._id)))
 })
 
-UserSchema.virtual("search_text").get(function() {
+UserSchema.virtual(`search_text`).get(function() {
   const attributes='firstname,lastname,qualified_str,visible_str,company_name'.split(',')
   let values=attributes.map(att => this[att])
   values.push(COACHING[this.coaching])

@@ -9,7 +9,7 @@ const DietCommentSchema = new Schema(
     user: {
       type: Schema.Types.ObjectId,
       ref: 'user',
-      required: [true, "L'utilisateur est obligatoire"],
+      required: [true, `L'utilisateur est obligatoire`],
     },
     text: {
       type: String,
@@ -18,7 +18,7 @@ const DietCommentSchema = new Schema(
     diet: {
       type: Schema.Types.ObjectId,
       ref: 'user',
-      required: [true, "La diet est obligatoire"],
+      required: [true, `La diet est obligatoire`],
     },
     // Ponctualité
     punctuality_note: {

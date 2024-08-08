@@ -27,8 +27,8 @@ const CompanySchema = new Schema(
 
 CompanySchema.virtual('users', {
   ref: 'user', // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "company", // is equal to foreignField
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `company`, // is equal to foreignField
 });
 
 module.exports = CompanySchema

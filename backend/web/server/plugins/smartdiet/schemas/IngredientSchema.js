@@ -25,7 +25,7 @@ const IngredientSchema = new Schema({
   unit: {
     type: String,
     enum: Object.keys(UNIT),
-    required: [true, "L'unité est obligatoire"]
+    required: [true, `L'unité est obligatoire`]
   },
 },
 {...schemaOptions, ...EVENT_DISCRIMINATOR}

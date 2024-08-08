@@ -9,11 +9,11 @@ const SpoonGainSchema = new Schema({
   source: {
     type: String,
     enum: Object.keys(SPOON_SOURCE),
-    required: [true, "La source de cuillères est obligatoire"],
+    required: [true, `La source de cuillères est obligatoire`],
   },
   gain: {
     type: Number,
-    required: [true, "Le nombre de cuillères gagnées est obligatoire"],
+    required: [true, `Le nombre de cuillères gagnées est obligatoire`],
   }
 }, schemaOptions)
 

@@ -25,15 +25,15 @@ const IndividualChallengeSchema = new Schema({
   },
   fail_message: {
     type: String,
-    required: [true, "Le message d'échec' est obligatoire"],
+    required: [true, `Le message d'échec est obligatoire`],
   },
   trophy_on_picture: {
     type: String,
-    required: [true, "L'illustration de trophée obtenu est obligatoire"],
+    required: [true, `L'illustration de trophée obtenu est obligatoire`],
   },
   trophy_off_picture: {
     type: String,
-    required: [true, "L'illustration de trophée non obtenu est obligatoire"],
+    required: [true, `L'illustration de trophée non obtenu est obligatoire`],
   },
   spoons_count_for_trophy: {
     type: Number,

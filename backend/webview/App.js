@@ -20,7 +20,7 @@ const App = () => {
           startInLoadingState={true}
           allowsBackForwardNavigationGestures
           mediaPlaybackRequiresUserAction={true}
-          source={{ uri: "https://my-alfred.io/" }}
+          source={{ uri: `https://my-alfred.io/` }}
           ref={webviewRef}
         />
         </SafeAreaView>

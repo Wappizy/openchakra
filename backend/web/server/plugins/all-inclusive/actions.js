@@ -337,7 +337,7 @@ addAction('hasChildren', hasChildrenAction)
 
 const askRecommandationAction = ({value, email, message, page}, user) => {
   if (!value) {throw new BadRequestError('Le job est obligatoire')}
-  if (!(email && isEmailOk(email))) {throw new BadRequestError("L'email est invalide")}
+  if (!(email && isEmailOk(email))) {throw new BadRequestError(`L'email est invalide`)}
   if (!message?.trim()) {throw new BadRequestError('Le message est obligatoire')}
   if (!page) {throw new BadRequestError('La page de recommandation est obligatoire')}
   return loadFromDb({model: 'jobUser', id: value, fields:['user.full_name']})

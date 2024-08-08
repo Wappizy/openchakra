@@ -28,7 +28,7 @@ const UserSchema = new Schema({
     type: String,
     required: [true, 'L\'email est obligatoire'],
     set: v => v ? v.toLowerCase().trim() : v,
-    validate: [function(v) {v && isEmailOk(v)}, "L'email est invalide"],
+    validate: [function(v) {v && isEmailOk(v)}, `L'email est invalide`],
   },
   phone: {
     type: String,

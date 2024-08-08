@@ -24,13 +24,13 @@ describe('Challenge.key.picture ', () => {
 
   it('must load challenge.key.picture', async() => {
     const challenges=await IndividualChallenge.find()
-     .populate([{"path":"key", populate: []}])
+     .populate([{'path':`key`, populate: []}])
     console.log(challenges.map(c => c.key.picture))
   })
 
   it('must load user.challenge.key.picture', async() => {
     const users=await User.find()
-     .populate([{"path": '_all_individual_challenges'}, {"path":"individual_challenges","populate":{"path":"key"}}])
+     .populate([{'path': '_all_individual_challenges'}, {'path':`individual_challenges`,'populate':{'path':`key`}}])
     expect(users[0]?.individual_challenges[0]?.key?.picture).toBeTruthy()
   })
 

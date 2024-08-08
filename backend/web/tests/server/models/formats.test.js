@@ -15,7 +15,7 @@ describe('Stripe tests', () => {
   ]
 
   test.each(NUMBERS) (
-    "%p must be valid:%p",
+    `%p must be valid:%p`,
     ((number, expected) => {
       expect(isPhoneOk(number)).toEqual(expected)
     })

@@ -1,10 +1,10 @@
-const axios = require("axios")
+const axios = require(`axios`)
 const mime=require('mime-types')
 const moment=require('moment')
-const { fillForm } = require("../../../utils/fillForm")
-const { sendBufferToAWS } = require("../../middlewares/aws")
+const { fillForm } = require(`../../../utils/fillForm`)
+const { sendBufferToAWS } = require(`../../middlewares/aws`)
 const NutritionAdvice=require('../../models/NutritionAdvice')
-const { formatDate } = require("../../../utils/text")
+const { formatDate } = require(`../../../utils/text`)
 
 const getNutAdviceCertificate = async (userId, params, data) => {
   // Don't generate before the appointment

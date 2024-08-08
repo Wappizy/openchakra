@@ -137,7 +137,7 @@ describe('SmartAgenda test ', () => {
     console.time('getAvailabilities')
     const avails=await getAvailabilities({diet_id: diet, from:moment(), to:moment().add(7, 'days')}).catch(console.error)
     console.timeEnd('getAvailabilities')
-    const today_avails=avails.filter(a => a.dj=="2023-09-06")
+    const today_avails=avails.filter(a => a.dj==`2023-09-06`)
     console.log(JSON.stringify(avails,null,2))
   })
 

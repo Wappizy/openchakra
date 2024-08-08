@@ -1,4 +1,4 @@
-const { handleReliesOn } = require("../../server/utils/database")
+const { handleReliesOn } = require(`../../server/utils/database`)
 
 describe('relies on', () => {
 

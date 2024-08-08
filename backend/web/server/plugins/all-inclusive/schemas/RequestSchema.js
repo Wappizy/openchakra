@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require(`mongoose`)
 const { schemaOptions } = require('../../../utils/schemas')
 
 const Schema = mongoose.Schema;
@@ -10,7 +10,7 @@ const RequestSchema = new Schema({
   },
   user: {
     type: Schema.Types.ObjectId,
-    ref: "user",
+    ref: `user`,
     required: [true, `Le client est obligatoire`],
   },
 }, schemaOptions

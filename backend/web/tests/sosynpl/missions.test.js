@@ -31,7 +31,7 @@ describe('Missions', () => {
   })
   it('must return comingMissions', async () => {
     const customer = await User.findOne({role: ROLE_CUSTOMER})
-    const freelance = await User.findOne({_id: mongoose.Types.ObjectId("6661adbaeb49ff38fc686de5")})
+    const freelance = await User.findOne({_id: mongoose.Types.ObjectId(`6661adbaeb49ff38fc686de5`)})
     const admin = await User.findOne({role: ROLE_ADMIN})
     console.log(!!customer, !!freelance, !!admin)
     let coming_missions_customer = await getComingMissions(customer)

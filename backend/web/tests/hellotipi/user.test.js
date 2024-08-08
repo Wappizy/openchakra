@@ -39,43 +39,43 @@ describe('Test user model', () => {
     await mongoose.connection.close()
   })
 
-  it("Must compute finished_missions_count", async() => {
+  it(`Must compute finished_missions_count`, async() => {
   })
 
-  it("Must compute recommandations_count", async() => {
+  it(`Must compute recommandations_count`, async() => {
     const user=await User.findOne()
       .populate({path: 'jobs', populate: {path: 'recommandations'}})
     expect(user.recommandations_count).toEqual(2)
   })
 
-  it("Must compute recommandations_note", async() => {
+  it(`Must compute recommandations_note`, async() => {
     const user=await User.findOne()
       .populate({path: 'jobs', populate: {path: 'recommandations'}})
     expect(user.recommandations_note).toEqual(2.5)
   })
 
-  it("Must compute comments_count", async() => {
+  it(`Must compute comments_count`, async() => {
     const user=await User.findOne()
       .populate({path: 'jobs', populate: {path: 'comments'}})
     expect(user.comments_count).toEqual(2)
   })
 
-  it("Must compute comments_note", async() => {
+  it(`Must compute comments_note`, async() => {
     const user=await User.findOne()
       .populate({path: 'jobs', populate: {path: 'comments'}})
     expect(user.comments_note).toEqual(3)
   })
 
-  it("Must compute revenue", async() => {
+  it(`Must compute revenue`, async() => {
   })
 
-  it("Must compute revenue_to_come", async() => {
+  it(`Must compute revenue_to_come`, async() => {
   })
 
-  it("Must compute accepted_quotations_count", async() => {
+  it(`Must compute accepted_quotations_count`, async() => {
   })
 
-  it("Must compute profile_shares_count", async() => {
+  it(`Must compute profile_shares_count`, async() => {
   })
 
 })

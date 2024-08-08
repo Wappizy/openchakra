@@ -29,7 +29,7 @@ module.exports = function validatePrestationInput(data) {
   }
 
   if (data.private_company && !parseInt(data.company_price)) {
-    errors.company_price = "Le tarif d'entreprise doit être fourni"
+    errors.company_price = `Le tarif d'entreprise doit être fourni`
   }
 
   return {

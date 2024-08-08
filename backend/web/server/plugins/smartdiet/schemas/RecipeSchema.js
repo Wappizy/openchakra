@@ -125,13 +125,13 @@ const RecipeSchema = new Schema({
 {...schemaOptions, ...EVENT_DISCRIMINATOR}
 )
 
-RecipeSchema.virtual("ingredients", {
-  ref: "recipeIngredient", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "recipe" // is equal to foreignField
+RecipeSchema.virtual(`ingredients`, {
+  ref: `recipeIngredient`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `recipe` // is equal to foreignField
 })
 
-RecipeSchema.virtual("type", {localField: 'tagada', foreignField: 'tagada'}).get(function() {
+RecipeSchema.virtual(`type`, {localField: 'tagada', foreignField: 'tagada'}).get(function() {
   return this.duration>0 ? RECIPE_TYPE_RECIPE : RECIPE_TYPE_FAMILY
 })
 

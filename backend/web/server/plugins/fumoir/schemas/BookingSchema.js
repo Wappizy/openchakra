@@ -24,14 +24,14 @@ const BookingSchema = new Schema(
     },
     start_date: {
       type: Date,
-      required: [true, "La date/heure de réservation est obligatoire"],
-      min: [moment(), "Date antérieure à la date d'aujourd'hui"],
+      required: [true, `La date/heure de réservation est obligatoire`],
+      min: [moment(), `Date antérieure à la date d'aujourd'hui`],
     },
     duration: {
       type: Number,
       min: 1,
       max: 24,
-      required: [true, "La durée de réservation est obligatoire"],
+      required: [true, `La durée de réservation est obligatoire`],
     },
     booking_user: {
       // User who booked
@@ -59,7 +59,7 @@ const BookingSchema = new Schema(
       min: 0,
       max: [MAX_BOOKING_GUESTS, `Vous ne pouvez inviter plus de ${MAX_BOOKING_GUESTS} personnes`],
       default: 0,
-      required: [true, "Le nombre d'invités est obligatoire"],
+      required: [true, `Le nombre d'invités est obligatoire`],
     },
     comments: {
       type: String,

@@ -35,8 +35,8 @@ const Style = theme => ({
     borderTop: '1 solid black'
   },
   table: {
-    display: "table",
-    width: "auto",
+    display: `table`,
+    width: `auto`,
     borderStyle: BORDER_STYLE,
     borderColor: BORDER_COLOR,
     borderWidth: 1,
@@ -45,12 +45,12 @@ const Style = theme => ({
     marginBottom: '8vh'
   },
   tableRow: {
-    margin: "auto",
-    flexDirection: "row"
+    margin: `auto`,
+    flexDirection: `row`
   },
   resultRow: {
-    flexDirection: "row",
-    justifyContent: "flex-end"
+    flexDirection: `row`,
+    justifyContent: `flex-end`
   },
   tableColHeaderDescription: {
     width: COLDESCRIPTION_WIDTH + '%',
@@ -64,7 +64,7 @@ const Style = theme => ({
     borderTopWidth: 0
   },
   tableColHeader: {
-    width: COLN_WIDTH + "%",
+    width: COLN_WIDTH + `%`,
     backgroundColor: BACKGROUND_COLOR,
     borderStyle: BORDER_STYLE,
     borderColor: BORDER_COLOR,
@@ -82,7 +82,7 @@ const Style = theme => ({
     borderTopWidth: 0
   },
   tableCol: {
-    width: COLN_WIDTH + "%",
+    width: COLN_WIDTH + `%`,
     borderStyle: BORDER_STYLE,
     borderColor: BORDER_COLOR,
     borderWidth: 1,

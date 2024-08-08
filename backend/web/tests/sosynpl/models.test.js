@@ -157,11 +157,11 @@ describe('Test models', () => {
     expect(freelance.hard_skills_categories).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          "name": "Catégorie 1",
+          "name": `Catégorie 1`,
           progress: 2/3,
         }),
         expect.objectContaining({
-          "name": "Catégorie 2",
+          "name": `Catégorie 2`,
           progress: 1/3,
         })
 

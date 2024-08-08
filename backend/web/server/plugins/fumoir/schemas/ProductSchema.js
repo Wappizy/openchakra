@@ -30,11 +30,11 @@ const ProductSchema = new Schema(
     supplier: {
       type: Schema.Types.ObjectId,
       ref: 'company',
-      required: [true, "L'entité analytique est obligatoire"],
+      required: [true, `L'entité analytique est obligatoire`],
     },
     picture: {
       type: String,
-      required: [true, "L'illustration est obligatoire"],
+      required: [true, `L'illustration est obligatoire`],
     },
     recommandation: [
       {

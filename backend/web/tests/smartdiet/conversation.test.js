@@ -49,7 +49,7 @@ describe('Conversation ', () => {
     sortedConversations.map(conv => {
       console.group(conv.users.map(u => u.email).sort())
       conv.messages.forEach(m => {
-        console.log(m.group ? "GROUPE!!!"+m: '')
+        console.log(m.group ? `GROUPE!!!`+m: '')
         console.log([m.sender, m.receiver].map(u => u.email).sort())
       })
       console.groupEnd()
@@ -68,7 +68,7 @@ describe('Conversation ', () => {
   })
 
   it.only('Should return latest messages (2)', async()=> {
-    const CONVID="66102d3348a4d229cbb1164b"
+    const CONVID=`66102d3348a4d229cbb1164b`
     const DIET_EMAIL='cyndiet.smartdiet@gmail.com'
     const conversation=await Conversation.findById(CONVID).populate(['messages', 'latest_messages'])
     expect(conversation.latest_messages[0]?.[CREATED_AT_ATTRIBUTE]).toBeTruthy()

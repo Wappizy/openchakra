@@ -344,7 +344,7 @@ addAction('smartdiet_download_impact', downloadImpact)
 
 const buyPack = async ({value}, sender) => {
   await isActionAllowed({action:'smartdiet_buy_pack', dataId:value, user:sender})
-  // If no value, generic "OK" return
+  // If no value, generic `OK` return
   if (lodash.isEmpty(value)) {
     return {}
   }
@@ -406,13 +406,13 @@ const isActionAllowed = async ({ action, dataId, user, actionProps }) => {
     return Lead.exists({_id: dataId, operator: null})
   }
   // Can i start a new coaching ?
-  // TODO: send nothing instead of "undefined" for dataId
+  // TODO: send nothing instead of `undefined` for dataId
   if (action=='create' && actionProps.model=='nutritionAdvice') {
     if (!(user.role==ROLE_EXTERNAL_DIET)) {
       throw new Error(`Seule une diet peut créer un conseil nut`)
     }
   }
-  if (['save', 'create'].includes(action) && actionProps?.model=='coaching' && (action=='create' || (lodash.isEmpty(dataId) || dataId=="undefined"))) {
+  if (['save', 'create'].includes(action) && actionProps?.model=='coaching' && (action=='create' || (lodash.isEmpty(dataId) || dataId==`undefined`))) {
     let patientId;
     if ([ROLE_ADMIN, ROLE_SUPER_ADMIN, ROLE_SUPPORT, ROLE_EXTERNAL_DIET].includes(user.role)) {
       if (!actionProps?.parent) {
@@ -444,7 +444,7 @@ const isActionAllowed = async ({ action, dataId, user, actionProps }) => {
     return true
   } 
 
-  const promise = dataId && dataId != "undefined" ? getModel(dataId) : Promise.resolve(null)
+  const promise = dataId && dataId != `undefined` ? getModel(dataId) : Promise.resolve(null)
   return promise
     .then(modelName => {
       const promise=modelName ? mongoose.models[modelName].findById(dataId) : Promise.resolve(null)

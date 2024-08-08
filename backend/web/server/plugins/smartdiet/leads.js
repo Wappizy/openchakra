@@ -64,7 +64,7 @@ const mapData = (input, mapping)  => {
 
     output[attribute]=lodash.isEmpty(converted) ? null : converted
   })
-  // console.log(input, "=>", output)
+  // console.log(input, `=>`, output)
   // console.log('return')
   return Promise.resolve(output)
   }

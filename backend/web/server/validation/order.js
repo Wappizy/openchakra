@@ -26,7 +26,7 @@ function validateOrderItem(data) {
   let errors = {}
 
   if (!mongoose.isValidObjectId(data.product)) {
-    errors.product = "L'article est invalide"
+    errors.product = `L'article est invalide`
   }
 
   if (!(lodash.isInteger(data.quantity) && data.quantity>0)) {

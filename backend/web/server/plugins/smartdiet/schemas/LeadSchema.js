@@ -72,22 +72,22 @@ const LeadSchema = new Schema({
   },
   operator: {
     type: Schema.Types.ObjectId,
-    ref: "user",
+    ref: `user`,
     required: false,
   },
   job: {
     type: Schema.Types.ObjectId,
-    ref: "job",
+    ref: `job`,
     required: false,
   },
   decline_reason: {
     type: Schema.Types.ObjectId,
-    ref: "declineReason",
+    ref: `declineReason`,
     required: false,
   },
   join_reason: {
     type: Schema.Types.ObjectId,
-    ref: "joinReason",
+    ref: `joinReason`,
     required: false,
   },
   next_call_date: {
@@ -96,7 +96,7 @@ const LeadSchema = new Schema({
   },
   interested_in: [{
     type: Schema.Types.ObjectId,
-    ref: "interest",
+    ref: `interest`,
     required: false,
   }],
   call_direction: {
@@ -129,26 +129,26 @@ LeadSchema.virtual('fullname', DUMMY_REF).get(function() {
   return `${this.firstname || ''} ${this.lastname || ''}`
 })
 
-LeadSchema.virtual("company", {
-  ref: "company", // The Model to use
-  localField: "company_code", // Find in Model, where localField
-  foreignField: "code", // is equal to foreignField
+LeadSchema.virtual(`company`, {
+  ref: `company`, // The Model to use
+  localField: `company_code`, // Find in Model, where localField
+  foreignField: `code`, // is equal to foreignField
   justOne: true,
 });
 
 // Corresponding registered user if any
-LeadSchema.virtual("registered_user", {
-  ref: "user", // The Model to use
-  localField: "email", // Find in Model, where localField
-  foreignField: "email", // is equal to foreignField
+LeadSchema.virtual(`registered_user`, {
+  ref: `user`, // The Model to use
+  localField: `email`, // Find in Model, where localField
+  foreignField: `email`, // is equal to foreignField
 });
 
 LeadSchema.virtual('registered', DUMMY_REF).get(function() {
   return !lodash.isEmpty(this.registered_user)
 })
 
-LeadSchema.virtual("nutrition_advices", {
-  ref: "nutritionAdvice", // The Model to use
+LeadSchema.virtual(`nutrition_advices`, {
+  ref: `nutritionAdvice`, // The Model to use
   localField: 'email',
   foreignField: 'patient_email',
 })

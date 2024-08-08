@@ -1,4 +1,4 @@
-import App from "next/app";
+import App from 'next/app';
 
 class MyApp extends App {
   render() {

@@ -248,7 +248,7 @@ describe('Performance ', () => {
       model: 'loggedUser', 
       fields, 
       user, 
-      params:{"limit.diet_appointments":"1","limit":"30"}})
+      params:{'limit.diet_appointments':`1`,'limit':`30`}})
     expect(loadedUser.diet_appointments[0].order).toBeGreaterThan(0)
   }, 3000)
 
@@ -362,14 +362,14 @@ describe('Performance ', () => {
   it('Should filter by fullname', async () => {
     const fields='fullname,email,picture,phone,company.name'.split(',')
     const diet=await User.findOne(DIET_CRITERION)
-    const params={"filter.fullname":"bras", limit:3}
+    const params={'filter.fullname':`bras`, limit:3}
     const patients=await loadFromDb({model: 'user', fields, params, user:diet})
     console.log(patients)
   })
 
   it('Must handle sorts', async () => {
     const user=await User.findOne(DIET_CRITERION)
-    const id="65c1fa450ac08c025b15a1cf"
+    const id=`65c1fa450ac08c025b15a1cf`
     const url='https://localhost:4201/myAlfred/api/studio/user/65c1fa450ac08c025b15a1cf/?fields=latest_coachings.food_documents.key.picture,latest_coachings.food_documents.type,latest_coachings.food_documents.url,latest_coachings.food_documents,latest_coachings.food_documents.name,latest_coachings.food_documents.key.name,latest_coachings.user.fullname,latest_coachings.user.company.name,latest_coachings.spent_credits,latest_coachings.remaining_credits,latest_coachings.mode,latest_coachings.user,latest_coachings,latest_coachings.reasons.name,latest_coachings.reasons,latest_coachings.quizz.key.picture,latest_coachings.quizz.key.name,latest_coachings.quizz.type,latest_coachings.quizz.name,latest_coachings.quizz,latest_coachings.appointments.coaching.food_documents,latest_coachings.appointments,latest_coachings.appointments.coaching.quizz_templates,latest_coachings.appointments.logbooks,latest_coachings.food_program&limit.latest_coachings.food_documents=1000&limit.latest_coachings=30&limit.latest_coachings.reasons=30&limit.latest_coachings.quizz=300&limit.latest_coachings.appointments=1&limit.latest_coachings.appointments=1&limit.latest_coachings.appointments=1&sort.latest_coachings.food_documents.key.order=asc&sort.latest_coachings.quizz.key.order=asc&sort.latest_coachings.appointments.creation_date=desc&sort.latest_coachings.appointments.start_date=desc&sort.latest_coachings.appointments.start_date=desc&filter.latest_coachings.food_documents.type=FOOD_DOCUMENT_TYPE_NUTRITION&'
     const fields=url.replace(/^.*fields=/, '').replace(/\&.*$/, '').split(',')
     const params=Object.fromEntries(url.split('&').filter(v => /^(limit|sort|filter)/.test(v)).map(v => v.split('=')))

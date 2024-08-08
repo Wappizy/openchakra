@@ -378,10 +378,10 @@ UserSchema.virtual('logbooks', DUMMY_REF).get(function() {
 
 
 
-UserSchema.virtual("surveys", {
-  ref: "userSurvey", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "user" // is equal to foreignField
+UserSchema.virtual(`surveys`, {
+  ref: `userSurvey`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `user` // is equal to foreignField
 });
 
 const computeTargets = user => {
@@ -394,9 +394,9 @@ const computeTargets = user => {
 }
 // Computed virtual
 UserSchema.virtual('contents', {
-  ref: "content", // The Model to use
-  localField: "dummy", // Find in Model, where localField
-  foreignField: "dummy", // is equal to foreignField
+  ref: `content`, // The Model to use
+  localField: `dummy`, // Find in Model, where localField
+  foreignField: `dummy`, // is equal to foreignField
   options: {
     match : u => {
       return {targets: {$in: computeTargets((u))}}
@@ -404,17 +404,17 @@ UserSchema.virtual('contents', {
   }
 })
 
-UserSchema.virtual("available_groups", DUMMY_REF).get(function () {
+UserSchema.virtual(`available_groups`, DUMMY_REF).get(function () {
   return lodash(this.company?.groups)
     .filter(g => shareTargets(this, g))
     .differenceBy(this.registered_groups, g => g._id.toString())
     .value()
 })
 
-UserSchema.virtual("registered_groups", {
-  ref: "group", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "users" // is equal to foreignField
+UserSchema.virtual(`registered_groups`, {
+  ref: `group`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `users` // is equal to foreignField
 });
 
 // TODO get rid of this
@@ -445,10 +445,10 @@ UserSchema.virtual('available_webinars', DUMMY_REF).get(function() {
 })
 
 // Any past company webinar
-UserSchema.virtual("past_webinars", {
-  ref: "webinar", // The Model to use
-  localField: "company", // Find in Model, where localField
-  foreignField: "companies", // is equal to foreignField
+UserSchema.virtual(`past_webinars`, {
+  ref: `webinar`, // The Model to use
+  localField: `company`, // Find in Model, where localField
+  foreignField: `companies`, // is equal to foreignField
   options: {
     match: () => {
       return {end_date: {$lt: Date.now()}}
@@ -456,10 +456,10 @@ UserSchema.virtual("past_webinars", {
   },
 });
 
-UserSchema.virtual("_all_individual_challenges", {
-  ref: "individualChallenge", // The Model to use
-  localField: "dummy", // Find in Model, where localField
-  foreignField: "dummy" // is equal to foreignField
+UserSchema.virtual(`_all_individual_challenges`, {
+  ref: `individualChallenge`, // The Model to use
+  localField: `dummy`, // Find in Model, where localField
+  foreignField: `dummy` // is equal to foreignField
 });
 
 // Ind. challenge registered still not failed or passed
@@ -500,17 +500,17 @@ UserSchema.virtual('passed_individual_challenges', DUMMY_REF).get(function() {
   return this._all_individual_challenges?.filter(c => passed.find(p => idEqual(p._id, c._id)))||[]
 })
 
-UserSchema.virtual("_all_menus", {
-  ref: "menu", // The Model to use
-  localField: "dummy", // Find in Model, where localField
-  foreignField: "dummy" // is equal to foreignField
+UserSchema.virtual(`_all_menus`, {
+  ref: `menu`, // The Model to use
+  localField: `dummy`, // Find in Model, where localField
+  foreignField: `dummy` // is equal to foreignField
 });
 
 // Available menus for this week
-UserSchema.virtual("available_menus", {
-  ref: "menu", // The Model to use
-  localField: "dummy", // Find in Model, where localField
-  foreignField: "dummy", // is equal to foreignField
+UserSchema.virtual(`available_menus`, {
+  ref: `menu`, // The Model to use
+  localField: `dummy`, // Find in Model, where localField
+  foreignField: `dummy`, // is equal to foreignField
   options: {
     match: () => {
       return {start_date: {$lt: Date.now()}, end_date:{$gt: Date.now()}}
@@ -519,10 +519,10 @@ UserSchema.virtual("available_menus", {
 });
 
 // Past menus
-UserSchema.virtual("past_menus", {
-  ref: "menu", // The Model to use
-  localField: "dummy", // Find in Model, where localField
-  foreignField: "dummy", // is equal to foreignField
+UserSchema.virtual(`past_menus`, {
+  ref: `menu`, // The Model to use
+  localField: `dummy`, // Find in Model, where localField
+  foreignField: `dummy`, // is equal to foreignField
   options: {
     match: () => {
       return {end_date:{$lt: Date.now()}}
@@ -532,10 +532,10 @@ UserSchema.virtual("past_menus", {
 });
 
 // Past menus
-UserSchema.virtual("future_menus", {
-  ref: "menu", // The Model to use
-  localField: "dummy", // Find in Model, where localField
-  foreignField: "dummy", // is equal to foreignField
+UserSchema.virtual(`future_menus`, {
+  ref: `menu`, // The Model to use
+  localField: `dummy`, // Find in Model, where localField
+  foreignField: `dummy`, // is equal to foreignField
   options: {
     match: () => {
       return {start_date:{$gt: Date.now()}}
@@ -557,14 +557,14 @@ UserSchema.virtual('_all_events', DUMMY_REF).get(function() {
     .filter(v=>!!v)
 })
 
-UserSchema.virtual("measures", {
-  ref: "measure", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "user", // is equal to foreignField
+UserSchema.virtual(`measures`, {
+  ref: `measure`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `user`, // is equal to foreignField
   options: {sort: 'date'},
 });
 
-UserSchema.virtual("last_measures", DUMMY_REF).get(function() {
+UserSchema.virtual(`last_measures`, DUMMY_REF).get(function() {
   if (lodash.isEmpty(this.measures)) {
     return null
   }
@@ -578,13 +578,13 @@ UserSchema.virtual("last_measures", DUMMY_REF).get(function() {
   return [res]
 })
 
-UserSchema.virtual("pinned_contents", {
-  ref: "content", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "pins" // is equal to foreignField
+UserSchema.virtual(`pinned_contents`, {
+  ref: `content`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `pins` // is equal to foreignField
 });
 
-UserSchema.virtual("targets", DUMMY_REF).get(function() {
+UserSchema.virtual(`targets`, DUMMY_REF).get(function() {
   return computeTargets(this)
 })
 
@@ -628,17 +628,17 @@ UserSchema.methods.canJoinEvent = function(event_id) {
 }
 
 // External Diet
-UserSchema.virtual("diploma", {
-  ref: "diploma", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "user" // is equal to foreignField
+UserSchema.virtual(`diploma`, {
+  ref: `diploma`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `user` // is equal to foreignField
 });
 
 // Comments for diet
-UserSchema.virtual("diet_comments", {
-  ref: "dietComment", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "diet" // is equal to foreignField
+UserSchema.virtual(`diet_comments`, {
+  ref: `dietComment`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `diet` // is equal to foreignField
 });
 
 // Diet : average_note
@@ -655,68 +655,68 @@ UserSchema.virtual('profile_progress', DUMMY_REF).get(function() {
 });
 
 // Comments for diet
-UserSchema.virtual("diet_objectives", {
-  ref: "quizzQuestion", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "diet_private" // is equal to foreignField
+UserSchema.virtual(`diet_objectives`, {
+  ref: `quizzQuestion`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `diet_private` // is equal to foreignField
 });
 
-UserSchema.virtual("coachings", {
-  ref: "coaching", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "user" // is equal to foreignField
+UserSchema.virtual(`coachings`, {
+  ref: `coaching`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `user` // is equal to foreignField
 })
 
-UserSchema.virtual("coachings_count", {
-  ref: "coaching", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "user", // is equal to foreignField
+UserSchema.virtual(`coachings_count`, {
+  ref: `coaching`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `user`, // is equal to foreignField
   count: true,
 })
 
-UserSchema.virtual("latest_coachings", {
-  ref: "coaching", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "user", // is equal to foreignField
+UserSchema.virtual(`latest_coachings`, {
+  ref: `coaching`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `user`, // is equal to foreignField
   options: { sort: { creation_date: -1 }, limit:1 },
   array: true,
 })
 
-UserSchema.virtual("diet_coachings", {
-  ref: "coaching", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "diet", // is equal to foreignField
+UserSchema.virtual(`diet_coachings`, {
+  ref: `coaching`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `diet`, // is equal to foreignField
 })
 
-UserSchema.virtual("diet_questions", {
-  ref: "quizzQuestion", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "diet_private", // is equal to foreignField
+UserSchema.virtual(`diet_questions`, {
+  ref: `quizzQuestion`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `diet_private`, // is equal to foreignField
 })
 
-UserSchema.virtual("availability_ranges", {
-  ref: "range", // The Model to use
-  localField: "_id", // Find in Model, where localField
-  foreignField: "user", // is equal to foreignField
+UserSchema.virtual(`availability_ranges`, {
+  ref: `range`, // The Model to use
+  localField: `_id`, // Find in Model, where localField
+  foreignField: `user`, // is equal to foreignField
 })
 
-UserSchema.virtual("keys", {
-  ref: "key", // The Model to use
-  localField: "dummy", // Find in Model, where localField
-  foreignField: "dummy", // is equal to foreignField
+UserSchema.virtual(`keys`, {
+  ref: `key`, // The Model to use
+  localField: `dummy`, // Find in Model, where localField
+  foreignField: `dummy`, // is equal to foreignField
 })
 
-// UserSchema.virtual("diet_appointments", {
-//   ref: "appointment", // The Model to use
-//   localField: "_id", // Find in Model, where localField
-//   foreignField: "diet", // is equal to foreignField
+// UserSchema.virtual(`diet_appointments`, {
+//   ref: `appointment`, // The Model to use
+//   localField: `_id`, // Find in Model, where localField
+//   foreignField: `diet`, // is equal to foreignField
 // })
 
 // TODO this should work !!!
-// UserSchema.virtual("diet_appointments_count", {
-//   ref: "appointment", // The Model to use
-//   localField: "_id", // Find in Model, where localField
-//   foreignField: "diet", // is equal to foreignField
+// UserSchema.virtual(`diet_appointments_count`, {
+//   ref: `appointment`, // The Model to use
+//   localField: `_id`, // Find in Model, where localField
+//   foreignField: `diet`, // is equal to foreignField
 //   count: true,
 // })
 
@@ -734,10 +734,10 @@ UserSchema.virtual('days_inactivity', {localField:'tagada', foreignField:'tagada
   return moment().diff(moment(this.last_activity), 'days')
 })
 
-UserSchema.virtual("nutrition_advices", {
-  ref: "nutritionAdvice", // The Model to use
-  localField: function() {return this.role==ROLE_EXTERNAL_DIET ?  "_id" : "email"}, // Find in Model, where localField
-  foreignField: function() {return this.role==ROLE_EXTERNAL_DIET ?  "diet" : "patient_email"}, // is equal to foreignField
+UserSchema.virtual(`nutrition_advices`, {
+  ref: `nutritionAdvice`, // The Model to use
+  localField: function() {return this.role==ROLE_EXTERNAL_DIET ?  `_id` : `email`}, // Find in Model, where localField
+  foreignField: function() {return this.role==ROLE_EXTERNAL_DIET ?  `diet` : `patient_email`}, // is equal to foreignField
 })
 
 UserSchema.virtual('spent_nutrition_credits', {

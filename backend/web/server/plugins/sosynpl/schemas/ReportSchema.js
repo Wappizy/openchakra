@@ -1,9 +1,9 @@
-const mongoose = require("mongoose")
-const moment = require("moment")
+const mongoose = require(`mongoose`)
+const moment = require(`moment`)
 const { schemaOptions } = require('../../../utils/schemas');
 const autoIncrement = require('mongoose-auto-increment')
-const { DUMMY_REF } = require("../../../utils/database");
-const { REPORT_STATUS, REPORT_STATUS_DRAFT, REPORT_STATUS_DISPUTE, REPORT_STATUS_SENT, REPORT_STATUS_PAID, REPORT_STATUS_ACCEPTED } = require("../consts");
+const { DUMMY_REF } = require(`../../../utils/database`);
+const { REPORT_STATUS, REPORT_STATUS_DRAFT, REPORT_STATUS_DISPUTE, REPORT_STATUS_SENT, REPORT_STATUS_PAID, REPORT_STATUS_ACCEPTED } = require(`../consts`);
 
 const Schema = mongoose.Schema;
 
