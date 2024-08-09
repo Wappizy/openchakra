@@ -1,5 +1,5 @@
 {
-  delete: {
+  "delete": {
     "sender": "smartagenda",
     "senderSite": "devsmartdiet",
     "objClass": "pdo_events",
@@ -67,7 +67,7 @@
     },
     "hash": "37aee8c18f4881e6f75ea998c8bb3c412993ca499f84c0a8dbea62bf9c0db2c9"
   },
-  insert: {
+  "insert": {
     "sender": "smartagenda",
     "senderSite": "devsmartdiet",
     "objClass": "pdo_events",
@@ -135,7 +135,7 @@
     },
     "hash": "917b0b5d36edde4305060cf89c7c7fdc0e0a13b4db9be38a4e65a30041c453a6"
   },
-  update: {
+  "update": {
     "sender": "smartagenda",
     "senderSite": "devsmartdiet",
     "objClass": "pdo_events",
@@ -202,5 +202,5 @@
       }
     },
     "hash": "8f6536b9c18b68d464e346c21e072256298f720a7d5ea3ef25efc4b77d1053a8"
-  },
+  }
 }
