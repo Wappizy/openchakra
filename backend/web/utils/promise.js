@@ -1,4 +1,3 @@
-
 const delayedPromise = (delay_ms, promise_fn) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
