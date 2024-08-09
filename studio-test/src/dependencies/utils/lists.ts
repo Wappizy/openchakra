@@ -1,4 +1,4 @@
-export const unitList = [
+const unitList = [
   'acre',
   'bit',
   'byte',
@@ -45,6 +45,13 @@ export const unitList = [
   'year',
 ]
 
-export const currencyList = ['EUR', 'JPY', 'GBP', 'USD']
-export const unitListDisplay = ['short', 'long', 'narrow']
-export const currencyListDisplay = ['symbol', 'name', 'code']
+const currencyList = ['EUR', 'JPY', 'GBP', 'USD']
+const unitListDisplay = ['short', 'long', 'narrow']
+const currencyListDisplay = ['symbol', 'name', 'code']
+
+module.exports = {
+  unitList,
+  currencyList,
+  unitListDisplay,
+  currencyListDisplay
+}

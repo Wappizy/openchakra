@@ -3,7 +3,7 @@ import lodash from 'lodash'
 import Cookies from 'universal-cookie'
 const THUMBNAILS_DIR = 'thumbnails'
 
-export function isJsonString(str: string) {
+function isJsonString(str: string) {
   try {
     JSON.parse(str)
   } catch (e) {
@@ -12,9 +12,9 @@ export function isJsonString(str: string) {
   return true
 }
 
-export const NOT_CONNECTED=`NOT_CONNECTED`
+const NOT_CONNECTED=`NOT_CONNECTED`
 
-export const normalize = (str:string) => {
+const normalize = (str:string) => {
   str = str
     ? str
         .trim()
@@ -26,7 +26,7 @@ export const normalize = (str:string) => {
 }
 
 
-export const matcher = (pattern:string, elements:Array<any>, attribute:string) => {
+const matcher = (pattern:string, elements:Array<any>, attribute:string) => {
   if (!elements) { return elements}
   const patternElements=normalize(pattern).trim().split(' ')
   // Default search: match every pattern element
@@ -46,7 +46,7 @@ export const matcher = (pattern:string, elements:Array<any>, attribute:string) =
 }
 
 
-export const imageSrcSetPaths = (originalSrc:string, withDimension=true) => {
+const imageSrcSetPaths = (originalSrc:string, withDimension=true) => {
 
   /**
    * src filename example containing sizes: 
@@ -83,7 +83,7 @@ export const imageSrcSetPaths = (originalSrc:string, withDimension=true) => {
   return srcSet
 }
 
-export const joinDelimiter = ({array, delimiter=', ', lastDelimiter=' et '}) => {
+const joinDelimiter = ({array, delimiter=', ', lastDelimiter=' et '}) => {
   if (!lodash.isArray(array)) {
     throw new Error(`array ${array} (type ${typeof array}) is not an array`)
   }
@@ -98,7 +98,7 @@ export const joinDelimiter = ({array, delimiter=', ', lastDelimiter=' et '}) => 
   return [firstPart, secondPart].join(lastDelimiter)
 }
 
-export const formatAddress = addr => {
+const formatAddress = addr => {
   if (!addr) {
     return null
   }
@@ -107,8 +107,19 @@ export const formatAddress = addr => {
   return [part1, part2].filter(v => !!v).join(', ')
 }
 
-export const redirectExists = () =>{
+const redirectExists = () =>{
   const cookies=new Cookies()
   const redirect=cookies.get('redirect')
   return !!redirect
-} 
+}
+
+module.exports = {
+  redirectExists,
+  formatAddress,
+  joinDelimiter,
+  imageSrcSetPaths,
+  matcher,
+  normalize,
+  NOT_CONNECTED,
+  isJsonString
+}

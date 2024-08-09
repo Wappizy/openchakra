@@ -2,7 +2,7 @@
 // If not found, search for component with id ${componentId}${suffix}
 // in case of cloned components
 
-export const getComponent = (componentId, suffix) => {
+const getComponent = (componentId, suffix) => {
   let suffixes=suffix?.split('_') || []
   while (true) {
     const subCompId=`${componentId}${suffixes.join('_')}`
@@ -16,7 +16,7 @@ export const getComponent = (componentId, suffix) => {
 
 }
 
-export const getComponentDataValue = (componentId, suffix) => {
+const getComponentDataValue = (componentId, suffix) => {
   let suffixes=suffix?.split('_') || []
   while (true) {
     const subCompId=`${componentId}${suffixes.join('_')}`
@@ -35,7 +35,7 @@ export const getComponentDataValue = (componentId, suffix) => {
   return
 }
 
-export const clearComponentValue = (componentId, suffix) => {
+const clearComponentValue = (componentId, suffix) => {
   let component = document.getElementById(componentId)
   if (!component) {
     component = document.getElementById(`${componentId}${suffix}`)
@@ -43,4 +43,10 @@ export const clearComponentValue = (componentId, suffix) => {
   if (component) {
     component.value = ''
   }
+}
+
+module.exports = {
+  clearComponentValue,
+  getComponentDataValue,
+  getComponent
 }

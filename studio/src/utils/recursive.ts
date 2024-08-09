@@ -2,7 +2,7 @@ import omit from 'lodash/omit'
 import filter from 'lodash/filter'
 import { generateId } from './generateId'
 
-export const duplicateComponent = (
+const duplicateComponent = (
   componentToClone: IComponent,
   components: IComponents,
 ) => {
@@ -62,7 +62,7 @@ export const duplicateComponent = (
   }
 }
 
-export const deleteComponent = (
+const deleteComponent = (
   component: IComponent,
   components: IComponents,
 ) => {
@@ -82,4 +82,9 @@ export const deleteComponent = (
   deleteRecursive(component.children, component.id)
   updatedComponents = omit(updatedComponents, component.id)
   return updatedComponents
+}
+
+module.exports = {
+  deleteComponent,
+  duplicateComponent
 }

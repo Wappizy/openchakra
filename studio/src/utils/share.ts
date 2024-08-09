@@ -1,13 +1,13 @@
 import * as LZString from 'lz-string'
 
-export const createShareUrl = (components: IComponents) =>
+const createShareUrl = (components: IComponents) =>
   `${document.location.protocol}//${
     document.location.host
   }/?share=${LZString.compressToEncodedURIComponent(
     JSON.stringify(components),
   )}`
 
-export const decodeShareUrl = (): IComponents | null => {
+const decodeShareUrl = (): IComponents | null => {
   try {
     const searchParams = new URLSearchParams(document.location.search)
     const sharedData = searchParams.get('share')
@@ -20,4 +20,9 @@ export const decodeShareUrl = (): IComponents | null => {
   }
 
   return null
+}
+
+module.exports = {
+  decodeShareUrl,
+  createShareUrl
 }

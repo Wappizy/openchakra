@@ -5,7 +5,7 @@ import moment from 'moment'
 import lodash from 'lodash'
 import { Input } from '@chakra-ui/react'
 
-export const OPERATORS = {
+const OPERATORS = {
   Boolean: { true: v => !!v, false: v => !v, empty: lodash.isNil },
   Number: {
     '=': (v, ref) => v == ref,
@@ -54,7 +54,7 @@ export const OPERATORS = {
   }
 }
 
-export const getOperators = att => {
+const getOperators = att => {
   if(att?.enumValues) {
     return OPERATORS.Enum
   }
@@ -67,7 +67,7 @@ export const getOperators = att => {
   return OPERATORS[att?.type]
 }
 
-export const isOperatorMultiple = (att, op) => {
+const isOperatorMultiple = (att, op) => {
   return att?.enumValues && op=='in'
 }
 
@@ -86,7 +86,7 @@ const createFilters = (filterDef, props, componentValueGetter) => {
   })
 }
 
-export const getConditionalProperties = (props, dataSource, componentValueGetter) => {
+const getConditionalProperties = (props, dataSource, componentValueGetter) => {
   const conditions = Object.keys(props).filter(k => /^conditions/.test(k))
   const properties = Object.fromEntries(
     conditions
@@ -101,7 +101,7 @@ export const getConditionalProperties = (props, dataSource, componentValueGetter
   return properties
 }
 
-export const ValueComponent = ({ type, operator, ...props }) => {
+const ValueComponent = ({ type, operator, ...props }) => {
   const VALUE_COMPONENTS = {
     Boolean: _ => null,
     Number: op =>
@@ -115,15 +115,15 @@ export const ValueComponent = ({ type, operator, ...props }) => {
   return Cmp ? <Cmp {...props} /> : null
 }
 
-export const getConditionPropertyName = conditionId => {
+const getConditionPropertyName = conditionId => {
   return `condition${conditionId}`
 }
 
-export const getConditionsPropertyName = property => {
+const getConditionsPropertyName = property => {
   return `conditions${property}`
 }
 
-export const buildFilter = (dataSourceId, filterAttributes, componentsValues) => {
+const buildFilter = (dataSourceId, filterAttributes, componentsValues) => {
   // componentsValues stores comp-XXX_0_1_2 while componentName is the studio's one (i.e. comp-XXX)
   const log=dataSourceId=='root' ? console.log : () => {}
   const getComponentValue= compId => {
@@ -138,4 +138,15 @@ export const buildFilter = (dataSourceId, filterAttributes, componentsValues) =>
   const allFilters=[...constants, ...variables]
   const res=allFilters.length>0 ? allFilters.join('&')+'&' : ''
   return res
+}
+
+module.exports = {
+  buildFilter,
+  getConditionsPropertyName,
+  getConditionPropertyName,
+  ValueComponent,
+  getConditionalProperties,
+  isOperatorMultiple,
+  getOperators,
+  OPERATORS
 }

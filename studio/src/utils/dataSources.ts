@@ -13,7 +13,7 @@ import { DEFAULT_LIMIT } from '~dependencies/utils/consts'
 
     Deploy 47s
  */
-export const CONTAINER_TYPE: ComponentType[] = [
+const CONTAINER_TYPE: ComponentType[] = [
   'Box',
   'Grid',
   'SimpleGrid',
@@ -25,22 +25,23 @@ export const CONTAINER_TYPE: ComponentType[] = [
   'TabList',
   'TabPanels',
 ]
-export const TEXT_TYPE: ComponentType[] = [
+const TEXT_TYPE: ComponentType[] = [
   'Text',
   'Heading',
   'Badge',
   'ListItem',
 ]
-export const ACTION_TYPE: ComponentType[] = ['Button', 'IconButton', 'Calendar']
-export const IMAGE_TYPE: ComponentType[] = ['Image', 'Avatar', 'Media']
-export const PROGRESS_TYPE: ComponentType[] = ['Progress', 'CircularProgress']
-export const DATE_TYPE: ComponentType[] = ['Date']
-export const SELECT_TYPE: ComponentType[] = ['Select']
-export const SOURCE_TYPE: ComponentType[] = ['Timer', 'Chart']
-export const CHECKBOX_TYPE: ComponentType[] = ['Checkbox', 'Radio', 'Switch', 'IconCheck']
-export const INPUT_TYPE: ComponentType[] = ['Lexical', 'Input', 'Textarea', 'NumberInput', 'Rating', 'NumberFormat', 'Address', 'Slider']
-export const UPLOAD_TYPE: ComponentType[] = ['UploadFile']
-export const GROUP_TYPE: ComponentType[] = ['RadioGroup', 'CheckboxGroup']
+const ACTION_TYPE: ComponentType[] = ['Button', 'IconButton', 'Calendar']
+const IMAGE_TYPE: ComponentType[] = ['Image', 'Avatar', 'Media']
+const PROGRESS_TYPE: ComponentType[] = ['Progress', 'CircularProgress']
+const DATE_TYPE: ComponentType[] = ['Date']
+const SELECT_TYPE: ComponentType[] = ['Select']
+const SOURCE_TYPE: ComponentType[] = ['Timer', 'Chart']
+const CHECKBOX_TYPE: ComponentType[] = ['Checkbox', 'Radio', 'Switch', 'IconCheck']
+const INPUT_TYPE: ComponentType[] = ['Lexical', 'Input', 'Textarea', 'NumberInput', 'Rating', 'NumberFormat', 'Address', 'Slider']
+const UPLOAD_TYPE: ComponentType[] = ['UploadFile']
+const GROUP_TYPE: ComponentType[] = ['RadioGroup', 'CheckboxGroup']
+
 
 const ALL_DYNAMICS = lodash.flatten([
   CONTAINER_TYPE,
@@ -57,20 +58,20 @@ const ALL_DYNAMICS = lodash.flatten([
   GROUP_TYPE,
 ])
 
-export const allowsDataSource = (component: IComponent): boolean => {
+const allowsDataSource = (component: IComponent): boolean => {
   return ALL_DYNAMICS.includes(component.type)
     && (!(component.type === 'Flex' && !!component?.props?.isFilterComponent))
 }
 
-export const isMultipleDispatcher = (component: IComponent): boolean => {
+const isMultipleDispatcher = (component: IComponent): boolean => {
   return CONTAINER_TYPE.includes(component.type)
 }
 
-export const isSingleDataPage = (components: IComponents): boolean => {
+const isSingleDataPage = (components: IComponents): boolean => {
   return components?.root?.props?.cardinality=='single'
 }
 
-export const getComponentsHierarchy = (
+const getComponentsHierarchy = (
   component: IComponent,
   components: IComponents,
 ): IComponent[] => {
@@ -83,7 +84,7 @@ export const getComponentsHierarchy = (
   ]
 }
 
-export const getDataProviders = (
+const getDataProviders = (
   component: IComponent,
   components: IComponents,
 ): IComponent[] => {
@@ -96,7 +97,7 @@ export const getDataProviders = (
   )
 }
 
-export const getDataProviderDataType = (
+const getDataProviderDataType = (
   component: IComponent,
   components: IComponents,
   dataSource: string,
@@ -170,7 +171,7 @@ const getComponentAttributes = (
 
 
 // TODO Filter attributes
-export const getAvailableAttributes = (
+const getAvailableAttributes = (
   component: IComponent,
   components: IComponents,
   models: any,
@@ -187,7 +188,7 @@ export const getAvailableAttributes = (
   return cardinalityAttributes
 }
 
-export const getFilterAttributes = (
+const getFilterAttributes = (
   component: IComponent,
   components: IComponents,
   models: any,
@@ -204,7 +205,7 @@ export const getFilterAttributes = (
   return simpleAttributes
 }
 
-export const computeDataFieldName = (
+const computeDataFieldName = (
   component: IComponent,
   components: IComponents,
   dataSourceId: string,
@@ -284,7 +285,7 @@ export const computeDataFieldName = (
   return result
 }
 
-export const getLimitsForDataProvider = (
+const getLimitsForDataProvider = (
   dataProviderId: string,
   components: IComponents,
   getDynamicType: any,
@@ -298,7 +299,7 @@ export const getLimitsForDataProvider = (
 }
 
 // Traverse down-up from components to dataprovider to join all fields
-export const getFieldsForDataProvider = (
+const getFieldsForDataProvider = (
   dataProviderId: string,
   components: IComponents,
 ): string[] => {
@@ -317,7 +318,7 @@ export const getFieldsForDataProvider = (
   return fields
 }
 
-export const getParentOfType = (components:IComponents, comp: IComponent, type: ComponentType): IComponent | null => {
+const getParentOfType = (components:IComponents, comp: IComponent, type: ComponentType): IComponent | null => {
   if (comp.type==type) {
     return comp
   }
@@ -327,11 +328,11 @@ export const getParentOfType = (components:IComponents, comp: IComponent, type: 
   return null
 }
 
-export const hasParentType = (comp: IComponent, comps: IComponents, type: ComponentType) => {
+const hasParentType = (comp: IComponent, comps: IComponents, type: ComponentType) => {
   return !!getParentOfType(comps, comp, type)
 }
 
-export const getChildrenOfType = (components:IComponents, comp: IComponent, type: ComponentType):IComponent[] => {
+const getChildrenOfType = (components:IComponents, comp: IComponent, type: ComponentType):IComponent[] => {
   if (comp.type==type) {
     return [comp]
   }
@@ -342,3 +343,31 @@ export const getChildrenOfType = (components:IComponents, comp: IComponent, type
   return lodash.flatten(children)
 }
 
+module.exports = {
+  getChildrenOfType,
+  hasParentType,
+  getParentOfType,
+  getFieldsForDataProvider,
+  getLimitsForDataProvider,
+  computeDataFieldName,
+  getFilterAttributes,
+  getAvailableAttributes,
+  getDataProviderDataType,
+  getDataProviders,
+  getComponentsHierarchy,
+  isSingleDataPage,
+  isMultipleDispatcher,
+  allowsDataSource,
+  GROUP_TYPE,
+  UPLOAD_TYPE,
+  INPUT_TYPE,
+  CHECKBOX_TYPE,
+  SOURCE_TYPE,
+  SELECT_TYPE,
+  DATE_TYPE,
+  PROGRESS_TYPE,
+  IMAGE_TYPE,
+  ACTION_TYPE,
+  TEXT_TYPE,
+  CONTAINER_TYPE
+}

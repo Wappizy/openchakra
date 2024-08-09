@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 
 // TODO configure error color in project
-export const Error = ({title='Erreur', message, onClose}) => {
+const Error = ({title='Erreur', message, onClose}) => {
   return (
     <AlertDialog
        motionPreset='slideInBottom'
@@ -31,7 +31,7 @@ export const Error = ({title='Erreur', message, onClose}) => {
 }
 
 
-export const Information = ({title='Information', message, onClose}) => {
+const Information = ({title='Information', message, onClose}) => {
   return (
     <AlertDialog
        motionPreset='slideInBottom'
@@ -50,4 +50,9 @@ export const Information = ({title='Information', message, onClose}) => {
      </AlertDialog>
   )
 
+}
+
+module.exports = {
+  Information,
+  Error
 }

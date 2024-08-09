@@ -5,28 +5,28 @@ import theme from '~dependencies/theme/theme'
 import { PageState } from '~core/models/project'
 import lodash from 'lodash' 
 
-export const capitalize = (value: string) => {
+const capitalize = (value: string) => {
   return value.charAt(0).toUpperCase() + value.slice(1)
 }
 
-export const normalizePageName = (pageName: string) => {
+const normalizePageName = (pageName: string) => {
   return capitalize(camelCase(pageName))
 }
 
-export const getPageFileName = (
+const getPageFileName = (
   pageId: string,
   pages: { [key: string]: PageState },
 ) => {
   return normalizePageName(pages[pageId].pageName)
 }
 
-export const urlClean = (url: string) => url
+const urlClean = (url: string) => url
   .toLowerCase()
   .replace(/ /gi, '-')
   .normalize('NFD')
   .replace(/\p{Diacritic}/gu, '')
 
-export const getPageUrl = (
+const getPageUrl = (
   pageId: string,
   pages: { [key: string]: PageState },
 ) => {
@@ -43,7 +43,7 @@ export const getPageUrl = (
   }
 }
 
-export function whatTheHexaColor(color: string) {
+function whatTheHexaColor(color: string) {
   const colorArray = typeof color === 'string' && color?.split('.') || color
   const isChakraTint = colorArray?.[1] // get the tint
 
@@ -56,13 +56,13 @@ export function whatTheHexaColor(color: string) {
   return retainedColor
 }
 
-export function addBackslashes(str: string) {
+function addBackslashes(str: string) {
   return str
     .replace(/\\/, '')
     .replace(/'/g, "\\'")
 }
 
-export const iconStuff = ({
+const iconStuff = ({
   icon,
   dataLib = '',
   color,
@@ -101,7 +101,7 @@ export const iconStuff = ({
   return {IconFromSet, iconProps}
 }
 
-export const sortComponents = (components: IComponents): IComponents => {
+const sortComponents = (components: IComponents): IComponents => {
   const res=lodash(components)
     .entries()
     .sortBy(([k, v]) => `${v.type}-${v.id}`)
@@ -111,7 +111,23 @@ export const sortComponents = (components: IComponents): IComponents => {
 }
 
 
-export const REDIRECT_COUNT=4
-export const REDIRECT_ROLE=`autoRedirectRole_`
-export const REDIRECT_PAGE=`autoRedirectPage_`
-export const DEFAULT_REDIRECT_PAGE=`defaultRedirectPage`
+const REDIRECT_COUNT=4
+const REDIRECT_ROLE=`autoRedirectRole_`
+const REDIRECT_PAGE=`autoRedirectPage_`
+const DEFAULT_REDIRECT_PAGE=`defaultRedirectPage`
+
+module.exports = {
+  DEFAULT_REDIRECT_PAGE,
+  REDIRECT_COUNT,
+  REDIRECT_PAGE,
+  REDIRECT_ROLE,
+  sortComponents,
+  iconStuff,
+  addBackslashes,
+  whatTheHexaColor,
+  getPageUrl,
+  urlClean,
+  getPageFileName,
+  normalizePageName,
+  capitalize
+}

@@ -10,7 +10,7 @@ type IActions = {
   }
 }
 
-export const pagesList= ({pages}) => {
+const pagesList= ({pages}) => {
   return lodash(pages)
     .values()
     .orderBy(p => p.pageName.toLowerCase())
@@ -18,7 +18,7 @@ export const pagesList= ({pages}) => {
     .value()
 }
 
-export const colorsList = ({pages}) => {
+const colorsList = ({pages}) => {
   return lodash(pages).values()
     .map(page => page.components).map(components => Object.values(components)).flatten()
     .map(component => ['color', 'backgroundColor', 'focusBorderColor'].map(color => component.props[color])).flatten()
@@ -29,7 +29,7 @@ export const colorsList = ({pages}) => {
     .value()
 }
 
-export const ACTIONS: IActions = {
+const ACTIONS: IActions = {
   create: {
     label: 'Create new data',
     options: {
@@ -725,8 +725,15 @@ export const ACTIONS: IActions = {
   },
 }
 
-export const allowsActions = (component: IComponent) => {
+const allowsActions = (component: IComponent) => {
   return ['Button', 'IconButton', 'Flex', 'Calendar'].includes(component.type)
     && (!(component.type === 'Flex' && !!component.props.isFilterComponent))
 
+}
+
+module.exports = {
+  allowsActions,
+  ACTIONS,
+  colorsList,
+  pagesList
 }

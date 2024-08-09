@@ -47,7 +47,7 @@ import { isJsonString } from '../dependencies/utils/misc'
 //const HIDDEN_ATTRIBUTES=['dataSource', 'attribute']
 const HIDDEN_ATTRIBUTES: string[] = []
 
-export const getPageComponentName = (
+const getPageComponentName = (
   pageId: string,
   pages: { [key: string]: PageState },
 ) => {
@@ -114,7 +114,7 @@ const getDynamicType = (comp: IComponent) => {
   throw new Error(`No dynamic found for ${comp.type}`)
 }
 
-export const formatCode = async (code: string) => {
+const formatCode = async (code: string) => {
   let formattedCode = `// 🚨 Your props contains invalid code`
 
   const prettier = await import('prettier/standalone')
@@ -541,7 +541,7 @@ type GenerateComponentCode = {
   noAutoSaveComponents: string[]
 }
 
-export const generateComponentCode = ({
+const generateComponentCode = ({
   component,
   components,
   componentName,
@@ -861,7 +861,7 @@ useEffect(() => {
    };
  }, []);`
 
-export const generateCode = async (
+const generateCode = async (
   pageId: string,
   pages: {
     [key: string]: PageState
@@ -1096,7 +1096,7 @@ export default ${componentName};`
     return await formatCode(code)
 }
 
-export const generateApp = async (state: ProjectState) => {
+const generateApp = async (state: ProjectState) => {
   /**
   <ul>
 ${pageNames.map(name => `<li><a href='/${name}'>${name}</a></li>`).join('\n')}
@@ -1144,4 +1144,12 @@ ${pageNames.map(name => `<li><a href='/${name}'>${name}</a></li>`).join('\n')}
   `
   code = await formatCode(code)
   return code
+}
+
+module.exports = {
+  generateApp,
+  generateCode,
+  generateComponentCode,
+  formatCode,
+  getPageComponentName
 }

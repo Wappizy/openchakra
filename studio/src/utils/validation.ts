@@ -136,7 +136,7 @@ const checkTabPanelMaskability = (
   }
 }
 
-export const validateComponent = (
+const validateComponent = (
   component: IComponent,
   components: IComponents,
 ): IWarning[] => {
@@ -165,7 +165,7 @@ export const validateComponent = (
   return warnings
 }
 
-export const validateComponents = (icomponents: IComponents): IWarning[] => {
+const validateComponents = (icomponents: IComponents): IWarning[] => {
   const components = Object.values(icomponents)
   const warnings = lodash([
     checkEmptyDataProvider,
@@ -194,7 +194,7 @@ export const validateComponents = (icomponents: IComponents): IWarning[] => {
   return warnings
 }
 
-export const validateProject = (project: ProjectState): IWarning[] => {
+const validateProject = (project: ProjectState): IWarning[] => {
   const pages=Object.values(project.pages)
   const warningPages=lodash(pages)
     .groupBy(page => getPageUrl(page.pageId, project.pages))
@@ -231,10 +231,17 @@ export const validateProject = (project: ProjectState): IWarning[] => {
   return lodash.isEmpty(warningsComponents) ? null : warningsComponents
 }
 
-export const validateJSON = (jsonObject: object) => {
+const validateJSON = (jsonObject: object) => {
   const validator = new Validator()
   const validationResult = validator.validate(jsonObject, projectSchema)
   if (!validationResult.valid) {
     throw new Error(validationResult.errors)
   }
+}
+
+module.exports = {
+  validateJSON,
+  validateProject,
+  validateComponents,
+  validateComponent
 }
