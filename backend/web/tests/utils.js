@@ -8,14 +8,14 @@ const storeAuth = res => {
   })
 }
 
-export const login = username => {
+const login = username => {
   return axios.post('https://localhost/myAlfred/api/users/force-login', {username: username})
     .then(res => {
       return storeAuth(res)
     })
 }
 
-export const forceDataModelFumoir = () => {
+const forceDataModelFumoir = () => {
   jest.mock('../config/config', () => {
     const originalModule = jest.requireActual('../config/config')
 
@@ -27,7 +27,7 @@ export const forceDataModelFumoir = () => {
   })
 }
 
-export const forceDataModelDekuple = () => {
+const forceDataModelDekuple = () => {
   jest.mock('../config/config', () => {
     const originalModule = jest.requireActual('../config/config')
 
@@ -39,7 +39,7 @@ export const forceDataModelDekuple = () => {
   })
 }
 
-export const forceDataModelAftral = () => {
+const forceDataModelAftral = () => {
   jest.mock('../config/config', () => {
     const originalModule = jest.requireActual('../config/config')
 
@@ -51,7 +51,7 @@ export const forceDataModelAftral = () => {
   })
 }
 
-export const forceDataModelSmartdiet = () => {
+const forceDataModelSmartdiet = () => {
   jest.mock('../config/config', () => {
     const originalModule = jest.requireActual('../config/config')
 
@@ -63,7 +63,7 @@ export const forceDataModelSmartdiet = () => {
   })
 }
 
-export const forceDataModelAllInclusive = () => {
+const forceDataModelAllInclusive = () => {
   jest.mock('../config/config', () => {
     const originalModule = jest.requireActual('../config/config')
 
@@ -75,7 +75,7 @@ export const forceDataModelAllInclusive = () => {
   })
 }
 
-export const forceDataModelKlesia = () => {
+const forceDataModelKlesia = () => {
   jest.mock('../config/config', () => {
     const originalModule = jest.requireActual('../config/config')
 
@@ -88,7 +88,18 @@ export const forceDataModelKlesia = () => {
 }
 
 // Creates the regular expression matching model attributes validation fail
-export const buildAttributesException = attributes => {
+const buildAttributesException = attributes => {
   return new RegExp(attributes.map(att => `(?=.*${att})`).join(''))
   // (?=.*birthday)(?=.*gender)(?=.*dataTreatmentAccepted)(?=.*cguAccepted)(?=.*pseudo)(?=.*home_status)/
+}
+
+module.exports = {
+  login,
+  forceDataModelFumoir,
+  forceDataModelDekuple,
+  forceDataModelAftral,
+  forceDataModelSmartdiet,
+  forceDataModelAllInclusive,
+  forceDataModelKlesia,
+  buildAttributesException,
 }

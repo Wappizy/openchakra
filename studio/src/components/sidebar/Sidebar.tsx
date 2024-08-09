@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react'
 import { CloseIcon, SearchIcon } from '@chakra-ui/icons'
 import DragItem from './DragItem'
-import { menuItems, MenuItem } from '~componentsList'
+const { menuItems, MenuItem } = require('~componentsList')
 
 type categoryItems = {
   [name: string]: string[]

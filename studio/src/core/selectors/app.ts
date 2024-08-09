@@ -1,21 +1,36 @@
 import { RootState } from '~core/store'
 
-export const getPageLayout = (state: RootState) => state.app.pageLayout
-export const getShowOverview = (state: RootState) => state.app.showOverview
-export const getMediasLayout = (state: RootState) => state.app.mediasLayout
-export const getCurrentSection = (state: RootState) => state.app.currentSection
-export const getShowLeftPanel = (state: RootState) => state.app.showLeftPanel
-export const getShowWarnings = (state: RootState) => state.app.showWarnings
-export const getShowRightPanel = (state: RootState) => state.app.showRightPanel
-export const getEditDatabaseLayout = (state: RootState) => state.app.editDatabaseLayout
+const getPageLayout = (state: RootState) => state.app.pageLayout
+const getShowOverview = (state: RootState) => state.app.showOverview
+const getMediasLayout = (state: RootState) => state.app.mediasLayout
+const getCurrentSection = (state: RootState) => state.app.currentSection
+const getShowLeftPanel = (state: RootState) => state.app.showLeftPanel
+const getShowWarnings = (state: RootState) => state.app.showWarnings
+const getShowRightPanel = (state: RootState) => state.app.showRightPanel
+const getEditDatabaseLayout = (state: RootState) => state.app.editDatabaseLayout
 
-export const getDevice = (state: RootState) => state.app.device
+const getDevice = (state: RootState) => state.app.device
 
-export const getShowCode = (state: RootState) => state.app.showCode
+const getShowCode = (state: RootState) => state.app.showCode
 
-export const getFocusedComponent = (id: IComponent['id']) => (
+const getFocusedComponent = (id: IComponent['id']) => (
   state: RootState,
 ) => state.app.inputTextFocused && state.project.present.pages[state.project.present.activePage].selectedId === id
 
-export const getInputTextFocused = (state: RootState) =>
+const getInputTextFocused = (state: RootState) =>
   state.app.inputTextFocused
+
+module.exports = {
+  getInputTextFocused,
+  getFocusedComponent,
+  getDevice,
+  getShowCode,
+  getEditDatabaseLayout,
+  getShowRightPanel,
+  getShowWarnings,
+  getShowLeftPanel,
+  getCurrentSection,
+  getMediasLayout,
+  getShowOverview,
+  getPageLayout
+}

@@ -199,15 +199,6 @@ let menuItems: MenuItems = {
     group: 'form',
   },
   Menu: { soon: true },
-  Tabs: {
-    children: {
-      Tabs: {},
-      Tab: {},
-      TabList: {},
-      TabPanel: {},
-      TabPanels: {},
-    },
-  },
   VisuallyHidden: {},
 
   /*`Tabs`,
@@ -283,7 +274,7 @@ const componentsList: ComponentType[] = [
   'Textarea',
 ]
 
-export const registerComponentType = (componentType: ComponentType) => {
+const registerComponentType = (componentType: ComponentType) => {
   if (componentsList.includes(componentType)) {
     throw new Error(`${componentType} is already registered`)
   }
@@ -295,7 +286,7 @@ type menuParams = {
   menuChildren: object
 }
 
-export const registerComponentMenu = ({
+const registerComponentMenu = ({
   componentType,
   menuChildren,
 }: menuParams) => {
@@ -305,4 +296,9 @@ export const registerComponentMenu = ({
   menuItems[componentType] = menuChildren
 }
 
-export { menuItems, componentsList }
+module.exports = {
+  registerComponentMenu,
+  registerComponentType,
+  menuItems,
+  componentsList
+}
