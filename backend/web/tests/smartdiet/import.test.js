@@ -17,8 +17,8 @@ const {
 } = require('../../server/plugins/smartdiet/consts')
 const bcrypt = require('bcryptjs')
 const Coaching = require('../../server/models/Coaching')
-const { importDiets, importCoachings, importAppointments, importCompanies, importMeasures, fixFiles, importQuizz, importQuizzQuestions, importQuizzQuestionAnswer, importUserQuizz, importKeys, importProgressQuizz, importUserProgressQuizz, importOffers, importUserObjectives, importUserAssessmentId, importUserImpactId, importConversations, importMessages, updateImportedCoachingStatus, updateDietCompanies, importSpecs, importDietSpecs, importPatients, importPatientHeight, generateProgress, fixAppointments, importFoodDocuments, importUserFoodDocuments, importNutAdvices, importNetworks, importDietNetworks, importDiploma, importOtherDiploma, importPatientWeight,loadRecords, generateQuizz, importFoodPrograms } = require('../../server/plugins/smartdiet/import')
-const { getCacheKeys, displayCache, loadCache, saveCache } = require('../../utils/import')
+const { importAppointments, fixFiles, importUserQuizz, importUserProgressQuizz, importUserObjectives, importUserAssessmentId, importUserImpactId, importConversations, importMessages, updateImportedCoachingStatus, updateDietCompanies, importSpecs, importDietSpecs, importPatientHeight, importFoodDocuments, importUserFoodDocuments, importNutAdvices, importNetworks, importDietNetworks, importDiploma, importOtherDiploma, importPatientWeight,importFoodPrograms } = require('../../server/plugins/smartdiet/import')
+const { loadCache, saveCache } = require('../../utils/import')
 const Measure = require('../../server/models/Measure')
 const QuizzQuestion = require('../../server/models/QuizzQuestion')
 const Key = require('../../server/models/Key')
@@ -49,7 +49,6 @@ const forcePasswords = () => {
 }
 
 const PATIENT_EMAIL = 'lonza85@live.fr'
-const DIET_EMAIL = 'raphaelleh.smartdiet@gmail.com'
 const QUIZZ_NAME = 'Saisons'
 const QUIZZ_ID = 17
 describe('Test imports', () => {
@@ -77,13 +76,11 @@ describe('Test imports', () => {
   })
 
   it('must import companies', async () => {
-    const res = await importCompanies(path.join(ROOT, 'smart_project.csv'))
     const companies=await Company.find()
     expect(companies.length).toEqual(13)
   })
 
   it('must import patients', async () => {
-    const res = await importPatients(path.join(ROOT, 'smart_patient.csv')).catch(console.error)
     await forcePasswords()
     const users=await User.find({source: 'import'})
     expect(users.filter(u => !lodash.isEmpty(u.phone)).length).toBeGreaterThan(8000)
@@ -103,18 +100,12 @@ describe('Test imports', () => {
   })
 
   it('must import one offer per imported company', async () => {
-    const res = await importOffers(path.join(ROOT, 'smart_coaching.csv'))
     const offersCount=await Offer.countDocuments({migration_id: {$ne:null}})
     const migratedCompanyCount=await Company.countDocuments({migration_id: {$ne: null}})
     expect(offersCount).toEqual(migratedCompanyCount)
   })
 
   it('must import diets', async () => {
-    let res = await importDiets(
-      path.join(ROOT, 'smart_diets.csv'), 
-      path.join(ROOT, 'pictures', 'diets', 'dietpics'),
-      path.join(ROOT, 'pictures', 'diets', 'dietribs'),
-    )
     await forcePasswords()
     const diets=await User.find({role: ROLE_EXTERNAL_DIET})
     expect(diets.filter(d => !!d.phone).length).toBeGreaterThan(diets.length/2)
@@ -133,7 +124,6 @@ describe('Test imports', () => {
   })
 
   it('must upsert coachings', async () => {
-    let res = await importCoachings(path.join(ROOT, 'smart_coaching.csv'))
     const user=await User.findOne({email: PATIENT_EMAIL})
     const coachings=await Coaching.find({user}).populate('progress')
     expect(coachings).toHaveLength(1)
@@ -162,7 +152,6 @@ describe('Test imports', () => {
   })
 
   it('must upsert measures', async () => {
-    let res = await importMeasures(path.join(ROOT, 'smart_measure.csv'))
     const user=await User.findOne({email: PATIENT_EMAIL})
     const measures=await Measure.find({user})
     expect(measures.length).toEqual(2)
@@ -170,14 +159,11 @@ describe('Test imports', () => {
   })
 
   it('must upsert quizz', async () => {
-    const before=await Quizz.countDocuments()
-    let res = await importQuizz(path.join(ROOT, 'wapp_quiz.csv'))
     const quizz=await Quizz.findOne({migration_id: QUIZZ_ID})
     expect(quizz.name).toEqual(QUIZZ_NAME)
   })
 
   it('must import quizz questions', async () => {
-    let res = await importQuizzQuestions(path.join(ROOT, 'wapp_questions.csv'))
     const questions=await QuizzQuestion.find({migration_id: {$ne:null}})
     expect(questions.length).toEqual(243)
     const quizz=await Quizz.findOne({name: QUIZZ_NAME}).populate('questions')
@@ -185,19 +171,16 @@ describe('Test imports', () => {
   })
 
   it('must upsert quizz questions answers', async () => {
-    let res = await importQuizzQuestionAnswer(path.join(ROOT, 'wapp_answers.csv'), path.join(ROOT, 'wapp_questions.csv'))
     const migratedItems=await Item.find({migration_id: {$ne:null}})
     expect(migratedItems.length).not.toBeLessThan(436)
   })
 
   it('must upsert keys', async () => {
-    let res = await importKeys(path.join(ROOT, 'smart_criteria.csv'))
     const keys=await Key.find({migration_id: {$ne: null}})
     expect(keys.length).toEqual(7)
   })
 
   it('must upsert progress quizz', async () => {
-    let res = await importProgressQuizz(path.join(ROOT, 'smart_criteria.csv'))
     const quizz=await Quizz.findOne({type: QUIZZ_TYPE_PROGRESS}).populate('questions')
     expect(quizz.questions.every(q => !!q.migration_id)).toBeTruthy
   })
@@ -300,6 +283,4 @@ describe('Test imports', () => {
   it('must upsert other diploma', async () => {
     return importOtherDiploma(path.join(ROOT, 'smart_diets.csv'))
   })
-
 })
-

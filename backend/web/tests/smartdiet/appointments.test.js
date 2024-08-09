@@ -2,13 +2,13 @@ const AppointmentType = require('../../server/models/AppointmentType')
 const moment=require('moment')
 const mongoose = require('mongoose')
 
-const {forceDataModelSmartdiet, buildAttributesException}=require('../utils')
+const {forceDataModelSmartdiet}=require('../utils')
 
 forceDataModelSmartdiet()
 
 require('../../server/plugins/smartdiet/functions')
 
-const {getDataModel} = require('../../config/config')
+require('../../config/config')
 const {MONGOOSE_OPTIONS, loadFromDb} = require('../../server/utils/database')
 const {ROLE_CUSTOMER, COMPANY_ACTIVITY} = require('../../server/plugins/smartdiet/consts')
 
@@ -54,5 +54,4 @@ describe('Survey ', () => {
     expect(appRead1[0].order).toEqual(1)
     expect(appRead2[0].order).toEqual(2)
   })
-
 })

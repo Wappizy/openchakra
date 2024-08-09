@@ -1,10 +1,9 @@
 const mongoose = require('mongoose')
 const moment = require('moment')
-const lodash = require('lodash')
 const path = require('path')
 const { MONGOOSE_OPTIONS } = require('../../server/utils/database')
-const { importJobs, importSectors, importJobFiles, importJobFileFeatures, importHardSkills, fixFiles, importCategories1, importCategories2, importExpCategories, importExpertises } = require('../../server/plugins/sosynpl/import')
-const { loadCache, saveCache, displayCache } = require('../../utils/import')
+const { importJobs, importSectors, importJobFiles, importJobFileFeatures, importHardSkills, importCategories1, importCategories2, importExpertises } = require('../../server/plugins/sosynpl/import')
+const { loadCache, saveCache } = require('../../utils/import')
 
 const HardSkill=require('../../server/models/HardSkill')
 const Sector=require('../../server/models/Sector')
@@ -12,7 +11,7 @@ const JobFile = require('../../server/models/JobFile')
 const JobFileFeature = require('../../server/models/JobFileFeature')
 const Job = require('../../server/models/Job')
 const HardSkillCategory = require('../../server/models/HardSkillCategory')
-const { SKILLS } = require('../../utils/consts')
+require('../../utils/consts')
 const Expertise = require('../../server/models/Expertise')
 
 const ORIGINAL_DB=true
@@ -79,6 +78,4 @@ describe('Test imports', () => {
     await importExpertises(path.join(ROOT, 'Base métiers.xlsx'), `5 - Compétences`, 1)
     expect(await Expertise.countDocuments()).toEqual(1345)
   })
-
 })
-

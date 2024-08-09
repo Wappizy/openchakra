@@ -5,7 +5,6 @@ const {
 const Mission = require('../../server/models/Mission')
 const User = require('../../server/models/User')
 const JobUser = require('../../server/models/JobUser')
-const Quotation = require('../../server/models/Quotation')
 const moment=require('moment')
 const mongoose = require('mongoose')
 const {forceDataModelAllInclusive}=require('../utils')
@@ -13,7 +12,7 @@ const {forceDataModelAllInclusive}=require('../utils')
 forceDataModelAllInclusive()
 require('../../server/plugins/all-inclusive/functions')
 const {MONGOOSE_OPTIONS, buildQuery} = require('../../server/utils/database')
-const {inspect}=require('util')
+require('util')
 jest.setTimeout(20000)
 
 describe('Test whole populates', () => {
@@ -24,8 +23,6 @@ describe('Test whole populates', () => {
     user=await User.create({
         firstname: 'Sébastien', lastname: 'Auvray', birthday: moment(), cguAccepted: true,
         password: 'prout', email: 's@a.com', coaching: COACH_ALLE, role: ROLE_TI})
-    const job=await JobUser.create({name: 'Peintre', user})
-    const mission=await Mission.create({user, name:'Mision', description:'Description', job})
   })
 
   afterAll(async() => {
@@ -50,5 +47,4 @@ describe('Test whole populates', () => {
       .populate({path: `missions`,populate: {'path': `job`, populate: {path: 'user'}}})
     expect(job.missions?.[0]?.job?.user?.full_name).toEqual(user.full_name)
   })
-
 })

@@ -1,5 +1,4 @@
 const {
-  COMPANY_ACTIVITY,
   COMPANY_ACTIVITY_BANQUE,
   ROLE_EXTERNAL_DIET
 } = require('../../../server/plugins/smartdiet/consts')

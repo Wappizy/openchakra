@@ -1,4 +1,4 @@
-const {forceDataModelSmartdiet, buildAttributesException}=require('../utils')
+const {forceDataModelSmartdiet}=require('../utils')
 forceDataModelSmartdiet()
 
 require('../../server/plugins/smartdiet/functions')
@@ -67,10 +67,9 @@ describe('Test models ', () => {
     const models=getModels()
     const attributes=lodash(models).values()
     attributes.forEach(model => {
-      lodash(model.attributes).entries().forEach(([key, params]) => {
+      lodash(model.attributes).entries().forEach(([, params]) => {
         expect(params).toHaveProperty('required')
       })
     })
   })
-
 })

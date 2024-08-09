@@ -1,9 +1,7 @@
 const mongoose=require('mongoose')
 const moment=require('moment')
-const lodash=require('lodash')
 
 const ROLES=['user', 'customer', 'freelance']
-const Schema = mongoose.Schema;
 
 // Base schema for User
 const UserSchema = new mongoose.Schema({
@@ -72,6 +70,5 @@ describe('Inheritance test', () => {
     await Freelance.create({firstname: 'freelance', lastname: 'freelance', siret:52})
     const users=await User.find()
     console.log(users)
-    const customers=await User.find({role: {$in: ['user', 'freelance']}})
   })
 })

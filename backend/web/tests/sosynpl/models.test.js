@@ -6,7 +6,7 @@ const path = require('path')
 const { MONGOOSE_OPTIONS, getModels, loadFromDb } = require('../../server/utils/database')
 const Freelance = require('../../server/models/Freelance')
 const { buildAttributesException } = require('../utils')
-const { WORK_DURATION, SOFT_SKILL_ADAPTATION, SS_MEDALS_BRONZE, SOFT_SKILLS, SOFT_SKILL_ANALYSIS, SOFT_SKILL_COMM, SOFT_SKILL_CONFLICT, SOFT_SKILL_CREATIVE, SOFT_SKILL_ORGANIZATION, SOFT_SKILL_MANAGE, SOFT_SKILL_TEAMWORK, SOFT_SKILL_FEDERATE } = require('../../server/plugins/sosynpl/consts')
+const { WORK_DURATION, SOFT_SKILL_ADAPTATION, SOFT_SKILLS, SOFT_SKILL_COMM, SOFT_SKILL_CONFLICT, SOFT_SKILL_CREATIVE, SOFT_SKILL_ORGANIZATION, SOFT_SKILL_MANAGE, SOFT_SKILL_TEAMWORK, SOFT_SKILL_FEDERATE } = require('../../server/plugins/sosynpl/consts')
 const Customer = require('../../server/models/Customer')
 const {CUSTOMER_DATA, FREELANCE_DATA, JOB_DATA, JOB_FILE_DATA, SECTOR_DATA, CATEGORY_DATA}=require('./data/base_data')
 require('../../server/plugins/sosynpl/functions')
@@ -18,7 +18,6 @@ const HardSkill=require('../../server/models/HardSkill')
 const Job = require('../../server/models/Job')
 const JobFile = require('../../server/models/JobFile')
 const Sector = require('../../server/models/Sector')
-const Category = require('../../server/models/Category')
 const HardSkillCategory = require('../../server/models/HardSkillCategory')
 const SoftSkill = require('../../server/models/SoftSkill')
 
@@ -164,10 +163,7 @@ describe('Test models', () => {
           "name": `Catégorie 2`,
           progress: 1/3,
         })
-
       ])
-
     )
   })
 })
-

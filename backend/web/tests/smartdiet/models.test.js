@@ -4,13 +4,9 @@ forceDataModelSmartdiet()
 require('../../server/plugins/smartdiet/functions')
 const { getModels } = require('../../server/utils/database')
 
-const {
-  getAvailableContents
-} = require('../../server/plugins/smartdiet/functions')
+require('../../server/plugins/smartdiet/functions')
 const {
   ACTIVITY,
-  CONTENTS_TYPE,
-  EVENT_COLL_CHALLENGE,
   GENDER,
   ROLE_CUSTOMER,
   ROLE_ADMIN,
@@ -50,7 +46,6 @@ const EventLog=require('../../server/models/EventLog')
 const FilterPresentation=require('../../server/models/FilterPresentation')
 const Group=require('../../server/models/Group')
 const Guest=require('../../server/models/Guest')
-const IndividualChallenge=require('../../server/models/IndividualChallenge')
 const Job=require('../../server/models/Job')
 const Key=require('../../server/models/Key')
 const LoggedUser=require('../../server/models/LoggedUser')
@@ -58,7 +53,6 @@ const Meal=require('../../server/models/Meal')
 const MealCategory=require('../../server/models/MealCategory')
 const Measure=require('../../server/models/Measure')
 const Message=require('../../server/models/Message')
-const Menu=require('../../server/models/Menu')
 const Network=require('../../server/models/Network')
 const Newsletter=require('../../server/models/Newsletter')
 const Objective=require('../../server/models/Objective')
@@ -88,7 +82,6 @@ const TrainingCenter=require('../../server/models/TrainingCenter')
 const UIConfiguration=require('../../server/models/UIConfiguration')
 const User=require('../../server/models/User')
 const UserSessionData=require('../../server/models/UserSessionData')
-const Webinar=require('../../server/models/Webinar')
 
 jest.setTimeout(20000)
 
@@ -215,24 +208,6 @@ describe('Test models ', () => {
     const cat=await Category.create({name: 'Poids', picture: 'hop'})
     const target=await Target.create({name: 'Cible poids', category: cat})
     const target2=await Target.create({name: 'Cible poids 2', category: cat})
-    const user=await User.create({
-      activity: Object.keys(ACTIVITY)[0],
-      gender: Object.keys(GENDER)[0],
-      dataTreatmentAccepted: true, cguAccepted: true,
-      pseudo: 'seb', birthday: moment(),
-      role: ROLE_CUSTOMER, email: 'a@a.com',
-      lastname: 'Auvray', firstname: 'Sébastien',
-      targets:[target, target2],
-      company,
-    })
-    const key=await Key.create({name: 'name', picture: 'hop'})
-    const content=await Content.create({
-      name: 'name', key: key, duration: 1,
-      contents: 'contenu', default: false, picture: 'hop', type: 'VIDEO',
-      targets:[target, target2],
-      creator: user,
-    })
-    const contents=await getAvailableContents(user)
   })
 
   it('Offer.company must be ref unique', async () => {
@@ -250,19 +225,6 @@ describe('Test models ', () => {
   it('User must see default contents', async () => {
     const tgtCat=await Category.create({name: 'cat', picture: 'pct'})
     const target=await Target.create({name:'hop', category: tgtCat})
-    const key=await Key.create({name: 'Clé', picture: 'Tagada'})
-    const user=await User.create({dataTreatmentAccepted:true,cguAccepted:true,
-        pseudo: 'Seb',email: 'email', lastname: 'Auvray', firstname: 'Seb',
-        targets: [target], role: ROLE_CUSTOMER, company,
-    })
-    const content=await Content.create({
-      key, duration:1, contents: 'hop', picture: 'picture', default: false, name: 'Contenu',
-      type:Object.keys(CONTENTS_TYPE)[0], creator:user, targets: [target],
-    })
-    const content2=await Content.create({
-      key, duration:1, contents: 'hop2', picture: 'picture', default: false, name: 'Contenu',
-      type:Object.keys(CONTENTS_TYPE)[0], creator:user, default: true,
-    })
 
     const foundUser=await User.findOne().populate('available_contents')
     console.log('in test')
@@ -305,5 +267,4 @@ describe('Test models ', () => {
       fields: ['spoons', 'spoons.user.company.administrators.fullname']})
     console.log(data)
   })
-
 })

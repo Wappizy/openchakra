@@ -2,8 +2,7 @@ const axios=require('axios')
 const moment=require('moment')
 const fs=require('fs')
 const path=require('path')
-const FormData=require('form-data')
-const { Readable } = require('stream')
+require('stream')
 const { createTicket, getTickets, createComment } = require('../../server/plugins/smartdiet/ticketing')
 
 jest.setTimeout(60000)
@@ -79,5 +78,4 @@ describe('Jira tickets tests ', () => {
     const res=await createTicket(data)
     expect(res).toEqual('OK')
   })
-
 })

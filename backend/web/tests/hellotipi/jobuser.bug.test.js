@@ -1,11 +1,10 @@
-const moment=require('moment')
 const mongoose = require('mongoose')
 const {forceDataModelAllInclusive}=require('../utils')
 forceDataModelAllInclusive()
 
 const { loadFromDb } = require('../../server/utils/database')
 require('../../server/plugins/all-inclusive/functions')
-const {MONGOOSE_OPTIONS, getExposedModels} = require('../../server/utils/database')
+const {MONGOOSE_OPTIONS} = require('../../server/utils/database')
 require('../../server/models/JobUser')
 require('../../server/models/Activity')
 require('../../server/models/Recommandation')
@@ -37,5 +36,4 @@ describe('Test DB', () => {
       expect(data.length).toEqual(1)
     }
   })
-
 })

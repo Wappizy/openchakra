@@ -1,5 +1,4 @@
 const {
-  getModel,
   getModels,
   loadFromDb
 } = require('../../server/utils/database')
@@ -94,5 +93,4 @@ describe('Compute commissions tests', () => {
     const [loaded_mission]=await loadFromDb({model: 'mission', id: mission._id, fields:[field]})
     return expect(loaded_mission[field]).toBeCloseTo(expected)
   });
-
 })

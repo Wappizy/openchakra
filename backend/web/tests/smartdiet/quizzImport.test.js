@@ -1,10 +1,6 @@
-const Quizz = require('../../server/models/Quizz')
-const QuizzQuestion = require('../../server/models/QuizzQuestion')
 const { MONGOOSE_OPTIONS } = require('../../server/utils/database')
 const { forceDataModelSmartdiet } = require('../utils')
 const { importQuizz } = require('../../scripts/smartdiet/importQuizz')
-const fs=require('fs')
-const moment = require('moment')
 const mongoose = require('mongoose')
 
 forceDataModelSmartdiet()
@@ -29,5 +25,4 @@ describe('Prospects', () => {
       .then(console.log)
       .catch(console.error)
   })
-
 })

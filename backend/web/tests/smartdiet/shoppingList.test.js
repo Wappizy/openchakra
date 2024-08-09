@@ -1,4 +1,3 @@
-const moment=require('moment')
 const mongoose = require('mongoose')
 const {MONGOOSE_OPTIONS, loadFromDb} = require('../../server/utils/database')
 
@@ -43,7 +42,5 @@ describe('Shopping list computation', () => {
     Object.entries(ingsBefore).forEach(([ingName, qty]) => {
       expect(ingsAfter[ingName]).toEqual(qty*ratio)
     });
-
   })
-
 })

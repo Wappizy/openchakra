@@ -1,16 +1,13 @@
-const {forceDataModelSmartdiet, buildAttributesException}=require('../utils')
+const {forceDataModelSmartdiet}=require('../utils')
 
 forceDataModelSmartdiet()
 require('../../server/plugins/smartdiet/functions')
 const IndividualChallenge = require('../../server/models/IndividualChallenge')
 const User = require('../../server/models/User')
-const Key = require('../../server/models/Key')
-const Content = require('../../server/models/Content')
-const Comment = require('../../server/models/Comment')
 
 const moment=require('moment')
 const mongoose = require('mongoose')
-const {MONGOOSE_OPTIONS, loadFromDb} = require('../../server/utils/database')
+const {MONGOOSE_OPTIONS} = require('../../server/utils/database')
 
 describe('Challenge.key.picture ', () => {
 
@@ -33,5 +30,4 @@ describe('Challenge.key.picture ', () => {
      .populate([{'path': '_all_individual_challenges'}, {'path':`individual_challenges`,'populate':{'path':`key`}}])
     expect(users[0]?.individual_challenges[0]?.key?.picture).toBeTruthy()
   })
-
 })

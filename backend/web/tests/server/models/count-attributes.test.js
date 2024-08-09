@@ -2,15 +2,13 @@ const {
   COMPANY_ACTIVITY_BANQUE
 } = require('../../../server/plugins/smartdiet/consts')
 const {
-  getModelAttributes,
-  getModels
-} = require('../../../server/utils/database')
+  getModelAttributes} = require('../../../server/utils/database')
 const {forceDataModelSmartdiet}=require('../../utils')
 
 forceDataModelSmartdiet()
 
 require('../../../server/plugins/smartdiet/functions')
-const {ROLE_ADMIN} = require('../../../server/plugins/smartdiet/consts')
+require('../../../server/plugins/smartdiet/consts')
 const moment=require('moment')
 const mongoose = require('mongoose')
 const {MONGOOSE_OPTIONS, loadFromDb} = require('../../../server/utils/database')
@@ -55,5 +53,4 @@ describe('Measure model ', () => {
     const messages=await loadFromDb({model: 'message', fields:['likes_count']})
     console.log(messages)
   })
-
 })

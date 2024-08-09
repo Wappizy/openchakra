@@ -1,6 +1,4 @@
 const { checkConsistency } = require('../../../scripts/database/consistency')
-const mongoose = require('mongoose')
-const moment=require('moment')
 
 describe('Test DB consistency on missing references', () => {
 
@@ -13,6 +11,4 @@ describe('Test DB consistency on missing references', () => {
   it('should check for missing references', async() => {
     await checkConsistency()
   })
-
-
 })

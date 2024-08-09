@@ -1,9 +1,8 @@
-const lodash=require('lodash')
 const moment=require('moment')
 const mongoose = require('mongoose')
 const {forceDataModelSmartdiet}=require('../utils')
 const { MONGOOSE_OPTIONS } = require('../../server/utils/database')
-const { USER_DATA, COMPANY_NO_INSURANCE_DATA, WEBINAR_DATA } = require('./data/modelsBaseData')
+const { USER_DATA, COMPANY_NO_INSURANCE_DATA } = require('./data/modelsBaseData')
 const User = require('../../server/models/User')
 const Company = require('../../server/models/Company')
 const { sendAppointmentRemindTomorrow } = require('../../server/plugins/smartdiet/mailing')
@@ -37,4 +36,3 @@ describe('Notifications ', () => {
     await sendAppointmentRemindTomorrow({appointment})
   })
 })
-

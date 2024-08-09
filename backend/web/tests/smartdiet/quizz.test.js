@@ -1,8 +1,8 @@
-const {forceDataModelSmartdiet, buildAttributesException}=require('../utils')
+const {forceDataModelSmartdiet}=require('../utils')
 forceDataModelSmartdiet()
 
 require('../../server/models/User')
-const {USER_DATA, COMPANY_DATA, COACHING_DATA, APPOINTMENT_DATA} = require('./data/modelsBaseData')
+const {USER_DATA, COMPANY_DATA, COACHING_DATA} = require('./data/modelsBaseData')
 const {ROLE_CUSTOMER, ROLE_EXTERNAL_DIET, QUIZZ_TYPE_PATIENT, QUIZZ_QUESTION_TYPE} = require('../../server/plugins/smartdiet/consts')
 
 const moment=require('moment')
@@ -15,7 +15,6 @@ const Company=require('../../server/models/Company')
 const Coaching=require('../../server/models/Coaching')
 const QuizzQuestion=require('../../server/models/QuizzQuestion')
 const Quizz=require('../../server/models/Quizz')
-const Appointment=require('../../server/models/Appointment')
 require('../../server/models/Target')
 require('../../server/models/Category')
 require('../../server/models/Association')
@@ -70,5 +69,4 @@ describe('Quizz', () => {
     expect(newCoaching.quizz_templates).toHaveLength(0)
     expect(newCoaching.quizz).toHaveLength(0)
   })
-
 })

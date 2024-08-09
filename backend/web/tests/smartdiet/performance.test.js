@@ -1,24 +1,18 @@
 const lodash=require('lodash')
-const AppointmentType = require('../../server/models/AppointmentType')
-const moment=require('moment')
 const mongoose = require('mongoose')
-const { performance } = require('perf_hooks');
-const {forceDataModelSmartdiet, buildAttributesException}=require('../utils')
+const {forceDataModelSmartdiet}=require('../utils')
 
 forceDataModelSmartdiet()
 
 require('../../server/plugins/smartdiet/functions')
 
-const {getDataModel} = require('../../config/config')
-const {MONGOOSE_OPTIONS, loadFromDb, buildPopulates, getModel, getModels, getFieldsToCompute, getFirstLevelFields, getNextLevelFields, getSecondLevelFields, checkIntegrity} = require('../../server/utils/database')
-const {ROLE_CUSTOMER, COMPANY_ACTIVITY, ROLE_EXTERNAL_DIET, ROLE_SUPER_ADMIN} = require('../../server/plugins/smartdiet/consts')
+const {MONGOOSE_OPTIONS, loadFromDb, getFieldsToCompute, getSecondLevelFields, checkIntegrity} = require('../../server/utils/database')
+const {ROLE_CUSTOMER, ROLE_EXTERNAL_DIET, ROLE_SUPER_ADMIN} = require('../../server/plugins/smartdiet/consts')
 
-const Appointment=require('../../server/models/Appointment')
 const Coaching=require('../../server/models/Coaching')
 const User=require('../../server/models/User')
 const Company=require('../../server/models/Company')
 const { computeStatistics, logbooksConsistency } = require('../../server/plugins/smartdiet/functions');
-const Patient = require('../../server/models/Patient');
 const { CREATED_AT_ATTRIBUTE } = require('../../utils/consts');
 require('../../server/models/Answer')
 require('../../server/models/ResetToken')
@@ -186,7 +180,7 @@ describe('Performance ', () => {
   it(`must load statistics properly`, async() => {
     const company=await Company.findOne(COMPANY_CRITERION)
     const stats=await computeStatistics({id: company._id, fields: FIELDS})
-    FIELDS.forEach(f => expect(stats).not.toBeNull())
+    FIELDS.forEach(() => expect(stats).not.toBeNull())
     FIELDS.forEach(f => expect(stats[f]).not.toBeUndefined())
   }, 1000)
 
@@ -238,7 +232,6 @@ describe('Performance ', () => {
     const user=await User.findOne(DIET_CRITERION)
     const fields=`diet_patients,diet_patients.fullname,diet_patients.picture,diet_patients.company.name,firstname,picture,diet_appointments_count,diet_patients_count,diet_current_future_appointments.coaching.user.picture,diet_current_future_appointments.coaching.user.fullname,diet_current_future_appointments.coaching.user.company_name,diet_current_future_appointments.start_date,diet_current_future_appointments.end_date,diet_current_future_appointments.order,diet_current_future_appointments.appointment_type.title,diet_current_future_appointments.status,diet_current_future_appointments.visio_url,diet_current_future_appointments.coaching.user,diet_current_future_appointments,diet_current_future_appointments.coaching.user.phone`.split(',')
     const params={'limit.diet_patients': '4', 'limit':30, 'limit.diet_current_future_appointments':'30'}
-    const loggedUser=await loadFromDb({model: 'loggedUser', fields, params, user})
   }, 2000)
 
   it('must load appointments order', async () => {
@@ -329,7 +322,6 @@ describe('Performance ', () => {
   }, 3500)
 
   it('Must return stephanoe b appointments count', async () => {
-    const fields=['appointments_count']
     const [user]=await loadFromDb({model: 'user', fields: ['diet_appointments_count'], id: diet._id, user: diet})
   }, 3500)
 
@@ -416,7 +408,6 @@ describe('Performance ', () => {
 
   it('Must return passed individual challenges', async() => {
     const user=await User.findOne(USER_CRITERION)
-    const urlOk='https://localhost:4201/myAlfred/api/studio/loggedUser/?fields=individual_challenges.name,individual_challenges.description,collective_challenges.start_date,collective_challenges.end_date,collective_challenges.name,collective_challenges.picture,passed_individual_challenges.trophy_picture,passed_individual_challenges.name,passed_individual_challenges,collective_challenges,individual_challenges.key.picture,individual_challenges,available_menus.picture,available_menus.name,available_menus.start_date,available_menus.end_date,available_menus,past_menus,future_menus,individual_challenges.trick,passed_individual_challenges.description,past_webinars.duration,available_menus.document,future_menus.picture,future_menus.name,future_menus.start_date,future_menus.end_date,future_menus.document,past_menus.picture,past_menus.name,past_menus.start_date,past_menus.end_date,past_menus.document,individual_challenges.status,individual_challenges.hardness,available_webinars.key.picture,available_webinars.picture,available_webinars.start_date,available_webinars.end_date,available_webinars.duration,available_webinars.name,available_webinars.description,available_webinars&limit.company.groups=30&limit=30&limit.past_webinars=30&limit.passed_individual_challenges=30&limit.collective_challenges=1&limit.individual_challenges=1'
     const urlNOK=`https://localhost:4201/myAlfred/api/studio/loggedUser/?fields=surveys.questions,surveys,passed_individual_challenges,passed_individual_challenges.trophy_picture,passed_individual_challenges.name,measures,picture&limit.surveys.questions=30&limit.surveys=1&limit.passed_individual_challenges=30&limit=30&limit=30&limit=30&sort.surveys.questions.order=asc&sort.surveys.update_date=desc&`
     const url=urlNOK
     const fields=url.replace(/^.*fields=/, '').replace(/\&.*$/, '').split(',').filter(f => !/past_/.test(f)).filter(f => !/webinar/.test(f)).sort()
@@ -439,6 +430,4 @@ describe('Performance ', () => {
     const user=await User.findOne(USER_CRITERION).populate('contents')
     console.log(user.contents.length)
   })
-
 })
-

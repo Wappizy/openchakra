@@ -1,11 +1,6 @@
-const { splitRemaining } = require('../../../utils/text')
 const mongoose=require('mongoose')
-const moment=require('moment')
-const lodash=require('lodash')
 
-const Schema = mongoose.Schema;
 const {MONGOOSE_OPTIONS} = require('../../../server/utils/database')
-const { schemaOptions } = require('../../../server/utils/schemas')
 
 const { forceDataModelSmartdiet } = require('../../utils')
 forceDataModelSmartdiet()
@@ -47,5 +42,4 @@ describe('Computed fields test', () => {
           })
       })
     })
-
 })

@@ -19,7 +19,6 @@ jest.setTimeout(20000)
 describe('Test vat on products, order item and so on', () => {
 
   let [product1_id, product2_id]=[null, null]
-  let [orderItem1_id, orderItem2_id]=[null, null]
   let category_id=null
   let company_id=null
   const picture='image'
@@ -69,6 +68,4 @@ describe('Test vat on products, order item and so on', () => {
     expect(booking.remaining_total).toEqual(100)
     expect(booking.remaining_vat_amount).toEqual(12.5)
   })
-
-
 })

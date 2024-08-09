@@ -1,6 +1,3 @@
-const moment=require('moment')
-const fs=require('fs')
-const { generateIcs } = require(`../../utils/ics`)
 const { getLocationSuggestions } = require('../../utils/geo')
 
 describe('GEO tests', () => {
@@ -9,5 +6,4 @@ describe('GEO tests', () => {
     const result=await getLocationSuggestions('Rouen', 'city')
     console.log(result)
   })
-
 })

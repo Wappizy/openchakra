@@ -1,18 +1,16 @@
 const moment=require('moment')
 const mongoose = require('mongoose')
 
-const {forceDataModelSmartdiet, buildAttributesException}=require('../utils')
+const {forceDataModelSmartdiet}=require('../utils')
 forceDataModelSmartdiet()
 require('../../server/plugins/smartdiet/functions')
 
-const {getDataModel} = require('../../config/config')
 const {MONGOOSE_OPTIONS, loadFromDb} = require('../../server/utils/database')
-const {ROLE_CUSTOMER, COMPANY_ACTIVITY,QUIZZ_QUESTION_TYPE,QUIZZ_TYPE_LOGBOOK,ROLE_EXTERNAL_DIET} = require('../../server/plugins/smartdiet/consts')
+const {ROLE_CUSTOMER, COMPANY_ACTIVITY,ROLE_EXTERNAL_DIET} = require('../../server/plugins/smartdiet/consts')
 
 const Coaching=require('../../server/models/Coaching')
 const User=require('../../server/models/User')
 const Company=require('../../server/models/Company')
-const Appointment=require('../../server/models/Appointment')
 require('../../server/models/LogbookDay')
 require('../../server/models/Range')
 require('../../server/models/Target')
@@ -49,8 +47,6 @@ describe('Diet appointments management ', () => {
   })
 
   it('must return diet appointments', async() => {
-    const created_app=await Appointment.create({coaching:coaching1._id, start_date: moment().add(-2, 'day'), end_date: moment().add(-2, 'day').add(2, 'hour')})
-    const created_app_2=await Appointment.create({coaching:coaching2._id, start_date: moment().add(-4, 'day'), end_date: moment().add(-4, 'day').add(2, 'hour')})
     const users=await loadFromDb({model: 'user', fields:['diet_appointments']})
     const loaded_diet=users.find(u => u.role==ROLE_EXTERNAL_DIET)
     expect(loaded_diet.diet_appointments).toHaveLength(2)
@@ -66,5 +62,4 @@ describe('Diet appointments management ', () => {
     expect(loaded_diet.diet_patients).toHaveLength(2)
     await extraCoaching.delete()
   })
-
 })

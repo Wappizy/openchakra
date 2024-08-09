@@ -3,7 +3,6 @@ const { MONGOOSE_OPTIONS } = require('../../server/utils/database')
 const { ROLE_FREELANCE, ROLE_ADMIN, ROLE_CUSTOMER } = require('../../server/plugins/sosynpl/consts')
 const { getCurrentMissions, getComingMissions } = require('../../server/plugins/sosynpl/missions')
 const User = require('../../server/models/User')
-const Mission = require('../../server/models/Mission')
 
 describe('Missions', () => {
 

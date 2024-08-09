@@ -8,10 +8,9 @@ const { COMPANY_DATA, USER_DATA } = require('./data/modelsBaseData')
 const { ACTIONS } = require('../../server/utils/studio/actions')
 const moment=require('moment')
 const mongoose = require('mongoose')
-const lodash = require('lodash')
-const {MONGOOSE_OPTIONS, loadFromDb, putAttribute} = require('../../server/utils/database')
+const {MONGOOSE_OPTIONS} = require('../../server/utils/database')
 
-const {forceDataModelSmartdiet, buildAttributesException}=require('../utils')
+const {forceDataModelSmartdiet}=require('../utils')
 
 forceDataModelSmartdiet()
 
@@ -62,7 +61,6 @@ describe('Registration', () => {
   })
 
   it('No integrity check: must register as company if code and lead', async() => {
-    const lead=await Lead.create({...USER_DATA, company_code: no_integ_company_code})
     await REGISTER_ACTION({...USER_DATA, company_code: no_integ_company_code})
     const users=await User.find().populate('company')
     expect(users).toHaveLength(1)
@@ -72,7 +70,6 @@ describe('Registration', () => {
   })
 
   it('No integrity check: must register as company if no code and is lead', async() => {
-    const lead=await Lead.create({...USER_DATA, company_code: no_integ_company_code})
     await REGISTER_ACTION({...USER_DATA})
     const users=await User.find().populate('company')
     expect(users).toHaveLength(1)
@@ -100,7 +97,6 @@ describe('Registration', () => {
   })
 
   it('Integrity check: must register as freemium with warning if no code and lead', async() => {
-    const lead=await Lead.create({...USER_DATA, company_code: integ_company_code})
     await REGISTER_ACTION({...USER_DATA})
     const users=await User.find().populate('company')
     expect(users).toHaveLength(1)
@@ -108,5 +104,4 @@ describe('Registration', () => {
     expect(user.company?.name).toEqual(PARTICULAR_COMPANY_NAME)
     expect(user.registration_warning).toEqual(REGISTRATION_WARNING_CODE_MISSING)
   })
-
 })

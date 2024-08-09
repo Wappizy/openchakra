@@ -1,5 +1,4 @@
 const {
-  createAccount,
   createAppointment,
   deleteAppointment,
   getAccount,
@@ -13,7 +12,6 @@ const {
   getCustomerAppointments,
   getDietAppointments,
   getDietUnavailabilities,
-  getEvents,
   getToken,
   smartDietToMoment,
   upsertAccount,
@@ -22,16 +20,14 @@ const Appointment = require('../../server/models/Appointment')
 const Range = require('../../server/models/Range')
 const { MONGOOSE_OPTIONS } = require('../../server/utils/database')
 const { getDatabaseUri } = require('../../config/config')
-const User = require('../../server/models/User')
 require('../../server/models/Company')
 require('../../server/models/Content')
 require('../../server/models/Comment')
-const axios = require('axios')
-const { PERIOD } = require('../../server/plugins/smartdiet/consts')
+require('../../server/plugins/smartdiet/consts')
 const moment = require('moment')
 const lodash=require('lodash')
-const {forceDataModelSmartdiet, buildAttributesException}=require('../utils')
-const {runPromisesWithDelay}=require('../../server/utils/concurrency')
+const {forceDataModelSmartdiet}=require('../utils')
+require('../../server/utils/concurrency')
 
 forceDataModelSmartdiet()
 
@@ -137,7 +133,6 @@ describe('SmartAgenda test ', () => {
     console.time('getAvailabilities')
     const avails=await getAvailabilities({diet_id: diet, from:moment(), to:moment().add(7, 'days')}).catch(console.error)
     console.timeEnd('getAvailabilities')
-    const today_avails=avails.filter(a => a.dj==`2023-09-06`)
     console.log(JSON.stringify(avails,null,2))
   })
 
@@ -163,5 +158,4 @@ describe('SmartAgenda test ', () => {
      .then(apps => getAppointmentVisioLink(apps[1].smartagenda_id))
      .then(console.log)
   })
-
 })

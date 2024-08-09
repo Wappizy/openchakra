@@ -1,5 +1,5 @@
 const lodash=require('lodash')
-const {SOFT_SKILL_COMM, SS_MEDALS_GOLD, SS_MEDALS_BRONZE, SOFT_SKILL_FEDERATE, SOFT_SKILL_CREATIVE, SS_MEDALS_SILVER, SOFT_SKILL_ORGANIZATION, SOFT_SKILL_MANAGE, SOFT_SKILL_TEAMWORK, SS_PILAR, SOFT_SKILLS, SS_MEDALS, SOFT_SKILL_CONFLICT, SOFT_SKILL_CHANGE, SOFT_SKILL_ADAPTATION, SOFT_SKILL_ANALYSIS, SS_PILAR_COORDINATOR, SS_PILAR_CREATOR, SS_PILAR_DIRECTOR, SS_PILAR_IMPLEMENTOR, SS_PILAR_NETWORKER, SS_PILAR_OPTIMIZER}=require('../../server/plugins/sosynpl/consts')
+const {SOFT_SKILL_COMM, SS_MEDALS_GOLD, SS_MEDALS_BRONZE, SOFT_SKILL_FEDERATE, SOFT_SKILL_CREATIVE, SS_MEDALS_SILVER, SOFT_SKILL_ORGANIZATION, SOFT_SKILL_MANAGE, SOFT_SKILL_TEAMWORK, SS_PILAR, SOFT_SKILLS, SOFT_SKILL_CONFLICT, SOFT_SKILL_CHANGE, SOFT_SKILL_ADAPTATION, SOFT_SKILL_ANALYSIS, SS_PILAR_COORDINATOR, SS_PILAR_CREATOR, SS_PILAR_DIRECTOR, SS_PILAR_IMPLEMENTOR, SS_PILAR_NETWORKER, SS_PILAR_OPTIMIZER}=require('../../server/plugins/sosynpl/consts')
 const { computePilars, MATRIX, computeGold, computeSilver, computeBronze, computeEmpty, computeActivated } = require('../../server/plugins/sosynpl/soft_skills')
 jest.setTimeout(60000)
 
@@ -12,7 +12,7 @@ describe('Test imports', () => {
   })
 
   const keyFromValue = (enumData, value) => {
-    return Object.entries(enumData).find(([k, val])=> val==value)?.[0]
+    return Object.entries(enumData).find(([, val])=> val==value)?.[0]
   }
 
   const CHARLOTTE_MEDALS={ 
@@ -52,7 +52,6 @@ describe('Test imports', () => {
     const themes=data.slice(1)
     const res=[]
     themes.forEach(theme => {
-      const themeName=theme[0]
       const medals=theme.slice(1)
       const themeKey = keyFromValue(SOFT_SKILLS, theme[0])
       return medals.forEach((medalNo, idx) => {
@@ -160,6 +159,4 @@ describe('Test imports', () => {
       expect(result[pilier], msg).toEqual(points)
     })
   })
-
 })
-

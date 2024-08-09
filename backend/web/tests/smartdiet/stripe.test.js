@@ -2,12 +2,10 @@ const {forceDataModelSmartdiet}=require('../utils')
 forceDataModelSmartdiet()
 
 require('../../server/plugins/smartdiet/functions')
-const {ROLE_ADMIN} = require('../../server/plugins/smartdiet/consts')
+require('../../server/plugins/smartdiet/consts')
 
-const moment=require('moment')
-const mongoose = require('mongoose')
-const {MONGOOSE_OPTIONS, loadFromDb} = require('../../server/utils/database')
-const { upsertCustomer, createRecurrentPayment, upsertProduct, getCheckout, getSubscription, getInvoice } = require('../../server/plugins/payment/stripe')
+require('../../server/utils/database')
+const { upsertCustomer, createRecurrentPayment, upsertProduct, getCheckout, getSubscription } = require('../../server/plugins/payment/stripe')
 const opn = require('opn')
 
 describe('Stripe tests ', () => {
@@ -55,5 +53,4 @@ describe('Stripe tests ', () => {
     console.log(checkout)
     console.log(sub)
   })
-
 })

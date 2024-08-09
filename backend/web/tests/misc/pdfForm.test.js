@@ -1,8 +1,6 @@
 const path=require('path')
-const mongoose = require('mongoose')
 const { exec } = require('child_process')    
 const { logFormFields, fillForm, savePDFFile } = require('../../utils/fillForm')
-const { default: axios } = require('axios')
 
 const ROOT = path.join(__dirname, './../data/pdf')
 const FILEPATH = path.join(ROOT, 'attestation_bilan_carcept.pdf')
@@ -38,5 +36,4 @@ describe('Fill form test', () => {
     const res=await exec(`xdg-open /home/seb/test.pdf`)
     console.log(res)
   })
-
 })

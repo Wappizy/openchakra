@@ -1,5 +1,3 @@
-const moment = require('moment')
-
 const checkCycle=require('../../../server/validation/cycle')
 
 describe('Cycle detection', () => {
@@ -10,5 +8,4 @@ describe('Cycle detection', () => {
     const IDS_2={1: [2], 2: [3], 3: [4]}
     expect(checkCycle(Object.keys(IDS_2), id => IDS_2[id])).toEqual(null)
   })
-
 })

@@ -8,22 +8,16 @@ const Quotation = require('../../server/models/Quotation')
 const QuotationDetail = require('../../server/models/QuotationDetail')
 const { loadFromDb } = require('../../server/utils/database')
 const {
-  BOOLEAN_NO,
-  COACHING,
   MISSION_STATUS_ASKING,
   MISSION_STATUS_ASKING_ALLE,
   MISSION_STATUS_BILL_SENT,
   MISSION_STATUS_DISPUTE,
   MISSION_STATUS_FINISHED,
-  MISSION_STATUS_JOB_FINISHED,
   MISSION_STATUS_QUOT_ACCEPTED,
   MISSION_STATUS_QUOT_REFUSED,
   MISSION_STATUS_QUOT_SENT,
   MISSION_STATUS_TI_REFUSED,
-  MISSION_STATUS_TO_BILL,
-  QUOTATION_STATUS,
-  ROLE_TI
-} = require('../../server/plugins/all-inclusive/consts')
+  MISSION_STATUS_TO_BILL} = require('../../server/plugins/all-inclusive/consts')
 const JobUser = require('../../server/models/JobUser')
 const User = require('../../server/models/User')
 const Mission = require('../../server/models/Mission')
@@ -47,7 +41,6 @@ describe('Test missions quotations', () => {
     ti=await User.create({...TI_USER})
     job=await JobUser.create({user:ti, name: 'Job'})
     customer=await User.create({...CUSTOMER_USER})
-    const mis=await Mission.create({name: 'Mission', description: 'Description de la mission', user:customer, recurrent: BOOLEAN_NO, job})
   })
 
   afterAll(async() => {

@@ -4,7 +4,7 @@ const {
 } = require('../../server/plugins/smartdiet/functions')
 const mongoose = require('mongoose')
 
-const {forceDataModelSmartdiet, buildAttributesException}=require('../utils')
+const {forceDataModelSmartdiet}=require('../utils')
 
 forceDataModelSmartdiet()
 
@@ -17,9 +17,6 @@ const CoachingLogbook = require('../../server/models/CoachingLogbook')
 jest.setTimeout(2000000)
 
 describe('Logbbooks management ', () => {
-
-  let user
-  let logbook, logbook2
 
   beforeAll(async() => {
     await mongoose.connect(getDatabaseUri(), MONGOOSE_OPTIONS)
@@ -48,5 +45,4 @@ describe('Logbbooks management ', () => {
       expect(testCount).toBe(afterCount)
     }
   })
-
 })

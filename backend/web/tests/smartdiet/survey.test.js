@@ -1,12 +1,12 @@
-const {forceDataModelSmartdiet, buildAttributesException}=require('../utils')
+const {forceDataModelSmartdiet}=require('../utils')
 forceDataModelSmartdiet()
 
 require('../../server/plugins/smartdiet/functions')
-const {ROLE_ADMIN} = require('../../server/plugins/smartdiet/consts')
+require('../../server/plugins/smartdiet/consts')
 
 const moment=require('moment')
 const mongoose = require('mongoose')
-const {MONGOOSE_OPTIONS, loadFromDb} = require('../../server/utils/database')
+const {MONGOOSE_OPTIONS} = require('../../server/utils/database')
 
 const Question=require('../../server/models/Question')
 require('../../server/models/Key')
@@ -26,5 +26,4 @@ describe('Survey ', () => {
     await Question.create({title: 'Title 1', picture: 'hop', order:1})
     await expect(Question.create({title: 'Title 2', picture: 'hop2', order:1})).rejects.toThrow(/duplicate/i);
   })
-
 })

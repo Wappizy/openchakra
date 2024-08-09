@@ -1,8 +1,7 @@
 const {
-  WORKFLOWS,
   computeWorkflowLists,
 } = require('../../server/plugins/smartdiet/workflows')
-const { MONGOOSE_OPTIONS, loadFromDb } = require('../../server/utils/database')
+const { MONGOOSE_OPTIONS } = require('../../server/utils/database')
 const mongoose = require('mongoose')
 const { getDatabaseUri } = require('../../config/config')
 const PROVIDER = require('../../server/utils/mailjet')
@@ -21,9 +20,6 @@ describe('Worflows', () => {
     await mongoose.connection.close()
   })
 
-  const emailContained = email => {
-    return expect.arrayContaining([expect.objectContaining( {Email: email})])
-  }
 
 
   it('must filter CL_ADH_LEAD_COA_NOGROUP_NOT_OPENED', async() => {
@@ -40,6 +36,4 @@ describe('Worflows', () => {
     const scenario_ids=await PROVIDER.getWorkflowsForContactsList({list: 2414836})
     expect(scenario_ids).toContain(119193)
   })
-
-
 })

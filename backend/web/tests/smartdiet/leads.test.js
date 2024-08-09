@@ -1,4 +1,4 @@
-const { COMPANY_DATA } = require('./data/modelsBaseData')
+require('./data/modelsBaseData')
 const { COMPANY_ACTIVITY } = require('../../server/plugins/smartdiet/consts')
 const Company = require('../../server/models/Company')
 const { importLeads } = require('../../server/plugins/smartdiet/leads')
@@ -7,7 +7,7 @@ const { MONGOOSE_OPTIONS } = require('../../server/utils/database')
 const fs=require('fs')
 const moment = require('moment')
 const mongoose = require('mongoose')
-const {forceDataModelSmartdiet, buildAttributesException}=require('../utils')
+const {forceDataModelSmartdiet}=require('../utils')
 
 forceDataModelSmartdiet()
 
@@ -36,5 +36,4 @@ describe('Prospects', () => {
     console.log(result)
     expect(result[0]).toMatch(/erreur.*email/i)
   })
-
 })

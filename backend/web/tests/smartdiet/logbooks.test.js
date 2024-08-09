@@ -1,7 +1,4 @@
 const {
-  logbooksConsistency
-} = require('../../server/plugins/smartdiet/functions')
-const {
   QUIZZ_QUESTION_TYPE,
   QUIZZ_TYPE_LOGBOOK
 } = require('../../server/plugins/smartdiet/consts')
@@ -10,18 +7,15 @@ const Quizz = require('../../server/models/Quizz')
 const moment=require('moment')
 const mongoose = require('mongoose')
 
-const {forceDataModelSmartdiet, buildAttributesException}=require('../utils')
+const {forceDataModelSmartdiet}=require('../utils')
 
 forceDataModelSmartdiet()
 
 require('../../server/plugins/smartdiet/functions')
 
-const {getDataModel} = require('../../config/config')
 const {MONGOOSE_OPTIONS, loadFromDb} = require('../../server/utils/database')
 const {ROLE_CUSTOMER, COMPANY_ACTIVITY} = require('../../server/plugins/smartdiet/consts')
 
-const Appointment=require('../../server/models/Appointment')
-const Coaching=require('../../server/models/Coaching')
 const User=require('../../server/models/User')
 const Company=require('../../server/models/Company')
 require('../../server/models/Target')
@@ -60,16 +54,11 @@ describe('Logbbooks management ', () => {
   })
 
   it('must return instantiated logbboks', async() => {
-    const coaching=await Coaching.create({user})
-    const created_app=await Appointment.create({coaching:coaching._id, start_date: moment().add(-2, 'day'), end_date: moment().add(-2, 'day').add(2, 'hour'), logbooks:[logbook._id]})
-    const created_app_2=await Appointment.create({coaching:coaching._id, start_date: moment().add(-4, 'day'), end_date: moment().add(-4, 'day').add(2, 'hour'), logbooks:[logbook._id, logbook2._id]})
     const apps=await loadFromDb({model: 'appointment', fields:['logbooks']})
     expect(apps[0].logbooks).toHaveLength(1)
     expect(apps[1].logbooks).toHaveLength(2)
-    const res=await logbooksConsistency()
     const [loaded_user]=await loadFromDb({model: 'user', fields:['latest_coachings.all_logbooks']})
     const logbookDays=loaded_user.latest_coachings[0].all_logbooks
     console.log(`logbooks days:${JSON.stringify(logbookDays, null, 2)}`)
   })
-
 })

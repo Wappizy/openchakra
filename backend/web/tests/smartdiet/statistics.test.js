@@ -2,9 +2,7 @@ const mongoose = require('mongoose')
 const { computeStatistics, preProcessGetFORBIDDEN } = require('../../server/plugins/smartdiet/functions')
 const { MONGOOSE_OPTIONS } = require('../../server/utils/database')
 const moment = require('moment')
-const { ROLE_SUPER_ADMIN, ROLE_EXTERNAL_DIET, ROLE_ADMIN, COACHING_STATUS_FINISHED, ROLE_RH } = require('../../server/plugins/smartdiet/consts')
-const Appointment = require('../../server/models/Appointment')
-const Coaching = require('../../server/models/Coaching')
+const { ROLE_RH } = require('../../server/plugins/smartdiet/consts')
 const User = require('../../server/models/User')
 
 jest.setTimeout(30000000)
@@ -18,10 +16,6 @@ afterAll(async () => {
 })
 
 describe('Statistics', () => {
-  const start_date = new Date('2020-01-05T13:00:00.000Z')
-  const end_date = new Date('2021-01-05T13:00:00.000Z')
-  const id = '65f2f95bd449f912a30afe74'
-  const diet = '65f2faa6234cec144a11fb3f'
 
   const fields = {
     number: [

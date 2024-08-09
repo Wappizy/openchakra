@@ -5,7 +5,6 @@ const { MONGOOSE_OPTIONS } = require('../../server/utils/database')
 const Announce = require('../../server/models/Announce')
 const {ANNOUNCE_DATA}=require('./data/base_data')
 const { clone } = require('../../server/plugins/sosynpl/announce')
-const ExpertiseCategory = require('../../server/models/ExpertiseCategory')
 const { CREATED_AT_ATTRIBUTE, UPDATED_AT_ATTRIBUTE, LANGUAGES, LANGUAGE_LEVEL } = require('../../utils/consts')
 const { EXPERIENCE } = require('../../server/plugins/sosynpl/consts')
 const LanguageLevel = require('../../server/models/LanguageLevel')
@@ -44,6 +43,4 @@ describe('Test announces', () => {
     announce=await Announce.findById(announce._id).populate('languages')
     expect(cleanAnnounce(cloned)).toEqual(cleanAnnounce(announce))
   })
-
 })
-

@@ -1,35 +1,16 @@
 const {
   WORKFLOWS,
   computeWorkflowLists,
-  mapContactToMailJet,
-  updateWorkflows
-} = require('../../server/plugins/smartdiet/workflows')
+  mapContactToMailJet} = require('../../server/plugins/smartdiet/workflows')
 const {
-  COMPANY_ACTIVITY_ASSURANCE,
-  COMPANY_ACTIVITY_BANQUE,
-  ROLE_EXTERNAL_DIET
-} = require('../../server/plugins/smartdiet/consts')
+  COMPANY_ACTIVITY_ASSURANCE} = require('../../server/plugins/smartdiet/consts')
 const {
   APPOINTMENT_DATA,
-  COACHING_DATA,
-  COLLECTIVE_CHALLENGE_DATA,
-  COMPANY_NO_INSURANCE_DATA,
-  GROUP_DATA,
-  KEY_DATA,
-  OFFER_DATA,
-  USER_DATA
-} = require('./data/modelsBaseData')
+  COACHING_DATA} = require('./data/modelsBaseData')
 const lodash=require('lodash')
-const AppointmentType = require('../../server/models/AppointmentType')
 const Appointment = require('../../server/models/Appointment')
 const Coaching = require('../../server/models/Coaching')
-const { MONGOOSE_OPTIONS, loadFromDb } = require('../../server/utils/database')
-const CollectiveChallenge = require('../../server/models/CollectiveChallenge')
-const Key = require('../../server/models/Key')
-const Offer = require('../../server/models/Offer')
-const Company = require('../../server/models/Company')
-const Lead = require('../../server/models/Lead')
-const User = require('../../server/models/User')
+const { MONGOOSE_OPTIONS } = require('../../server/utils/database')
 const moment = require('moment')
 const mongoose = require('mongoose')
 const {forceDataModelSmartdiet}=require('../utils')
@@ -54,10 +35,8 @@ describe('Worflows', () => {
   const DIET='diet@wappizy.com'
 
   let company
-  let anyUser
   let leadUser
   let diet
-  let key
   let offer
   let appointmentType
 
@@ -120,7 +99,6 @@ describe('Worflows', () => {
   })
 
   it('must filter CL_SALAR_REGISTERED_COLL_CHALL', async() => {
-    let challenge=await CollectiveChallenge.create({...COLLECTIVE_CHALLENGE_DATA, start_date: moment().add(29, 'days'), end_date: moment(), user:anyUser, company})
     const result=await computeWorkflowLists()
     expect(result.CL_SALAR_REGISTERED_COLL_CHALL.add).not.toEqual(emailContained(LEADONLY))
     expect(result.CL_SALAR_REGISTERED_COLL_CHALL.add).toEqual(emailContained(LEADUSER))
@@ -168,7 +146,6 @@ describe('Worflows', () => {
   })
 
   it('Must update workflows', async() => {
-    const res=await updateWorkflows()
   })
 
   it('must add to list with parameters', async() => {
@@ -180,7 +157,6 @@ describe('Worflows', () => {
   })
 
   it('Must display groups', async() => {
-    const allLists=await MAIL_HANDLER.getContactsLists()
     //console.log(allLists.filter(l => /adh/i.test(l.Name)))
   })
 
@@ -189,7 +165,6 @@ describe('Worflows', () => {
     const result=await MAIL_HANDLER.getContactsLists()
     console.log(result)
     const listId=result[0].ID
-    const res=await MAIL_HANDLER.addContactsToList({contacts: [{Email: email}], list: listId})
     const id=await MAIL_HANDLER.getContactId(email)
     console.log('ID is', id)
     console.log(listId)
@@ -197,5 +172,4 @@ describe('Worflows', () => {
     // console.log(campaigns, campaigns.length, 'workflows', campaigns.map(c => c.WorkflowID))
     await MAIL_HANDLER.removeContactsFromList({contacts: [{Email:email}], list: listId})
   })
-
 })
