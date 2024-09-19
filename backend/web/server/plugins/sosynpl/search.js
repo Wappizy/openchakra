@@ -8,6 +8,12 @@ const { computeDistanceKm } = require('../../../utils/functions')
 const Announce = require('../../models/Announce')
 const { REGIONS_FULL } = require('../../../utils/consts')
 const { loadFromDb } = require('../../utils/database')
+const NodeCache = require('node-cache')
+
+const freelanceCache = new NodeCache({ stdTTL: 60 })
+const announceCache = new NodeCache({ stdTTL: 60 })
+
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 // Limit results if no pattern or city was provided
 const MAX_RESULTS_NO_CRITERION=12
@@ -127,6 +133,13 @@ const computeSuggestedFreelances = async (userId, params, data) => {
 const PROFILE_TEXT_SEARCH_FIELDS=['position', 'description', 'motivation']
 
 const searchFreelances = async (userId, params, data, fields)  => {
+  const cacheKey = `freelances-${userId}-${data._id}`
+
+  const cachedResult = freelanceCache.get(cacheKey)
+  if (cachedResult) {
+    return cachedResult.candidates
+  }
+
   let filter={role: ROLE_FREELANCE}
   if (!lodash.isEmpty(data.work_modes)) {
     filter.work_mode={$in: data.work_modes}
@@ -185,55 +198,77 @@ const searchFreelances = async (userId, params, data, fields)  => {
 
   candidates = candidates.filter(c => c.freelance_profile_completion == 1)
   candidates=Object.keys(candidates).map(c => new CustomerFreelance(candidates[c]))
+
+  const cacheData = {
+    candidates,
+    count: candidates.length,
+  }
+
+  freelanceCache.set(cacheKey, cacheData)
+
   return candidates
 }
 
 // TODO: database should compute fields using dependency tree, so I can get data.profiles.length
-const countFreelances = async (userId, params, data, fields)  => {
-  const freelances=await searchFreelances(userId, params, data, fields)
+const countFreelances = async (userId, params, data, fields) => {
+  const cacheKey = `freelances-${userId}-${data._id}`
+  
+  let cachedResult = freelanceCache.get(cacheKey)
+  if (cachedResult) {
+    console.log("fr cache 1")
+    return cachedResult.count
+  }
+
+  await delay(100)
+  cachedResult = freelanceCache.get(cacheKey)
+  if (cachedResult) {
+    console.log("fr cache 2")
+    return cachedResult.count
+  }
+
+  const freelances = await searchFreelances(userId, params, data, fields)
   return freelances.length
 }
 
+
 const ANNOUNCE_TEXT_SEARCH_FIELDS=['description', 'expectation', 'company_description','team_description']
 
-const searchAnnounces = async (userId, params, data, fields)  => {
+const searchAnnounces = async (userId, params, data, fields) => {
+  const cacheKey = `announces-${userId}-${data._id}`
+  const cachedResult = announceCache.get(cacheKey)
+  if (cachedResult) {
+    return cachedResult.candidates
+  }
 
-  let filter={status: ANNOUNCE_STATUS_ACTIVE}
+  let filter = { status: ANNOUNCE_STATUS_ACTIVE }
 
   if (!lodash.isEmpty(data.experiences)) {
-    filter.experience={$in: data.experiences}
+    filter.experience = { $in: data.experiences }
   }
-  
   if (!lodash.isEmpty(data.sectors)) {
-    filter.sectors={$in: data.sectors}
+    filter.sectors = { $in: data.sectors }
   }
-  
   if (!lodash.isEmpty(data.expertises)) {
-    filter.expertises={$in: data.expertises}
+    filter.expertises = { $in: data.expertises }
   }
 
   if (data.pattern?.trim()) {
-    let candidates = []
-    const regExp=new RegExp(data.pattern, 'i')
-    ANNOUNCE_TEXT_SEARCH_FIELDS.forEach(async(field) => { 
-      const newFilter = {...filter, ...{[field]:regExp}}
-      const cand = await processFilters(params, fields, data, newFilter, userId)
-      candidates = [...candidates, ...cand]
-    })
-
-    return candidates
+    const regExp = new RegExp(data.pattern, 'i')
+    filter.$or = ANNOUNCE_TEXT_SEARCH_FIELDS.map(field => ({ [field]: regExp }))
   }
 
-  else {
-    return await processFilters(params, fields, data, filter, userId)
+  let candidates = await processFilters(params, fields, data, filter, userId)
+
+  const cacheData = {
+    candidates,
+    count: candidates.length,
   }
 
+  announceCache.set(cacheKey, cacheData)
 
-  // if (!lodash.isEmpty(data.work_modes)) {
-  //   filter.work_mode={$in: data.work_modes}
-  // }
-  
+  return candidates
 }
+
 
 const processFilters = async (params, f, data, filter, userId) => {
   let fields=[...f, 'pinned_by', 'pinned']
@@ -270,9 +305,22 @@ const processFilters = async (params, f, data, filter, userId) => {
   return candidates
 }
 
-const countAnnounce = async (userId, params, data, fields)  => {
-  const announces=await searchAnnounces(userId, params, data, fields)
-  return announces.length
+const countAnnounce = async (userId, params, data, fields) => {
+  const cacheKey = `announces-${userId}-${data._id}`;
+
+  let cachedResult = announceCache.get(cacheKey)
+  if (cachedResult) {
+    return cachedResult.count
+  }
+
+  await delay(100)
+  cachedResult = announceCache.get(cacheKey)
+  if (cachedResult) {
+    return cachedResult.count
+  }
+
+  const candidates = await searchAnnounces(userId, params, data, fields)
+  return candidates.length
 }
 
 module.exports={
